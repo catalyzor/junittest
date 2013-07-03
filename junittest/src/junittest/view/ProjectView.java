@@ -1,17 +1,21 @@
 package junittest.view;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.part.ViewPart;
 
 public class ProjectView extends ViewPart {
 
 	public static final String ID = "junittest.view.ProjectView"; //$NON-NLS-1$
+	private CheckboxTreeViewer checkboxTreeViewer;
 
 	public ProjectView() {
 	}
@@ -24,9 +28,14 @@ public class ProjectView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
-		TreeViewer treeViewer = new TreeViewer(container, SWT.BORDER);
-		Tree tree = treeViewer.getTree();
+		{
+			checkboxTreeViewer = new CheckboxTreeViewer(container, SWT.BORDER);
+			Tree tree = checkboxTreeViewer.getTree();
+			getSite().setSelectionProvider(checkboxTreeViewer);
+//			checkboxTreeViewer.setContentProvider(new ArrayContentProvider());
+			checkboxTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
+//			checkboxTreeViewer.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
+		}
 
 		createActions();
 		initializeToolBar();
@@ -46,6 +55,7 @@ public class ProjectView extends ViewPart {
 	private void initializeToolBar() {
 		IToolBarManager toolbarManager = getViewSite().getActionBars()
 				.getToolBarManager();
+//		toolbarManager.add(ActionFactory.REFRESH.create(getSite().getWorkbenchWindow()));
 	}
 
 	/**

@@ -74,7 +74,7 @@
                minimized="false"
                ratio="0.2"
                relationship="right"
-               relative="junittest.view.ProjectView">
+               relative="org.eclipse.ui.editorss">
          </view>
          <view
                closeable="false"
@@ -90,7 +90,106 @@
                relationship="stack"
                relative="org.eclipse.ui.views.PropertySheet">
          </view>
+         <view
+               closeable="false"
+               id="org.eclipse.ui.console.ConsoleView"
+               minimized="false"
+               ratio="0.7"
+               relationship="bottom"
+               relative="junittest.view.LogHistoryView">
+         </view>
       </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="junittest.category.project"
+            name="Project">
+      </category>
+      <command
+            categoryId="junittest.category.project"
+            id="junittest.command.open"
+            name="Open">
+      </command>
+      <command
+            categoryId="junittest.category.project"
+            id="junittest.command.close"
+            name="Close">
+      </command>
+      <command
+            categoryId="junittest.category.project"
+            id="junittest.command.recent"
+            name="Recent">
+      </command>
+      <command
+            categoryId="junittest.category.project"
+            id="junittest.command.load"
+            name="Load">
+      </command>
+      <command
+            categoryId="junittest.category.project"
+            id="junittest.command.delete"
+            name="Delete">
+      </command>
+      <category
+            id="junittest.commands.category"
+            name="Sample Category">
+      </category>
+      <command
+            categoryId="junittest.commands.category"
+            id="junittest.commands.sampleCommand"
+            name="Sample Command">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="工程"
+               tooltip="project">
+            <command
+                  commandId="junittest.command.open"
+                  label="打开"
+                  style="push">
+            </command>
+            <command
+                  commandId="junittest.command.close"
+                  label="闭关"
+                  style="push">
+            </command>
+            <command
+                  commandId="junittest.command.recent"
+                  label="最近"
+                  style="push">
+            </command>
+            <command
+                  commandId="junittest.command.load"
+                  label="加载"
+                  style="push">
+            </command>
+            <command
+                  commandId="junittest.command.delete"
+                  label="删除"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="配置"
+               tooltip="preference">
+         </menu>
+         <menu
+               label="报告"
+               tooltip="report">
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="junittest.handler.LoadSourceHandler"
+            commandId="junittest.command.load">
+      </handler>
    </extension>
    <!--<extension
          point="org.eclipse.ui.intro">
