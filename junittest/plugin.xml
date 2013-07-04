@@ -190,6 +190,21 @@
             class="junittest.handler.LoadSourceHandler"
             commandId="junittest.command.load">
       </handler>
+      <handler
+            class="junittest.handler.OpenProjectHandler"
+            commandId="junittest.command.open">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            class="junittest.ui.ResourceLabelDecorator"
+            id="junittest.decorator1"
+            label="resource"
+            location="REPLACE"
+            objectClass="org.eclipse.core.resources.IResource"
+            state="true">
+      </decorator>
    </extension>
    <!--<extension
          point="org.eclipse.ui.intro">
