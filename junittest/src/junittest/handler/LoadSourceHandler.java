@@ -34,7 +34,7 @@ public class LoadSourceHandler extends AbstractHandler implements IHandler {
 		if(dialog.open() == IDialogConstants.OK_ID){
 			ProjectView view = (ProjectView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ProjectView.ID);
 			if(view != null){
-				view.changePrject(wizard.getProject());
+				view.changePrject(new Object[]{wizard.getProject()});
 			}
 		}
 		return null;

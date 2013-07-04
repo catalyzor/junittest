@@ -132,13 +132,13 @@
             name="Delete">
       </command>
       <category
-            id="junittest.commands.category"
-            name="Sample Category">
+            id="junittest.category.run"
+            name="Run">
       </category>
       <command
-            categoryId="junittest.commands.category"
-            id="junittest.commands.sampleCommand"
-            name="Sample Command">
+            categoryId="junittest.category.run"
+            id="junittest.commands.start"
+            name="启动">
       </command>
    </extension>
    <extension
@@ -198,13 +198,30 @@
    <extension
          point="org.eclipse.ui.decorators">
       <decorator
+            adaptable="true"
             class="junittest.ui.ResourceLabelDecorator"
             id="junittest.decorator1"
             label="resource"
             location="REPLACE"
             objectClass="org.eclipse.core.resources.IResource"
             state="true">
+         <enablement>
+            <objectClass
+                  name="java.lang.Object">
+            </objectClass>
+         </enablement>
       </decorator>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:junittest.view.ProjectView">
+         <command
+               commandId="junittest.command.open"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <!--<extension
          point="org.eclipse.ui.intro">
