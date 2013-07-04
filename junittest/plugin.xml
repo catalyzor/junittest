@@ -53,6 +53,11 @@
             id="junittest.view.TestStepView"
             name="Test Step">
       </view>
+      <view
+            class="junittest.view.LogView"
+            id="junittest.view.LogView"
+            name="Log">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -92,7 +97,7 @@
          </view>
          <view
                closeable="false"
-               id="org.eclipse.ui.console.ConsoleView"
+               id="junittest.view.LogView"
                minimized="false"
                ratio="0.7"
                relationship="bottom"
@@ -138,7 +143,22 @@
       <command
             categoryId="junittest.category.run"
             id="junittest.commands.start"
-            name="启动">
+            name="Start">
+      </command>
+      <command
+            categoryId="junittest.category.run"
+            id="junittest.command.stop"
+            name="Stop">
+      </command>
+      <command
+            categoryId="junittest.category.run"
+            id="junittest.command.pause"
+            name="Pause">
+      </command>
+      <command
+            categoryId="junittest.category.run"
+            id="junittest.command.resumes"
+            name="Resumes">
       </command>
    </extension>
    <extension
@@ -183,6 +203,20 @@
                tooltip="report">
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <command
+               commandId="junittest.command.open"
+               label="工程打开"
+               style="push">
+         </command>
+         <command
+               commandId="junittest.command.close"
+               label="工程关闭"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -193,6 +227,14 @@
       <handler
             class="junittest.handler.OpenProjectHandler"
             commandId="junittest.command.open">
+      </handler>
+      <handler
+            class="junittest.handler.CloseProjectHandler"
+            commandId="junittest.command.close">
+      </handler>
+      <handler
+            class="junittest.handler.DeleteProjectHandler"
+            commandId="junittest.command.delete">
       </handler>
    </extension>
    <extension
@@ -218,7 +260,13 @@
             allPopups="false"
             locationURI="toolbar:junittest.view.ProjectView">
          <command
-               commandId="junittest.command.open"
+               commandId="junittest.commands.start"
+               label="启动"
+               style="push">
+         </command>
+         <command
+               commandId="junittest.command.stop"
+               label="停止"
                style="push">
          </command>
       </menuContribution>

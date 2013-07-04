@@ -4,14 +4,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import junittest.Activator;
 import junittest.util.ZipUtils;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 
 public class ResourceManager {
 
@@ -63,5 +68,26 @@ public class ResourceManager {
 			project.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor, 1));
 		}
 		return bool;
+	}
+	
+	public void deleteProject(final IProject[] projects){
+		Job job = new Job("Delete jobs") {
+			
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				// TODO Auto-generated method stub
+				try {
+					ResourcesPlugin.getWorkspace().delete(projects, true, monitor);
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "delete projects error", e);
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.setPriority(Job.LONG);
+		job.setUser(true);
+		job.schedule();
 	}
 }

@@ -1,11 +1,17 @@
 package junittest.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junittest.Activator;
 import junittest.resource.ResourceManager;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IMenuManager;
@@ -19,11 +25,12 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 
-public class ProjectView extends ViewPart {
+public class ProjectView extends ViewPart implements IResourceChangeListener {
 
 	public static final String ID = "junittest.view.ProjectView"; //$NON-NLS-1$
 	private CheckboxTreeViewer checkboxTreeViewer;
@@ -138,7 +145,15 @@ public class ProjectView extends ViewPart {
 						if(cases.exists()){
 							try {
 								IResource[] children = cases.members();
-								return children;
+								if(children != null && children.length > 0){
+									ArrayList<IResource> lstResource = new ArrayList<>();
+									for(int i = 0; i < children.length; i++){
+										if(!children[i].getName().toUpperCase().equals("META-INF")){
+											lstResource.add(children[i]);
+										}
+									}
+									return lstResource.toArray();
+								}
 							} catch (CoreException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -147,7 +162,20 @@ public class ProjectView extends ViewPart {
 					}else if(folder != null){
 						try {
 							IResource[] children = folder.members();
-							return children;
+							if(children != null && children.length > 0){
+								List<IResource> list = new ArrayList<>();
+								for(IResource res : children){
+									switch(res.getType()){
+									case IResource.FILE:
+										if(res.getFileExtension() == null && !res.getFileExtension().toUpperCase().equals("CLASS")){
+											break;
+										}
+									case IResource.FOLDER:
+										list.add(res);
+									}
+								}
+								return list.toArray();
+							}
 						} catch (CoreException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -165,6 +193,7 @@ public class ProjectView extends ViewPart {
 		createActions();
 		initializeToolBar();
 		initializeMenu();
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(this, IResourceChangeEvent.PRE_DELETE);
 	}
 
 	public void changePrject(Object[] objects){
@@ -200,5 +229,22 @@ public class ProjectView extends ViewPart {
 	@Override
 	public void setFocus() {
 		// Set the focus
+	}
+
+	@Override
+	public void resourceChanged(IResourceChangeEvent event) {
+		// TODO Auto-generated method stub
+		if(checkboxTreeViewer.getInput() != null && event.getType() == IResourceChangeEvent.PRE_DELETE){
+			if(event.getResource().equals(((Object[])checkboxTreeViewer.getInput())[0])){
+				Display.getDefault().asyncExec(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						changePrject(null);
+					}
+				});
+			}
+		}
 	}
 }
