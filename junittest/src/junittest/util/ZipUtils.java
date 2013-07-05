@@ -23,12 +23,6 @@ public class ZipUtils {
 	
 	static final long timeUpdate = 2000;
 
-//	/**
-//	 * ZIP鏂囦欢鍘嬬缉
-//	 * @param outFileName 鍘嬬缉鍚庣殑鏂囦欢鍚�
-//	 * @param dirName 寰呭帇缂╃殑鏂囦欢澶�
-//	 * @throws Exception
-//	 */
 //	public static void zip(String outFileName, String dirName) throws Exception {
 //		ZipOutputStream out = null;
 //		try {
@@ -42,13 +36,6 @@ public class ZipUtils {
 //		}
 //	}
 
-//	/**
-//	 * zip鍘嬬缉鏂囦欢
-//	 * @param out 杈撳嚭鏁版嵁娴�
-//	 * @param f 寰呭帇缂╂枃浠�
-//	 * @param base zip鏂囦欢鑺傜偣
-//	 * @throws Exception
-//	 */
 //	public static void zip(ZipOutputStream out, File f, String base) throws Exception {
 //		if (f.isDirectory()) {
 //			File[] fl = f.listFiles();
@@ -84,40 +71,29 @@ public class ZipUtils {
 //		}
 //	}
 
-	/**
-	 * 鍒ゆ柇鏂囦欢鏍煎紡鏄惁宸茬粡鍘嬬缉锛屼互鎻愰珮鍘嬬缉閫熷害
-	 * @param fileName 鏂囦欢鍚嶇О
-	 * @return true琛ㄧず宸茬粡鍘嬬缉锛宖alse琛ㄧず鏈帇缂�
-	 */
-	private static boolean isAlreadyCompressed(String fileName) {
-		// avoid compress an already compressed file
-		boolean res = false;
+//	private static boolean isAlreadyCompressed(String fileName) {
+//		// avoid compress an already compressed file
+//		boolean res = false;
+//
+//		// 宸茬粡鍘嬬缉鍥犳涓嶉渶鍐嶅帇缂╃殑鏂囦欢鍚庣紑鍚嶅垪琛�
+//		String[] exts = new String[] {
+//				".zip",
+//				".jar",
+//				".jpg",
+//				".png",
+//				".war",
+//		};
+//
+//		for(String ext : exts) {
+//			if(fileName.endsWith(ext)) {
+//				res = true;
+//				break;
+//			}
+//		}
+//
+//		return res;
+//	}
 
-		// 宸茬粡鍘嬬缉鍥犳涓嶉渶鍐嶅帇缂╃殑鏂囦欢鍚庣紑鍚嶅垪琛�
-		String[] exts = new String[] {
-				".zip",
-				".jar",
-				".jpg",
-				".png",
-				".war",
-		};
-
-		for(String ext : exts) {
-			if(fileName.endsWith(ext)) {
-				res = true;
-				break;
-			}
-		}
-
-		return res;
-	}
-
-	/**
-	 * 灏哯ip鏂囦欢瑙ｅ帇缂╁埌鎸囧畾鐩綍涓�
-	 * @param zipfile ZIP鏍煎紡鍘嬬缉鏂囦欢
-	 * @param destDir 瑙ｅ帇缂╃洰褰�
-	 * @throws Exception
-	 */
 	public static void unZip(String zipfile, String destDir) throws Exception {
 		if (!destDir.endsWith("/")) {
 			destDir = destDir + "/";
