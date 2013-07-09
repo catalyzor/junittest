@@ -36,7 +36,7 @@ public class ResourceManager {
 	public static final String FOLDER_REPORT = "report";
 	public static final String FOLDER_CASE = "case";
 	
-	private Map<IFile, TestResultEnum> mapResult;
+	private Map<String, TestResultEnum> mapResult;
 	private IProject project;
 	public URLClassLoader urlClassLoad;
 	private static ResourceManager instance;
@@ -146,11 +146,11 @@ public class ResourceManager {
 		}
 	}
 	
-	public void setMapResult(Map<IFile, TestResultEnum> map){
+	public void setMapResult(Map<String, TestResultEnum> map){
 		this.mapResult = map;
 	}
 	
-	public Map<IFile, TestResultEnum> getMapResult(){
+	public Map<String, TestResultEnum> getMapResult(){
 		if(mapResult == null) mapResult = new HashMap<>();
 		return mapResult;
 	}

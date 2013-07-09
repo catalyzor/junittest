@@ -263,6 +263,14 @@
             class="junittest.handler.RunHandler"
             commandId="junittest.commands.start">
       </handler>
+      <handler
+            class="junittest.handler.StopHandler"
+            commandId="junittest.command.stop">
+      </handler>
+      <handler
+            class="junittest.handler.PauseHandler"
+            commandId="junittest.command.pause">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
@@ -293,6 +301,11 @@
          <command
                commandId="junittest.command.stop"
                label="停止"
+               style="push">
+         </command>
+         <command
+               commandId="junittest.command.pause"
+               label="暂停"
                style="push">
          </command>
       </menuContribution>

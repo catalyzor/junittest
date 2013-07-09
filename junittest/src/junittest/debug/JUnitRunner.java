@@ -2,9 +2,10 @@ package junittest.debug;
 
 import java.net.URLClassLoader;
 import java.util.Date;
+import java.util.Map;
 
-import junittest.Activator;
 import junittest.resource.ResourceManager;
+import junittest.resource.TestResultEnum;
 
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
@@ -49,7 +50,14 @@ public class JUnitRunner {
 						pause = false;
 					}
 				}
-				System.out.println(description.getDisplayName());
+				System.out.println("testRunStarted:" + description.getDisplayName());
+				if(description.isSuite()){
+					for(Description des : description.getChildren()){
+						if(des.isTest()){
+							ResourceManager.getInstance().getMapResult().put(des.getClassName(), TestResultEnum.NORUN);
+						}
+					}
+				}
 			}
 
 			@Override
@@ -62,7 +70,12 @@ public class JUnitRunner {
 						pause = false;
 					}
 				}
-				System.out.println("finishied" + result.getRunTime());
+				System.out.println("testRunFinished:" + result.getRunTime());
+				if(!result.wasSuccessful()){
+					for(Failure fail: result.getFailures()){
+						ResourceManager.getInstance().getMapResult().put(fail.getDescription().getClassName(), TestResultEnum.FAIL);
+					}
+				}
 			}
 
 			@Override
@@ -75,7 +88,7 @@ public class JUnitRunner {
 						pause = false;
 					}
 				}
-				System.out.println(description.getDisplayName() + "start");
+				System.out.println("testStarted:" + description.getDisplayName() + "start");
 			}
 
 			@Override
@@ -88,7 +101,13 @@ public class JUnitRunner {
 						pause = false;
 					}
 				}
-				System.out.println(description.getDisplayName() + "finished");
+				System.out.println("testFinished:" + description.getDisplayName() + "finished");
+				if(description.isTest()){
+					Map<String, TestResultEnum> map = ResourceManager.getInstance().getMapResult();
+					if(!TestResultEnum.FAIL.equals(map.get(description.getClassName())) && !TestResultEnum.PRE.equals(map.get(description.getClassName()))){
+						ResourceManager.getInstance().getMapResult().put(description.getClassName(), TestResultEnum.PASS);
+					}
+				}
 			}
 
 			@Override
@@ -101,7 +120,10 @@ public class JUnitRunner {
 						pause = false;
 					}
 				}
-				System.out.println(failure.getMessage());
+				System.out.println("testFailure:" + failure.getMessage());
+				if(failure.getDescription().isTest()){
+					ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.FAIL);
+				}
 			}
 
 			@Override
@@ -119,7 +141,10 @@ public class JUnitRunner {
 						pause = false;
 					}
 				}
-				System.out.println(failure.getMessage());
+				System.out.println("testAssumptionFailure:" + failure.getMessage());
+				if(failure.getDescription().isTest()){
+					ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.PRE);
+				}
 			}
 
 			@Override
@@ -132,7 +157,7 @@ public class JUnitRunner {
 						pause = false;
 					}
 				}
-				System.out.println(description.getDisplayName() + "ignored");
+				System.out.println("testIgnored:" + description.getDisplayName() + "ignored");
 			}
 			
 		});
@@ -146,6 +171,7 @@ public class JUnitRunner {
 	
 	public void start(Class[] classes){
 		if(pause){
+			pause = false;
 			synchronized (pause) {
 				pause.notify();
 			}
@@ -173,10 +199,10 @@ public class JUnitRunner {
 	}
 	
 	public void pause(){
-		if(runThread != null){
+		if(runThread != null && runThread.isAlive()){
 //			IProcess process = DebugPlugin.newProcess(null, null, null);
 //			process.
-			pause = new Boolean(true);
+			pause = true;
 		}
 	}
 	public static void main(String[] args) {
