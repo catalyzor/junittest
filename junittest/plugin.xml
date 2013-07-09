@@ -259,6 +259,10 @@
             class="junittest.handler.DeleteProjectHandler"
             commandId="junittest.command.delete">
       </handler>
+      <handler
+            class="junittest.handler.RunHandler"
+            commandId="junittest.commands.start">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">

@@ -5,7 +5,9 @@ import java.util.List;
 
 import junittest.Activator;
 import junittest.resource.ResourceManager;
+import junittest.util.Utilities;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -246,5 +248,15 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 				});
 			}
 		}
+	}
+	
+	public List<String> getSelectedCases(){
+		List<String> list = new ArrayList<>();
+		Object[] objs = checkboxTreeViewer.getCheckedElements();
+		for(Object obj: objs){
+			IFile file = (IFile) Platform.getAdapterManager().getAdapter(obj, IFile.class);
+			if(file != null) list.add(Utilities.getFullClassName(file));
+		}
+		return list;
 	}
 }

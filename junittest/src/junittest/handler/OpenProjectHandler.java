@@ -1,12 +1,14 @@
 package junittest.handler;
 
 import junittest.Activator;
+import junittest.resource.ResourceManager;
 import junittest.view.ProjectView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
@@ -31,6 +33,7 @@ public class OpenProjectHandler extends AbstractHandler implements IHandler {
 		if(dialog.open() == IDialogConstants.OK_ID){
 			ProjectView view = (ProjectView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ProjectView.ID);
 			if(view != null){
+				ResourceManager.getInstance().setProject((IProject) dialog.getFirstResult());
 				view.changePrject(new Object[]{ dialog.getFirstResult()});
 			}
 		}

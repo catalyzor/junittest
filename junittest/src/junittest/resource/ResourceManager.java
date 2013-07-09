@@ -2,11 +2,20 @@ package junittest.resource;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import junittest.Activator;
 import junittest.util.ZipUtils;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -18,13 +27,18 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 
+import sun.misc.ClassLoaderUtil;
+
 public class ResourceManager {
 
 	public static final String FOLDER_JAR = "jar";
 	public static final String FOLDER_LOG = "log";
 	public static final String FOLDER_REPORT = "report";
 	public static final String FOLDER_CASE = "case";
-	IResource workspace;
+	
+	private Map<IFile, TestResultEnum> mapResult;
+	private IProject project;
+	public URLClassLoader urlClassLoad;
 	private static ResourceManager instance;
 	private ResourceManager(String path){
 //		ResourcesPlugin.getWorkspace().getRoot()
@@ -89,5 +103,55 @@ public class ResourceManager {
 		job.setPriority(Job.LONG);
 		job.setUser(true);
 		job.schedule();
+	}
+
+	public void setProject(IProject project){
+		if(this.project != null){
+			unloadTestJarClassLoader();
+		}
+		this.project = project;
+		if(this.project != null){
+			try {
+				String str = this.project.getFolder(FOLDER_JAR).members()[0].getLocation().toOSString();
+				loadTestJar(str);
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	public void loadTestJar(String jarPath) throws IOException, ClassNotFoundException{
+		urlClassLoad = URLClassLoader.newInstance(new URL[]{new URL("file:" + jarPath)}, getClass().getClassLoader());
+		JarFile jar = new JarFile(jarPath);
+		Enumeration<JarEntry> e = jar.entries();
+		while(e.hasMoreElements()){
+			JarEntry entry = e.nextElement();
+			String name = entry.getName();
+			if(!entry.isDirectory() && name.endsWith(".class")){
+				name = name.substring(0, name.length() - 6).replaceAll("/", ".");
+//				urlClassLoad.loadClass(name);
+			}
+		}
+	}
+	
+	public void unloadTestJarClassLoader(){
+		if(urlClassLoad != null){
+			ClassLoaderUtil.releaseLoader(urlClassLoad);
+		}
+	}
+	
+	public void setMapResult(Map<IFile, TestResultEnum> map){
+		this.mapResult = map;
+	}
+	
+	public Map<IFile, TestResultEnum> getMapResult(){
+		if(mapResult == null) mapResult = new HashMap<>();
+		return mapResult;
 	}
 }
