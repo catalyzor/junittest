@@ -2,5 +2,5 @@ package junittest.resource;
 
 public enum TestResultEnum {
 
-	NORUN,PASS,FAIL,PRE
+	Ignore,OK,FAIL,ERROR
 }

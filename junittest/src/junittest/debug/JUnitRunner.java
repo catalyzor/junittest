@@ -50,7 +50,7 @@ public class JUnitRunner {
 				if(description.isSuite()){
 					for(Description des : description.getChildren()){
 						if(des.isTest()){
-							ResourceManager.getInstance().getMapResult().put(des.getClassName(), TestResultEnum.NORUN);
+							ResourceManager.getInstance().getMapResult().put(des.getClassName(), TestResultEnum.Ignore);
 						}
 					}
 				}
@@ -100,8 +100,8 @@ public class JUnitRunner {
 				System.out.println("testFinished:" + description.getDisplayName() + "finished");
 				if(description.isTest()){
 					Map<String, TestResultEnum> map = ResourceManager.getInstance().getMapResult();
-					if(!TestResultEnum.FAIL.equals(map.get(description.getClassName())) && !TestResultEnum.PRE.equals(map.get(description.getClassName()))){
-						ResourceManager.getInstance().getMapResult().put(description.getClassName(), TestResultEnum.PASS);
+					if(!TestResultEnum.FAIL.equals(map.get(description.getClassName())) && !TestResultEnum.ERROR.equals(map.get(description.getClassName()))){
+						ResourceManager.getInstance().getMapResult().put(description.getClassName(), TestResultEnum.OK);
 					}
 				}
 			}
@@ -139,7 +139,7 @@ public class JUnitRunner {
 				}
 				System.out.println("testAssumptionFailure:" + failure.getMessage());
 				if(failure.getDescription().isTest()){
-					ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.PRE);
+					ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.ERROR);
 				}
 			}
 

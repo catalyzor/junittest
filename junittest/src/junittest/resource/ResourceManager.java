@@ -35,6 +35,8 @@ public class ResourceManager {
 	public static final String FOLDER_LOG = "log";
 	public static final String FOLDER_REPORT = "report";
 	public static final String FOLDER_CASE = "case";
+	public static final String SUFFIX_PROPERTIES = "properties";
+	public static final String SUFFIX_CLASS = "class";
 	
 	private Map<String, TestResultEnum> mapResult;
 	private IProject project;
@@ -133,7 +135,7 @@ public class ResourceManager {
 		while(e.hasMoreElements()){
 			JarEntry entry = e.nextElement();
 			String name = entry.getName();
-			if(!entry.isDirectory() && name.endsWith(".class")){
+			if(!entry.isDirectory() && name.endsWith("." + SUFFIX_CLASS)){
 				name = name.substring(0, name.length() - 6).replaceAll("/", ".");
 //				urlClassLoad.loadClass(name);
 			}
