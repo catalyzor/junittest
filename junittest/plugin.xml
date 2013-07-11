@@ -287,6 +287,19 @@
             </objectClass>
          </enablement>
       </decorator>
+      <decorator
+            adaptable="true"
+            class="junittest.ui.StatusLabelDecorator"
+            id="junittest.decorator.status"
+            label="status"
+            location="BOTTOM_LEFT"
+            state="true">
+         <enablement>
+            <objectClass
+                  name="java.lang.Object">
+            </objectClass>
+         </enablement>
+      </decorator>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

@@ -24,19 +24,15 @@ public class JUnitRunner {
 	
 	private static JUnitRunner instance;
 	
+	public void addRunListener(RunListener runListener){
+		junit.addListener(runListener);
+	}
+	
+	public void removeRunListener(RunListener runListener){
+		junit.removeListener(runListener);
+	}
 	private JUnitRunner(){
-		try {
-			junit = (JUnitCore) ResourceManager.getInstance().urlClassLoad.loadClass(JUnitCore.class.getName()).newInstance();
-		} catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		junit = new JUnitCore();
 		junit.addListener(new RunListener(){
 
 			@Override
@@ -176,6 +172,7 @@ public class JUnitRunner {
 				pause.notify();
 			}
 		}else{
+			ResourceManager.getInstance().getMapResult().clear();
 			this.classes = classes;
 			runThread = new Thread("Run Tests"){
 

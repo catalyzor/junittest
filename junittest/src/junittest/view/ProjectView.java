@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junittest.Activator;
+import junittest.debug.JUnitRunner;
 import junittest.resource.ResourceManager;
 import junittest.util.Utilities;
 
@@ -31,13 +32,41 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
+import org.junit.runner.Result;
+import org.junit.runner.notification.RunListener;
 
 public class ProjectView extends ViewPart implements IResourceChangeListener {
 
 	public static final String ID = "junittest.view.ProjectView"; //$NON-NLS-1$
 	private CheckboxTreeViewer checkboxTreeViewer;
 
+	private RunListener runListener;
 	public ProjectView() {
+		runListener = new RunListener(){
+
+			@Override
+			public void testRunFinished(Result result) throws Exception {
+				// TODO Auto-generated method stub
+//				super.testRunFinished(result);
+				Display.getDefault().asyncExec(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						checkboxTreeViewer.refresh(true);
+					}
+				});
+			}
+			
+		};
+		JUnitRunner.getInstance().addRunListener(runListener);
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		JUnitRunner.getInstance().removeRunListener(runListener);
+		super.dispose();
 	}
 
 	/**
