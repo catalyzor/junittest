@@ -107,6 +107,9 @@ public class ResourceManager {
 		job.schedule();
 	}
 
+	public IProject getProject(){
+		return project;
+	}
 	public void setProject(IProject project){
 		if(this.project != null){
 			unloadTestJarClassLoader();

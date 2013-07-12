@@ -1,12 +1,15 @@
 package junittest.view;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import junittest.Activator;
 import junittest.debug.JUnitRunner;
 import junittest.resource.ResourceManager;
 import junittest.util.Utilities;
+import junittest.xml.XMLLog;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -16,7 +19,11 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -32,6 +39,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
+import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.RunListener;
 
@@ -41,9 +49,12 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 	private CheckboxTreeViewer checkboxTreeViewer;
 
 	private RunListener runListener;
+	private IProject project;
+	private XMLLog logger;
 	public ProjectView() {
 		runListener = new RunListener(){
 
+//			private XMLLog logger;
 			@Override
 			public void testRunFinished(Result result) throws Exception {
 				// TODO Auto-generated method stub
@@ -57,6 +68,44 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 					}
 				});
 			}
+
+			@Override
+			public void testFinished(final Description description) throws Exception {
+				// TODO Auto-generated method stub
+//				super.testFinished(description);
+				Job job = new Job("update test result."){
+
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						// TODO Auto-generated method stub
+						logger.updateTestResult(description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
+						logger.saveToFile();
+						return Status.OK_STATUS;
+					}
+					
+				};
+			}
+
+			@Override
+			public void testRunStarted(Description description)
+					throws Exception {
+				// TODO Auto-generated method stub
+//				super.testRunStarted(description);
+				Job job = new Job("Output log file.") {
+					
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						// TODO Auto-generated method stub
+						String name = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.MEDIUM).format(Calendar.getInstance().getTime());
+						logger = new XMLLog(name, project);
+						logger.initStructure();
+						logger.saveToFile();
+						return Status.OK_STATUS;
+					}
+				};
+				job.setSystem(true);
+				job.schedule();
+			}
 			
 		};
 		JUnitRunner.getInstance().addRunListener(runListener);
@@ -69,6 +118,9 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 		super.dispose();
 	}
 
+	public XMLLog getXMLLog(){
+		return logger;
+	}
 	/**
 	 * Create contents of the view part.
 	 * @param parent
@@ -230,8 +282,10 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 	public void changePrject(Object[] objects){
 		checkboxTreeViewer.setInput(objects);
 //		checkboxTreeViewer.refresh();
-		if(objects != null && objects.length > 0)
+		if(objects != null && objects.length > 0){
+			project = (IProject) objects[0];
 			checkboxTreeViewer.setSubtreeChecked(objects[0], true);
+		}
 	}
 	/**
 	 * Create the actions.

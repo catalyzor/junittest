@@ -1,5 +1,6 @@
 package junittest.xml;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,10 +9,14 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import junittest.resource.ResourceManager;
+import junittest.resource.TestResultEnum;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -31,6 +36,10 @@ public class XMLLog {
 	private Document doc;
 	private IProject res;
 	private String fileName;
+	
+	public Document getDocument(){
+		return doc;
+	}
 	public XMLLog(String time, IProject res){
 		this.time = time;
 		this.res = res;
@@ -82,8 +91,9 @@ public class XMLLog {
 	}
 	public void addElement(Element parent, IResource[] ress){
 		for (int i = 0; i < ress.length; i++) {
+			Element element = null;
 			if(ress[i].getType() == IResource.FOLDER){
-				Element element = parent.addElement(ress[i].getName());
+				element = parent.addElement(ress[i].getName());
 				try {
 					addElement(parent, ((IFolder)ress[i].getAdapter(IFolder.class)).members());
 				} catch (CoreException e) {
@@ -94,12 +104,45 @@ public class XMLLog {
 				String name = ress[i].getName();
 				if(ress[i].getFileExtension() == null){
 //					name = ress[i].getName();
-					parent.addElement(name);
+					element = parent.addElement(name);
 				}else if(ress[i].getFileExtension().toLowerCase().equals("class")){
 					name = name.substring(0, ress[i].getName().length() - 7);
-					parent.addElement(name);
+					element = parent.addElement(name);
 				}
 			}
+
+			try {
+				addProp(element, ress[i]);
+			} catch (CoreException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+	}
+	
+	public void updateTestResult(String classname, TestResultEnum result){
+		String path = res.getName() + "//" + classname.replace('.', '/');
+		Node node = doc.selectSingleNode(path);
+		node.setText(result.name());
+		
+	}
+	
+	public void updateTestResult(Element element, TestResultEnum result){
+		if(element == null) return;
+		if(TestResultEnum.FAIL.equals(result)){
+			element.setText(result.name());
+		}else if(TestResultEnum.ERROR.equals(result)){
+			if(!element.getText().equals(TestResultEnum.FAIL.name())) element.setText(result.name());
+		}else if(TestResultEnum.OK.equals(result)){
+			String str = element.getText();
+			if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) element.setText(result.name());
+		}
+		updateTestResult(element.getParent(), result);
+	}
+	
+	public static String getTestResult(String filename) throws DocumentException{
+		SAXReader sax = new SAXReader();
+		Document document = sax.read(new File(filename));
+		return document.getRootElement().getText();
 	}
 }
