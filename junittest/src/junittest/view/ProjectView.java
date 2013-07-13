@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import junittest.Activator;
 import junittest.debug.JUnitRunner;
@@ -78,12 +79,16 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
 						// TODO Auto-generated method stub
+						if(logger != null){
 						logger.updateTestResult(description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
 						logger.saveToFile();
+						}
 						return Status.OK_STATUS;
 					}
 					
 				};
+				job.setSystem(true);
+				job.schedule();
 			}
 
 			@Override
@@ -96,7 +101,8 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
 						// TODO Auto-generated method stub
-						String name = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.MEDIUM).format(Calendar.getInstance().getTime());
+//						String name = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime());
+						String name = Calendar.getInstance().getTimeInMillis() + "";
 						logger = new XMLLog(name, project);
 						logger.initStructure();
 						logger.saveToFile();

@@ -142,6 +142,7 @@ public class LogHistoryView extends ViewPart {
 		if(project != null){
 			try {
 				tableViewer.setInput(project.getFolder(ResourceManager.FOLDER_LOG).members());
+				tableViewer.refresh();
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

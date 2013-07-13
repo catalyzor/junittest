@@ -16,7 +16,9 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -64,7 +66,7 @@ public class XMLLog {
 			file = ((IFolder)res.getAdapter(IFolder.class)).getFile(res.getName() + "." + ResourceManager.SUFFIX_PROPERTIES);
 		}else if(res.getType() == IResource.FILE){
 			if(res.getFileExtension() != null && res.getFileExtension().equals(ResourceManager.SUFFIX_CLASS)){
-				file = res.getParent().getFile(Path.fromOSString(file.getName().substring(0, file.getName().length() - ResourceManager.SUFFIX_CLASS.length() - 1) + ResourceManager.SUFFIX_PROPERTIES));
+				file = res.getParent().getFile(Path.fromOSString(res.getName().substring(0, res.getName().length() - ResourceManager.SUFFIX_CLASS.length() - 1) + ResourceManager.SUFFIX_PROPERTIES));
 			}
 		}
 		if(file != null && file.exists()){
@@ -82,8 +84,11 @@ public class XMLLog {
 	public void saveToFile(){
 		try {
 			FileWriter writer = new FileWriter(res.getFolder(ResourceManager.FOLDER_LOG).getLocation().append(fileName).toFile());
-			doc.write(writer);
-			
+//			doc.write(writer);
+			XMLWriter xmlWriter = new XMLWriter(writer, OutputFormat.createPrettyPrint());
+			xmlWriter.write(doc);
+			xmlWriter.close();
+			writer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,7 +100,7 @@ public class XMLLog {
 			if(ress[i].getType() == IResource.FOLDER){
 				element = parent.addElement(ress[i].getName());
 				try {
-					addElement(parent, ((IFolder)ress[i].getAdapter(IFolder.class)).members());
+					addElement(element, ((IFolder)ress[i].getAdapter(IFolder.class)).members());
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -106,7 +111,7 @@ public class XMLLog {
 //					name = ress[i].getName();
 					element = parent.addElement(name);
 				}else if(ress[i].getFileExtension().toLowerCase().equals("class")){
-					name = name.substring(0, ress[i].getName().length() - 7);
+					name = name.substring(0, ress[i].getName().length() - 6);
 					element = parent.addElement(name);
 				}
 			}
@@ -120,8 +125,10 @@ public class XMLLog {
 		}
 	}
 	
-	public void updateTestResult(String classname, TestResultEnum result){
-		String path = res.getName() + "//" + classname.replace('.', '/');
+	public synchronized void updateTestResult(String classname, TestResultEnum result){
+		if(result == null) return;
+		String path = "//" + res.getName() + "/" + classname.replace('.', '/');
+		System.out.println(path);
 		Node node = doc.selectSingleNode(path);
 		node.setText(result.name());
 		
