@@ -271,6 +271,10 @@
             class="junittest.handler.PauseHandler"
             commandId="junittest.command.pause">
       </handler>
+      <handler
+            class="junittest.handler.DeleteHandler"
+            commandId="org.eclipse.ui.edit.delete">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
@@ -319,6 +323,18 @@
          <command
                commandId="junittest.command.pause"
                label="暂停"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:junittest.view.LogHistoryView">
+         <command
+               commandId="org.eclipse.ui.edit.delete"
+               label="删除"
                style="push">
          </command>
       </menuContribution>

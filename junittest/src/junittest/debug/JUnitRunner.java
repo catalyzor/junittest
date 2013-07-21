@@ -1,12 +1,16 @@
 package junittest.debug;
 
 import java.net.URLClassLoader;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
+import junittest.xml.XMLLog;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
@@ -21,9 +25,13 @@ public class JUnitRunner {
 	protected Result result;
 	private Boolean pause = false;
 	private URLClassLoader urlClassLoad;
+	private XMLLog logger;
 	
 	private static JUnitRunner instance;
 	
+	public XMLLog getXMLLog(){
+		return logger;
+	}
 	public void addRunListener(RunListener runListener){
 		junit.addListener(runListener);
 	}
@@ -179,6 +187,16 @@ public class JUnitRunner {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
+					String name = Calendar.getInstance().getTimeInMillis() + "";
+					logger = new XMLLog(name, ResourceManager.getInstance().getProject());
+					logger.initStructure();
+					logger.saveToFile();
+					try {
+						ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG).refreshLocal(IResource.DEPTH_ONE, null);
+					} catch (CoreException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					result = junit.run(JUnitRunner.this.classes);
 
 				}

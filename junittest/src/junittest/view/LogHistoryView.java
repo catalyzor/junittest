@@ -1,5 +1,8 @@
 package junittest.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import junittest.debug.JUnitRunner;
 import junittest.resource.ResourceManager;
 import junittest.xml.XMLLog;
@@ -11,6 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
@@ -22,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
@@ -39,7 +44,8 @@ public class LogHistoryView extends ViewPart {
 			if(file != null){
 				switch (columnIndex) {
 				case 0:
-					return file.getName().substring(0, file.getName().length() - ResourceManager.SUFFIX_CLASS.length() - 2);
+					String name = file.getName().substring(0, file.getName().length() - ResourceManager.SUFFIX_CLASS.length() + 1);
+					return SimpleDateFormat.getDateTimeInstance().format(new Date(Long.parseLong(name)));
 				case 1:
 					return "Íê³É";
 				case 2:
@@ -70,18 +76,33 @@ public class LogHistoryView extends ViewPart {
 					throws Exception {
 				// TODO Auto-generated method stub
 //				super.testRunStarted(description);
-				refreshView();
+				Display.getDefault().asyncExec(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+
+						refreshView();
+					}
+				});
 			}
 
 			@Override
 			public void testRunFinished(Result result) throws Exception {
 				// TODO Auto-generated method stub
 //				super.testRunFinished(result);
-				refreshView();
+				Display.getDefault().asyncExec(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+
+						refreshView();
+					}
+				});
 			}
 			
 		};
-		JUnitRunner.getInstance().addRunListener(runListener);
 	}
 
 	@Override
@@ -135,6 +156,11 @@ public class LogHistoryView extends ViewPart {
 		createActions();
 		initializeToolBar();
 		initializeMenu();
+//		getSite().setSelectionProvider(tableViewer);
+		MenuManager mm = new MenuManager();
+		mm.createContextMenu(table);
+		getSite().registerContextMenu(mm, tableViewer);
+		JUnitRunner.getInstance().addRunListener(runListener);
 	}
 
 	public void refreshView(){

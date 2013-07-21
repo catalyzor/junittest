@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
+import junittest.util.Utilities;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -57,7 +58,7 @@ public class XMLLog {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		saveToFile();
+//		saveToFile();
 	}
 	
 	public void addProp(Element element, IResource res) throws CoreException, IOException{
@@ -81,7 +82,7 @@ public class XMLLog {
 			}
 		}
 	}
-	public void saveToFile(){
+	public synchronized void saveToFile(){
 		try {
 			FileWriter writer = new FileWriter(res.getFolder(ResourceManager.FOLDER_LOG).getLocation().append(fileName).toFile());
 //			doc.write(writer);
@@ -97,7 +98,7 @@ public class XMLLog {
 	public void addElement(Element parent, IResource[] ress){
 		for (int i = 0; i < ress.length; i++) {
 			Element element = null;
-			if(ress[i].getType() == IResource.FOLDER){
+			if(ress[i].getType() == IResource.FOLDER && !Utilities.isFilted(ress[i])){
 				element = parent.addElement(ress[i].getName());
 				try {
 					addElement(element, ((IFolder)ress[i].getAdapter(IFolder.class)).members());
@@ -105,15 +106,19 @@ public class XMLLog {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}else if(ress[i].getType() == IResource.FILE){
+			}else if(ress[i].getType() == IResource.FILE && !Utilities.isFilted(ress[i])){
 				String name = ress[i].getName();
-				if(ress[i].getFileExtension() == null){
-//					name = ress[i].getName();
+//				if(ress[i].getFileExtension() == null){
+////					name = ress[i].getName();
+//					element = parent.addElement(name);
+//				}else if(ress[i].getFileExtension().toLowerCase().equals("class")){
+//					name = name.substring(0, ress[i].getName().length() - 6);
+//					element = parent.addElement(name);
+//				}
+//				if(!Utilities.isFilted(ress[i])){
+//					name = name.substring(0, ress[i].getName().length() - 6);
 					element = parent.addElement(name);
-				}else if(ress[i].getFileExtension().toLowerCase().equals("class")){
-					name = name.substring(0, ress[i].getName().length() - 6);
-					element = parent.addElement(name);
-				}
+//				}
 			}
 
 			try {
@@ -127,11 +132,31 @@ public class XMLLog {
 	
 	public synchronized void updateTestResult(String classname, TestResultEnum result){
 		if(result == null) return;
-		String path = "//" + res.getName() + "/" + classname.replace('.', '/');
+		String path = new StringBuffer("//").append(res.getName()).append("/").append(classname.replace('.', '/')).append(".").append(ResourceManager.SUFFIX_CLASS).toString();
 		System.out.println(path);
 		Node node = doc.selectSingleNode(path);
 		node.setText(result.name());
-		
+		if(node instanceof Element){
+			updateTestResult((Element)node, result);
+		}
+	}
+	
+	public synchronized Element addElement(String classname, String name, String value){
+		String path = new StringBuffer("//").append(res.getName()).append("/").append(classname.replace('.', '/')).append(".").append(ResourceManager.SUFFIX_CLASS).toString();
+		Node node = doc.selectSingleNode(path);
+		if(node instanceof Element){
+			Element element = ((Element)node).addElement(name);
+			element.setText(value);
+			return element;
+		}
+		return null;
+	}
+	
+	public synchronized Element addElement(Element element, String name, String value){
+		if(element == null) return null;
+		Element el = element.addElement(name);
+		el.setText(value);
+		return el;
 	}
 	
 	public void updateTestResult(Element element, TestResultEnum result){

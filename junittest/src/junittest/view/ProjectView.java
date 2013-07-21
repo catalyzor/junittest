@@ -51,7 +51,6 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 
 	private RunListener runListener;
 	private IProject project;
-	private XMLLog logger;
 	public ProjectView() {
 		runListener = new RunListener(){
 
@@ -74,21 +73,28 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 			public void testFinished(final Description description) throws Exception {
 				// TODO Auto-generated method stub
 //				super.testFinished(description);
-				Job job = new Job("update test result."){
+				final XMLLog logger = JUnitRunner.getInstance().getXMLLog();
+				if(logger != null){
+					logger.updateTestResult(description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
+					Job job = new Job("update test result."){
 
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						// TODO Auto-generated method stub
-						if(logger != null){
-						logger.updateTestResult(description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
-						logger.saveToFile();
+						@Override
+						protected IStatus run(IProgressMonitor monitor) {
+							// TODO Auto-generated method stub
+							logger.saveToFile();
+							try {
+								ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG).refreshLocal(IResource.DEPTH_INFINITE, null);
+							} catch (CoreException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							return Status.OK_STATUS;
 						}
-						return Status.OK_STATUS;
-					}
-					
-				};
-				job.setSystem(true);
-				job.schedule();
+
+					};
+					job.setSystem(true);
+					job.schedule();
+				}
 			}
 
 			@Override
@@ -102,10 +108,7 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 					protected IStatus run(IProgressMonitor monitor) {
 						// TODO Auto-generated method stub
 //						String name = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime());
-						String name = Calendar.getInstance().getTimeInMillis() + "";
-						logger = new XMLLog(name, project);
-						logger.initStructure();
-						logger.saveToFile();
+						
 						return Status.OK_STATUS;
 					}
 				};
@@ -124,9 +127,6 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 		super.dispose();
 	}
 
-	public XMLLog getXMLLog(){
-		return logger;
-	}
 	/**
 	 * Create contents of the view part.
 	 * @param parent
@@ -237,7 +237,8 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 								if(children != null && children.length > 0){
 									ArrayList<IResource> lstResource = new ArrayList<>();
 									for(int i = 0; i < children.length; i++){
-										if(!children[i].getName().toUpperCase().equals("META-INF")){
+//										if(!children[i].getName().toUpperCase().equals("META-INF")){
+										if(!Utilities.isFilted(children[i])){
 											lstResource.add(children[i]);
 										}
 									}

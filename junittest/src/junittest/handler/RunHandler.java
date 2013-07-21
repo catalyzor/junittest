@@ -21,17 +21,19 @@ public class RunHandler extends AbstractHandler implements IHandler {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		ProjectView view = (ProjectView) window.getActivePage().findView(ProjectView.ID);
 		List<String> list = view.getSelectedCases();
-		Class[] classes = new Class[list.size()];
-		for (int i = 0; i < classes.length; i++) {
-			try {
-				classes[i] = ResourceManager.getInstance().urlClassLoad.loadClass(list.get(i));
-//				classes[i] = Class.forName(list.get(i));
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if(!list.isEmpty()){
+			Class[] classes = new Class[list.size()];
+			for (int i = 0; i < classes.length; i++) {
+				try {
+					classes[i] = ResourceManager.getInstance().urlClassLoad.loadClass(list.get(i));
+					//				classes[i] = Class.forName(list.get(i));
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			JUnitRunner.getInstance().start(classes);
 		}
-		JUnitRunner.getInstance().start(classes);
 		return null;
 	}
 
