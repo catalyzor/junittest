@@ -2,6 +2,8 @@ package junittest.handler;
 
 import java.util.Iterator;
 
+import junittest.view.LogHistoryView;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -28,6 +30,8 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 				if(obj instanceof IResource){
 					try {
 						((IResource)obj).delete(true, null);
+						LogHistoryView view = (LogHistoryView) window.getActivePage().findView(LogHistoryView.ID);
+						if(view != null) view.refreshView();
 					} catch (CoreException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

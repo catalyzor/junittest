@@ -10,6 +10,9 @@ import junittest.xml.XMLLog;
 import org.dom4j.DocumentException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IMenuManager;
@@ -27,6 +30,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
@@ -68,6 +72,7 @@ public class LogHistoryView extends ViewPart {
 	private TableViewer tableViewer;
 
 	private RunListener runListener;
+//	private IResourceChangeListener resListener;
 	public LogHistoryView() {
 		runListener = new RunListener(){
 
@@ -103,11 +108,22 @@ public class LogHistoryView extends ViewPart {
 			}
 			
 		};
+//		resListener = new IResourceChangeListener() {
+//			
+//			@Override
+//			public void resourceChanged(IResourceChangeEvent event) {
+//				// TODO Auto-generated method stub
+//				if(event.getType() == IResourceChangeEvent.PRE_DELETE){
+//					refreshView();
+//				}
+//			}
+//		};
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+//		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resListener);
 		JUnitRunner.getInstance().removeRunListener(runListener);
 		super.dispose();
 	}
@@ -156,11 +172,13 @@ public class LogHistoryView extends ViewPart {
 		createActions();
 		initializeToolBar();
 		initializeMenu();
-//		getSite().setSelectionProvider(tableViewer);
+		getSite().setSelectionProvider(tableViewer);
 		MenuManager mm = new MenuManager();
-		mm.createContextMenu(table);
+		Menu menu = mm.createContextMenu(table);
+		table.setMenu(menu);
 		getSite().registerContextMenu(mm, tableViewer);
 		JUnitRunner.getInstance().addRunListener(runListener);
+//		ResourcesPlugin.getWorkspace().addResourceChangeListener(resListener);
 	}
 
 	public void refreshView(){
