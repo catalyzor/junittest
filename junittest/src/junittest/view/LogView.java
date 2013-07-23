@@ -1,6 +1,11 @@
 package junittest.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import junittest.Activator;
 import junittest.debug.JUnitRunner;
+import junittest.resource.ResourceManager;
 import junittest.xml.XMLLog;
 
 import org.dom4j.Document;
@@ -26,12 +31,53 @@ import org.eclipse.ui.part.ViewPart;
 public class LogView extends ViewPart {
 	private static class ViewerLabelProvider extends LabelProvider {
 		public Image getImage(Object element) {
+			if(element instanceof Element){
+				Element el = (Element) element;
+				String name = el.getName();
+				String path = "icons/test.gif";
+				if(name.endsWith("." + ResourceManager.SUFFIX_CLASS)){
+					switch (el.getText()) {
+					case "ERROR":
+						path = "icons/testerr.gif";
+						break;
+					case "FAIL":
+						path = "icons/testfail.gif";
+						break;
+					case "OK":
+						path = "icons/testok.gif";
+						break;
+					default:
+						path = "icons/test.gif";
+						break;
+					}
+				}else{
+					switch (el.getText()) {
+					case "ERROR":
+						path = "icons/tsuiteerror.gif";
+						break;
+					case "FAIL":
+						path = "icons/tsuitefail.gif";
+						break;
+					case "OK":
+						path = "icons/tsuiteok.gif";
+						break;
+					default:
+						path = "icons/tsuite.gif";
+						break;
+					}
+				}
+				return Activator.getImageDescriptor(path).createImage();
+			}
 			return super.getImage(element);
 		}
 		public String getText(Object element) {
 			if(element instanceof Element){
 				Element e = (Element) element;
-				return e.getName() + " " + e.getText();
+				String name = e.getName();
+				if(name.endsWith("." + ResourceManager.SUFFIX_CLASS)){
+					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
+				}
+				return name;
 			}
 			return super.getText(element);
 		}
@@ -52,7 +98,13 @@ public class LogView extends ViewPart {
 //			return new Object[] { "item_0", "item_1", "item_2" };
 			if(parentElement instanceof Element){
 				Element element = (Element) parentElement;
-				return element.content().toArray();
+				List<Element> list = new ArrayList<>();
+				for(int i = 0;i < element.content().size();i ++){
+					if(!DefaultText.class.isInstance(element.content().get(i))){
+						list.add((Element) element.content().get(i));
+					}
+				}
+				return list.toArray();
 			}
 			return null;
 		}

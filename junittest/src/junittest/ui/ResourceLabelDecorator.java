@@ -1,13 +1,14 @@
 package junittest.ui;
 
+import junittest.Activator;
+import junittest.resource.ResourceManager;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 public class ResourceLabelDecorator implements ILabelDecorator {
 
@@ -38,12 +39,14 @@ public class ResourceLabelDecorator implements ILabelDecorator {
 	@Override
 	public Image decorateImage(Image image, Object element) {
         if (Platform.getAdapterManager().getAdapter(element, IContainer.class) != null) {
-            return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
+//            return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
+        	return Activator.getImageDescriptor("icons/tsuite.gif").createImage();
         } else {
 //            return Activator.getDefault().getEditorRegistry()
 //                    .getImageDescriptor(decorateText("", element));
-        	return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
+//        	return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
 			//TODO: what are the implications for content types?  Should I guess?
+        	return Activator.getImageDescriptor("icons/test.gif").createImage();
         }
     }
 
@@ -51,7 +54,11 @@ public class ResourceLabelDecorator implements ILabelDecorator {
 	public String decorateText(String text, Object element) {
 		// TODO Auto-generated method stub
 		if(element instanceof IResource){
-			return ((IResource)element).getName();
+			String name = ((IResource)element).getName();
+			if(name.endsWith("." + ResourceManager.SUFFIX_CLASS)){
+				name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
+			}
+			return name;
 		}
 		return null;
 	}

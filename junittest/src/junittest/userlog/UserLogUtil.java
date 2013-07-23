@@ -6,7 +6,7 @@ import org.dom4j.Element;
 
 public class UserLogUtil {
 
-	public static Object log(Object parent, String name, String value){
+	public static Object p_LevelLog(Object parent, String name, String value){
 		if(parent instanceof String){
 			return JUnitRunner.getInstance().getXMLLog().addElement((String)parent, name, value);
 		}else if(parent instanceof Element){

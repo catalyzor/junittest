@@ -7,10 +7,13 @@ import java.util.Map;
 
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
+import junittest.ui.TestRunningCheckSourceProvider;
 import junittest.xml.XMLLog;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.services.ISourceProviderService;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
@@ -23,14 +26,19 @@ public class JUnitRunner {
 	private JUnitCore junit;
 	private Thread runThread;
 	protected Result result;
+	private Object threadStateMark;
 	private Boolean pause = false;
 	private URLClassLoader urlClassLoad;
 	private XMLLog logger;
+	private boolean running;
 	
 	private static JUnitRunner instance;
 	
 	public XMLLog getXMLLog(){
 		return logger;
+	}
+	public void setXMLLog(XMLLog logger){
+		this.logger = logger;
 	}
 	public void addRunListener(RunListener runListener){
 		junit.addListener(runListener);
@@ -48,10 +56,19 @@ public class JUnitRunner {
 					throws Exception {
 				// TODO Auto-generated method stub
 //				super.testRunStarted(description);
+				setRunning(true);
+				fireStateChange();
+//				try {
+//					Thread.sleep(5000);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 				if(pause){
-					synchronized (pause) {
-						pause.wait();
-						pause = false;
+					synchronized (threadStateMark) {
+						threadStateMark.wait();
+//						pause = false;
+						setPause(false);
 					}
 				}
 				System.out.println("testRunStarted:" + description.getDisplayName());
@@ -68,10 +85,13 @@ public class JUnitRunner {
 			public void testRunFinished(Result result) throws Exception {
 				// TODO Auto-generated method stub
 //				super.testRunFinished(result);
+				setRunning(false);
+				fireStateChange();
 				if(pause){
-					synchronized (pause) {
-						pause.wait();
-						pause = false;
+					synchronized (threadStateMark) {
+						threadStateMark.wait();
+//						pause = false;
+						setPause(false);
 					}
 				}
 				System.out.println("testRunFinished:" + result.getRunTime());
@@ -87,9 +107,10 @@ public class JUnitRunner {
 				// TODO Auto-generated method stub
 //				super.testStarted(description);
 				if(pause){
-					synchronized (pause) {
-						pause.wait();
-						pause = false;
+					synchronized (threadStateMark) {
+						threadStateMark.wait();
+//						pause = false;
+						setPause(false);
 					}
 				}
 				System.out.println("testStarted:" + description.getDisplayName() + "start");
@@ -100,9 +121,10 @@ public class JUnitRunner {
 				// TODO Auto-generated method stub
 //				super.testFinished(description);
 				if(pause){
-					synchronized (pause) {
-						pause.wait();
-						pause = false;
+					synchronized (threadStateMark) {
+						threadStateMark.wait();
+//						pause = false;
+						setPause(false);
 					}
 				}
 				System.out.println("testFinished:" + description.getDisplayName() + "finished");
@@ -119,9 +141,10 @@ public class JUnitRunner {
 				// TODO Auto-generated method stub
 //				super.testFailure(failure);
 				if(pause){
-					synchronized (pause) {
-						pause.wait();
-						pause = false;
+					synchronized (threadStateMark) {
+						threadStateMark.wait();
+//						pause = false;
+						setPause(false);
 					}
 				}
 				System.out.println("testFailure:" + failure.getMessage());
@@ -135,14 +158,15 @@ public class JUnitRunner {
 				// TODO Auto-generated method stub
 //				super.testAssumptionFailure(failure);
 				if(pause){
-					synchronized (pause) {
+					synchronized (threadStateMark) {
 						try {
-							pause.wait();
+							threadStateMark.wait();
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						pause = false;
+//						pause = false;
+						setPause(false);
 					}
 				}
 				System.out.println("testAssumptionFailure:" + failure.getMessage());
@@ -156,9 +180,10 @@ public class JUnitRunner {
 				// TODO Auto-generated method stub
 //				super.testIgnored(description);
 				if(pause){
-					synchronized (pause) {
-						pause.wait();
-						pause = false;
+					synchronized (threadStateMark) {
+						threadStateMark.wait();
+//						pause = false;
+						setPause(false);
 					}
 				}
 				System.out.println("testIgnored:" + description.getDisplayName() + "ignored");
@@ -173,6 +198,11 @@ public class JUnitRunner {
 		return instance;
 	}
 	
+	public void fireStateChange(){
+		ISourceProviderService sourceProviderService = (ISourceProviderService) PlatformUI.getWorkbench().getService(ISourceProviderService.class);
+		TestRunningCheckSourceProvider sourceProvider = (TestRunningCheckSourceProvider) sourceProviderService.getSourceProvider(TestRunningCheckSourceProvider.SOURCE_NAME);
+		sourceProvider.fireStateChange();
+	}
 	public void start(Class[] classes){
 		if(pause){
 			pause = false;
@@ -186,6 +216,7 @@ public class JUnitRunner {
 
 				@Override
 				public void run() {
+					fireStateChange();
 					// TODO Auto-generated method stub
 					String name = Calendar.getInstance().getTimeInMillis() + "";
 					logger = new XMLLog(name, ResourceManager.getInstance().getProject());
@@ -198,7 +229,6 @@ public class JUnitRunner {
 						e.printStackTrace();
 					}
 					result = junit.run(JUnitRunner.this.classes);
-
 				}
 
 			};
@@ -211,14 +241,18 @@ public class JUnitRunner {
 		if(runThread != null){
 			runThread.interrupt();
 		}
+		fireStateChange();
 	}
 	
 	public void pause(){
 		if(runThread != null && runThread.isAlive()){
 //			IProcess process = DebugPlugin.newProcess(null, null, null);
 //			process.
-			pause = true;
+//			pause = true;
+			setPause(true);
+			setRunning(false);
 		}
+		fireStateChange();
 	}
 	public static void main(String[] args) {
 
@@ -306,7 +340,7 @@ public class JUnitRunner {
 						if(bool) obj.wait();
 					}
 					bool = false;
-					Thread.sleep(1000);
+//					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -315,4 +349,16 @@ public class JUnitRunner {
 		}
 		
 	};
+	public boolean isRunning(){
+		return running;
+	}
+	
+	public void setRunning(boolean bool){
+		this.running = bool;
+	}
+	
+	public void setPause(boolean bool){
+		this.pause = bool;
+		setRunning(!bool);
+	}
 }

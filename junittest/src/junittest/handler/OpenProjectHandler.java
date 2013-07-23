@@ -1,7 +1,10 @@
 package junittest.handler;
 
 import junittest.Activator;
+import junittest.debug.JUnitRunner;
 import junittest.resource.ResourceManager;
+import junittest.view.LogHistoryView;
+import junittest.view.LogView;
 import junittest.view.ProjectView;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -35,6 +38,14 @@ public class OpenProjectHandler extends AbstractHandler implements IHandler {
 			if(view != null){
 				ResourceManager.getInstance().setProject((IProject) dialog.getFirstResult());
 				view.changePrject(new Object[]{ dialog.getFirstResult()});
+			}
+			LogHistoryView lhv = (LogHistoryView) window.getActivePage().findView(LogHistoryView.ID);
+			if(lhv != null) lhv.refreshView();
+			
+			LogView lv = (LogView) window.getActivePage().findView(LogView.ID);
+			if(lv != null){
+				JUnitRunner.getInstance().setXMLLog(null);
+				lv.refreshView();
 			}
 		}
 		return null;

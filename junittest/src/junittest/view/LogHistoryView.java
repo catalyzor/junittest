@@ -2,6 +2,7 @@ package junittest.view;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import junittest.debug.JUnitRunner;
 import junittest.resource.ResourceManager;
@@ -10,9 +11,6 @@ import junittest.xml.XMLLog;
 import org.dom4j.DocumentException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IMenuManager;
@@ -49,12 +47,12 @@ public class LogHistoryView extends ViewPart {
 				switch (columnIndex) {
 				case 0:
 					String name = file.getName().substring(0, file.getName().length() - ResourceManager.SUFFIX_CLASS.length() + 1);
-					return SimpleDateFormat.getDateTimeInstance().format(new Date(Long.parseLong(name)));
+					return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM,SimpleDateFormat.MEDIUM,Locale.CHINA).format(new Date(Long.parseLong(name)));
 				case 1:
 					return "Íê³É";
 				case 2:
 					try {
-						return XMLLog.getTestResult(file.getLocation().toOSString());
+						return XMLLog.getLogTestResult(file.getLocation().toOSString());
 					} catch (DocumentException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

@@ -117,6 +117,9 @@ public class XMLLog {
 //				}
 //				if(!Utilities.isFilted(ress[i])){
 //					name = name.substring(0, ress[i].getName().length() - 6);
+//				if(ress[i].getFileExtension() != null && ress[i].getFileExtension().equals(ResourceManager.SUFFIX_CLASS)){
+//					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
+//				}
 					element = parent.addElement(name);
 //				}
 			}
@@ -132,7 +135,7 @@ public class XMLLog {
 	
 	public synchronized void updateTestResult(String classname, TestResultEnum result){
 		if(result == null) return;
-		String path = new StringBuffer("//").append(res.getName()).append("/").append(classname.replace('.', '/')).append(".").append(ResourceManager.SUFFIX_CLASS).toString();
+		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
 		System.out.println(path);
 		Node node = doc.selectSingleNode(path);
 		node.setText(result.name());
@@ -141,8 +144,19 @@ public class XMLLog {
 		}
 	}
 	
+	public String getTestResult(String xpath){
+		String result = "";
+		if(doc != null){
+			Node node = doc.selectSingleNode(xpath);
+			if(node instanceof Element){
+				result = ((Element)node).getTextTrim();
+			}
+		}
+		return result;
+	}
+	
 	public synchronized Element addElement(String classname, String name, String value){
-		String path = new StringBuffer("//").append(res.getName()).append("/").append(classname.replace('.', '/')).append(".").append(ResourceManager.SUFFIX_CLASS).toString();
+		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
 		Node node = doc.selectSingleNode(path);
 		if(node instanceof Element){
 			Element element = ((Element)node).addElement(name);
@@ -172,9 +186,9 @@ public class XMLLog {
 		updateTestResult(element.getParent(), result);
 	}
 	
-	public static String getTestResult(String filename) throws DocumentException{
+	public static String getLogTestResult(String filename) throws DocumentException{
 		SAXReader sax = new SAXReader();
 		Document document = sax.read(new File(filename));
-		return document.getRootElement().getText();
+		return document.getRootElement().getTextTrim();
 	}
 }
