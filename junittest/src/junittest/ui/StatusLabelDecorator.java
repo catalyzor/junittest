@@ -70,7 +70,7 @@ public class StatusLabelDecorator implements
 			}else{
 				XMLLog log = JUnitRunner.getInstance().getXMLLog();
 				if(log != null){
-					String result = (res.getType() == IResource.PROJECT)?log.getTestResult("/" + res.getName()):log.getTestResult("/" + res.getProject().getName() + "/" + res.getProjectRelativePath().removeFirstSegments(1).toString());
+					String result = (res.getType() == IResource.PROJECT)?log.getTestResult(res.getName()):log.getTestResult(res.getProject().getName() + "/" + res.getProjectRelativePath().removeFirstSegments(1).toString());
 					String path = null;
 					switch(result){
 					case "ERROR":

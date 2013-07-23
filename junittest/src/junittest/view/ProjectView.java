@@ -75,7 +75,7 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 //				super.testFinished(description);
 				final XMLLog logger = JUnitRunner.getInstance().getXMLLog();
 				if(logger != null){
-					logger.updateTestResult(description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
+					logger.updateTestResult(project.getName() + "." + description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
 					Job job = new Job("update test result."){
 
 						@Override

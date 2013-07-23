@@ -29,9 +29,12 @@ import org.eclipse.core.runtime.Path;
 
 public class XMLLog {
 
-//	public static final String NODE_ROOT = "Project";
-//	public static final String NODE_SUITE = "Suite";
-//	public static final String NODE_CASE = "Case";
+	public static final String NODE_ROOT = "project";
+	public static final String NODE_SUITE = "suite";
+	public static final String NODE_CASE = "case";
+	public static final String NODE_NAME = "name";
+	public static final String NODE_PROPS = "properties";
+	public static final String NODE_VERDICT = "verdict";
 	public static final String NODE_ATTR_DATE = "date";
 	public static final String NODE_ATTR_TIME = "time";
 	
@@ -51,7 +54,9 @@ public class XMLLog {
 	}
 	
 	public void initStructure(){
-		Element root = doc.addElement(res.getName()).addAttribute(NODE_ATTR_DATE, time);
+		Element root = doc.addElement(NODE_ROOT).addAttribute(NODE_ATTR_DATE, time);
+		root.addElement(NODE_NAME).addText(res.getName());
+		root.addElement(NODE_VERDICT);
 		try {
 			addElement(root, res.getFolder(ResourceManager.FOLDER_CASE).members());
 		} catch (CoreException e) {
@@ -76,9 +81,10 @@ public class XMLLog {
 			prop.load(in);
 			in.close();
 			Iterator<Entry<Object, Object>> itr = prop.entrySet().iterator();
+			Element props = element.addElement(NODE_PROPS);
 			while(itr.hasNext()){
 				Entry<Object, Object> entry = itr.next();
-				element.addAttribute((String)entry.getKey(), (String)entry.getValue());
+				props.addElement((String)entry.getKey()).addText((String)entry.getValue());
 			}
 		}
 	}
@@ -99,7 +105,9 @@ public class XMLLog {
 		for (int i = 0; i < ress.length; i++) {
 			Element element = null;
 			if(ress[i].getType() == IResource.FOLDER && !Utilities.isFilted(ress[i])){
-				element = parent.addElement(ress[i].getName());
+				element = parent.addElement(NODE_SUITE);
+				element.addElement(NODE_NAME).addText(ress[i].getName());
+				element.addElement(NODE_VERDICT);
 				try {
 					addElement(element, ((IFolder)ress[i].getAdapter(IFolder.class)).members());
 				} catch (CoreException e) {
@@ -117,10 +125,12 @@ public class XMLLog {
 //				}
 //				if(!Utilities.isFilted(ress[i])){
 //					name = name.substring(0, ress[i].getName().length() - 6);
-//				if(ress[i].getFileExtension() != null && ress[i].getFileExtension().equals(ResourceManager.SUFFIX_CLASS)){
-//					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
-//				}
-					element = parent.addElement(name);
+				if(ress[i].getFileExtension() != null && ress[i].getFileExtension().equals(ResourceManager.SUFFIX_CLASS)){
+					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
+				}
+					element = parent.addElement(NODE_CASE);
+					element.addElement(NODE_NAME).addText(name);
+					element.addElement(NODE_VERDICT);
 //				}
 			}
 
@@ -134,20 +144,52 @@ public class XMLLog {
 	}
 	
 	public synchronized void updateTestResult(String classname, TestResultEnum result){
+		updateTestResult(classname, result, false);
+	}
+	public synchronized void updateTestResult(String classname, TestResultEnum result, boolean suite){
 		if(result == null) return;
-		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
+//		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
+		StringBuffer sb = new StringBuffer("//");
+		String[] names = classname.split("\\.");
+		StringBuffer psb = new StringBuffer();
+		for(int i = 0;i < names.length;i ++){
+			if(i != names.length - 1){
+				sb.append((i == 0)?NODE_ROOT:NODE_SUITE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/");
+				psb.append(names[i]).append(".");
+//				sb.append(NODE_SUITE);
+			}else{
+				sb.append(suite?((i == 0)?NODE_ROOT:NODE_SUITE):NODE_CASE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/").append(NODE_VERDICT);
+//				sb.append(NODE_CASE);
+			}
+//			sb.append("[").append(NODE_NAME).append("=").append(names[i]).append("]").append("/")
+		}
+		String path = sb.toString();
 		System.out.println(path);
 		Node node = doc.selectSingleNode(path);
-		node.setText(result.name());
-		if(node instanceof Element){
-			updateTestResult((Element)node, result);
+//		node.setText(result.name());
+		if(TestResultEnum.FAIL.equals(result)){
+			node.setText(result.name());
+		}else if(TestResultEnum.ERROR.equals(result)){
+			if(!node.getText().equals(TestResultEnum.FAIL.name())) node.setText(result.name());
+		}else if(TestResultEnum.OK.equals(result)){
+			String str = node.getText();
+			if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) node.setText(result.name());
+		}
+		if(psb.length() > 0){
+			updateTestResult(psb.deleteCharAt(psb.length() - 1).toString(), result, true);
 		}
 	}
 	
 	public String getTestResult(String xpath){
+		String[] names = xpath.split("/");
+		StringBuffer sb = new StringBuffer("/");
+		for(int i = 0;i < names.length;i ++){
+			sb.append((i == 0)?NODE_ROOT:NODE_SUITE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/");
+		}
+		sb.append(NODE_VERDICT);
 		String result = "";
 		if(doc != null){
-			Node node = doc.selectSingleNode(xpath);
+			Node node = doc.selectSingleNode(sb.toString());
 			if(node instanceof Element){
 				result = ((Element)node).getTextTrim();
 			}
@@ -173,22 +215,22 @@ public class XMLLog {
 		return el;
 	}
 	
-	public void updateTestResult(Element element, TestResultEnum result){
-		if(element == null) return;
-		if(TestResultEnum.FAIL.equals(result)){
-			element.setText(result.name());
-		}else if(TestResultEnum.ERROR.equals(result)){
-			if(!element.getText().equals(TestResultEnum.FAIL.name())) element.setText(result.name());
-		}else if(TestResultEnum.OK.equals(result)){
-			String str = element.getText();
-			if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) element.setText(result.name());
-		}
-		updateTestResult(element.getParent(), result);
-	}
+//	public void updateTestResult(Element element, TestResultEnum result){
+//		if(element == null) return;
+//		if(TestResultEnum.FAIL.equals(result)){
+//			element.setText(result.name());
+//		}else if(TestResultEnum.ERROR.equals(result)){
+//			if(!element.getText().equals(TestResultEnum.FAIL.name())) element.setText(result.name());
+//		}else if(TestResultEnum.OK.equals(result)){
+//			String str = element.getText();
+//			if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) element.setText(result.name());
+//		}
+//		updateTestResult(element.getParent(), result);
+//	}
 	
 	public static String getLogTestResult(String filename) throws DocumentException{
 		SAXReader sax = new SAXReader();
 		Document document = sax.read(new File(filename));
-		return document.getRootElement().getTextTrim();
+		return document.selectSingleNode("/" + NODE_ROOT + "/" + NODE_VERDICT).getText();
 	}
 }
