@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="libs/iText-2.1.7.js2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/groovy-all-2.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/xalan-2.7.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-digester-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-beanutils-1.8.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jasperreports-5.1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jaxen-1.1-beta-6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/dom4j-1.6.1.jar">
 		<attributes>

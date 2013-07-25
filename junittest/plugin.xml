@@ -180,6 +180,25 @@
             id="junittest.command.resumes"
             name="Resumes">
       </command>
+      <category
+            id="junittest.category.report"
+            name="Report">
+      </category>
+      <command
+            categoryId="junittest.category.report"
+            id="junittest.command.simplereport"
+            name="SimpleReport">
+      </command>
+      <command
+            categoryId="junittest.category.report"
+            id="junittest.command.report"
+            name="Report">
+      </command>
+      <command
+            categoryId="junittest.category.report"
+            id="junittest.command.viewlog"
+            name="View Log">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -299,6 +318,10 @@
             class="junittest.handler.DeleteHandler"
             commandId="org.eclipse.ui.edit.delete">
       </handler>
+      <handler
+            class="junittest.handler.SimpleReportHandler"
+            commandId="junittest.command.simplereport">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
@@ -356,6 +379,21 @@
       <menuContribution
             allPopups="true"
             locationURI="popup:junittest.view.LogHistoryView">
+         <command
+               commandId="junittest.command.simplereport"
+               label="生成概要报告"
+               style="push">
+         </command>
+         <command
+               commandId="junittest.command.report"
+               label="生成详细报告"
+               style="push">
+         </command>
+         <command
+               commandId="junittest.command.viewlog"
+               label="查看日志"
+               style="push">
+         </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
                label="删除"

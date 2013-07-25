@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -54,7 +56,7 @@ public class XMLLog {
 	}
 	
 	public void initStructure(){
-		Element root = doc.addElement(NODE_ROOT).addAttribute(NODE_ATTR_DATE, time);
+		Element root = doc.addElement(NODE_ROOT).addAttribute(NODE_ATTR_DATE, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM).format(new Date(Long.parseLong(time))));
 		root.addElement(NODE_NAME).addText(res.getName());
 		root.addElement(NODE_VERDICT);
 		try {
