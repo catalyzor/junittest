@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="33ea499a-c224-4b89-b3e3-463ee518cfdb">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="33ea499a-c224-4b89-b3e3-463ee518cfdb">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="176"/>
+	<property name="ireport.y" value="237"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -123,9 +123,6 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\Michael\\"]]></defaultValueExpression>
-	</parameter>
 	<queryString language="xPath">
 		<![CDATA[//case]]>
 	</queryString>
@@ -136,29 +133,29 @@
 		<fieldDescription><![CDATA[verdict]]></fieldDescription>
 	</field>
 	<field name="date" class="java.lang.String">
-		<fieldDescription><![CDATA[ancestor::project/@date]]></fieldDescription>
+		<fieldDescription><![CDATA[ancestor::project/@time]]></fieldDescription>
 	</field>
 	<field name="verdict2" class="java.lang.String">
 		<fieldDescription><![CDATA[/project/verdict]]></fieldDescription>
 	</field>
-	<field name="verdictOK" class="java.lang.String">
-		<fieldDescription><![CDATA[verdict='OK']]></fieldDescription>
+	<field name="ERROR" class="java.lang.String">
+		<fieldDescription><![CDATA[/project/verdict/@ERROR]]></fieldDescription>
 	</field>
-	<field name="verdict4" class="java.lang.String">
-		<fieldDescription><![CDATA[verdict]]></fieldDescription>
+	<field name="FAIL" class="java.lang.String">
+		<fieldDescription><![CDATA[/project/verdict/@FAIL]]></fieldDescription>
 	</field>
-	<field name="verdict5" class="java.lang.String">
-		<fieldDescription><![CDATA[verdict]]></fieldDescription>
+	<field name="Ignore" class="java.lang.String">
+		<fieldDescription><![CDATA[/project/verdict/@Ignore]]></fieldDescription>
 	</field>
-	<field name="case" class="java.lang.String">
-		<fieldDescription><![CDATA[/verdict="OK"]]></fieldDescription>
+	<field name="total" class="java.lang.String">
+		<fieldDescription><![CDATA[/project/verdict/@total]]></fieldDescription>
 	</field>
-	<variable name="name_1" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{name}]]></variableExpression>
-	</variable>
-	<variable name="case_1" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{case}]]></variableExpression>
-	</variable>
+	<field name="time" class="java.lang.String">
+		<fieldDescription><![CDATA[@time]]></fieldDescription>
+	</field>
+	<field name="OK" class="java.lang.String">
+		<fieldDescription><![CDATA[/project/verdict/@OK]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -167,14 +164,14 @@
 			<staticText>
 				<reportElement uuid="4050ae70-c334-4dc7-bdc3-6d8be11d6cf5" x="116" y="0" width="291" height="32"/>
 				<textElement textAlignment="Center">
-					<font fontName="PMingLiU" size="22" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[测试报告]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="02cd1872-9b2f-4035-b869-8a4296ee91eb" x="16" y="32" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[基本信息]]></text>
 			</staticText>
@@ -184,35 +181,35 @@
 			<staticText>
 				<reportElement uuid="708d8195-457c-442e-91e7-fce65c6f2a54" x="16" y="59" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[操作人员：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="d357d1a9-52f9-4b89-ac38-db88e2d5d74a" x="16" y="79" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[测试结果：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="0979b2e9-53e1-4af4-b901-fdf3a78ba1c1" x="16" y="99" width="113" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[测试案例个数：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="11b31483-0617-46c9-a903-4b6871ca938b" x="16" y="119" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[测试时间：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="f4e7413a-bcf6-45ce-9260-41db9bc91c97" x="16" y="154" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[环境信息]]></text>
 			</staticText>
@@ -222,28 +219,28 @@
 			<staticText>
 				<reportElement uuid="ace8f3aa-4745-4f1c-a9c9-26b4d0494ff7" x="16" y="185" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[设备名称：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="213c775e-2049-49d9-9dcd-ef1afef915b1" x="16" y="205" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[设备序列号：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="5543e4b4-18dd-4a23-ac8b-2daec9724769" x="16" y="225" width="113" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[测试软件版本：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="2718bca4-a311-40c5-807e-88d0ace94186" x="16" y="245" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[硬件信息：]]></text>
 			</staticText>
@@ -253,68 +250,72 @@
 			<staticText>
 				<reportElement uuid="97559144-932a-4950-8e66-89d5866eccd7" x="16" y="312" width="100" height="20"/>
 				<textElement>
-					<font fontName="PMingLiU" size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="仿宋" size="14" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[统计结果：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="14aa2199-7bf1-4536-b723-7858361d6c98" x="280" y="312" width="100" height="20"/>
 				<textElement>
-					<font size="14"/>
+					<font fontName="仿宋" size="14"/>
 				</textElement>
-				<text><![CDATA[Passed]]></text>
+				<text><![CDATA[测试通过]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="798fb4c7-31dc-4702-af16-172938984645" x="280" y="332" width="100" height="20"/>
 				<textElement>
-					<font size="14"/>
+					<font fontName="仿宋" size="14"/>
 				</textElement>
-				<text><![CDATA[Failed]]></text>
+				<text><![CDATA[测试失败]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="11e7c7a4-2f87-4d74-9975-32b3f0e44569" x="280" y="352" width="100" height="20"/>
+				<reportElement uuid="11e7c7a4-2f87-4d74-9975-32b3f0e44569" x="280" y="352" width="114" height="20"/>
 				<textElement>
-					<font size="14"/>
+					<font fontName="仿宋" size="14"/>
 				</textElement>
-				<text><![CDATA[Inconclusive]]></text>
+				<text><![CDATA[预置条件执行失败]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="efb06f4d-276b-4524-ab11-db992fbcc8a0" x="280" y="372" width="114" height="20"/>
 				<textElement>
-					<font size="14"/>
+					<font fontName="仿宋" size="14"/>
 				</textElement>
-				<text><![CDATA[Not correctly performed]]></text>
+				<text><![CDATA[非测试项]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="6f90e137-ab03-4ede-be02-cb1a8f72293c" x="228" y="119" width="215" height="20"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
+				<reportElement uuid="c31dd9b6-bcec-4aa8-a758-4ccc0f5c3427" x="216" y="79" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{verdict2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b3796263-6e83-4254-ae1f-1e57ec866669" x="216" y="99" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f527d39c-c34a-40e3-8455-33832951691f" x="216" y="119" width="164" height="20"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e0241866-ee1a-4f56-950a-ed02e0559c71" x="228" y="79" width="100" height="20"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{verdict2}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement uuid="c9f9d843-5165-4f45-a4ae-d30f9fc704df" x="228" y="99" width="100" height="20"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{name_1}]]></textFieldExpression>
+				<reportElement uuid="0c81ea2f-d156-485e-a460-af5a1ca36b11" x="431" y="312" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{OK}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ab3ed1e3-0114-4395-abc2-7629d5a74029" x="417" y="312" width="100" height="20"/>
+				<reportElement uuid="7c42425c-eca8-40c9-a944-1add56196bb5" x="431" y="332" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{verdictOK}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FAIL}]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Report">
-				<reportElement uuid="1eeb0f75-cf7d-49dc-8341-265ca0108854" x="417" y="332" width="100" height="20"/>
+			<textField>
+				<reportElement uuid="6c0fada3-7fe5-42ab-98d7-09e288182976" x="431" y="352" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$V{case_1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ERROR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a9f27024-6c10-4342-9df9-81d066a6faa3" x="431" y="372" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Ignore}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -324,45 +325,62 @@
 	<columnHeader>
 		<band height="27" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="8a031e27-0f80-4cb3-bd95-8a6bcf34c7f8" x="64" y="2" width="392" height="25" backcolor="#CCFFFF"/>
+				<reportElement uuid="8a031e27-0f80-4cb3-bd95-8a6bcf34c7f8" x="43" y="2" width="456" height="25" backcolor="#CCFFFF"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="258b2ea6-61da-4a94-9773-3caea3692e4c" x="82" y="2" width="100" height="20"/>
+				<reportElement uuid="258b2ea6-61da-4a94-9773-3caea3692e4c" x="74" y="2" width="100" height="20"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9d3e5173-f0c9-4d99-b80d-a1eaefe8fe09" x="331" y="2" width="100" height="20"/>
+				<reportElement uuid="9d3e5173-f0c9-4d99-b80d-a1eaefe8fe09" x="441" y="2" width="55" height="20"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Verdict]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="101d5507-b24e-4b6b-a369-7af2337fe3cf" x="311" y="2" width="69" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Time]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="19f9bc64-35d4-4ee7-b6b1-34def1f053ee" x="64" y="1" width="252" height="20"/>
+				<reportElement uuid="0da4cc33-7094-4725-acc1-e3c68b38b5d3" x="299" y="1" width="132" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="63e0b567-f6dc-4d2a-b2fd-23d2930488c5" x="431" y="1" width="68" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="19f9bc64-35d4-4ee7-b6b1-34def1f053ee" x="43" y="1" width="256" height="20"/>
 			</rectangle>
 			<textField>
-				<reportElement uuid="6f946e0f-c393-4abe-82c8-e48e541efb43" x="82" y="0" width="234" height="20"/>
+				<reportElement uuid="6f946e0f-c393-4abe-82c8-e48e541efb43" x="63" y="0" width="236" height="20"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
-			<rectangle>
-				<reportElement uuid="63e0b567-f6dc-4d2a-b2fd-23d2930488c5" x="316" y="1" width="140" height="20"/>
-			</rectangle>
 			<textField>
-				<reportElement uuid="d2b282f4-a433-48ed-aa85-2e7c3b9231f6" x="331" y="0" width="100" height="20"/>
+				<reportElement uuid="d2b282f4-a433-48ed-aa85-2e7c3b9231f6" x="444" y="0" width="55" height="20"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{verdict}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c5247fa9-2869-429e-b2c8-e3420292138d" x="311" y="1" width="120" height="20"/>
+				<textElement>
+					<font size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{time}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -5,8 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -37,8 +39,13 @@ public class XMLLog {
 	public static final String NODE_NAME = "name";
 	public static final String NODE_PROPS = "properties";
 	public static final String NODE_VERDICT = "verdict";
-	public static final String NODE_ATTR_DATE = "date";
+//	public static final String NODE_ATTR_DATE = "date";
 	public static final String NODE_ATTR_TIME = "time";
+	public static final String ATTR_VERDICT_TOTAL = "total";
+	public static final String ATTR_VERDICT_OK = TestResultEnum.OK.name();
+	public static final String ATTR_VERDICT_FAIL = TestResultEnum.FAIL.name();
+	public static final String ATTR_VERDICT_ERROR = TestResultEnum.ERROR.name();
+	public static final String ATTR_VERDICT_IGNORE = TestResultEnum.Ignore.name();
 	
 	private String time;
 	private Document doc;
@@ -56,15 +63,18 @@ public class XMLLog {
 	}
 	
 	public void initStructure(){
-		Element root = doc.addElement(NODE_ROOT).addAttribute(NODE_ATTR_DATE, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM).format(new Date(Long.parseLong(time))));
+		Element root = doc.addElement(NODE_ROOT).addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(new Date(Long.parseLong(time))));
 		root.addElement(NODE_NAME).addText(res.getName());
-		root.addElement(NODE_VERDICT);
+		root.addElement(NODE_VERDICT).addAttribute(ATTR_VERDICT_TOTAL, "0").addAttribute(ATTR_VERDICT_OK, "0").addAttribute(ATTR_VERDICT_FAIL, "0").addAttribute(ATTR_VERDICT_ERROR, "0").addAttribute(ATTR_VERDICT_IGNORE, "0");
 		try {
 			addElement(root, res.getFolder(ResourceManager.FOLDER_CASE).members());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//add count
+		StringBuffer buf = new StringBuffer().append("//").append(NODE_CASE);
+		root.element(NODE_VERDICT).addAttribute(ATTR_VERDICT_TOTAL, "" + root.selectNodes(buf.toString()).size());
 //		saveToFile();
 	}
 	
@@ -130,9 +140,9 @@ public class XMLLog {
 				if(ress[i].getFileExtension() != null && ress[i].getFileExtension().equals(ResourceManager.SUFFIX_CLASS)){
 					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
 				}
-					element = parent.addElement(NODE_CASE);
+					element = parent.addElement(NODE_CASE).addAttribute(NODE_ATTR_TIME, "");
 					element.addElement(NODE_NAME).addText(name);
-					element.addElement(NODE_VERDICT);
+					element.addElement(NODE_VERDICT).addText(TestResultEnum.Ignore.name());
 //				}
 			}
 
@@ -176,6 +186,12 @@ public class XMLLog {
 		}else if(TestResultEnum.OK.equals(result)){
 			String str = node.getText();
 			if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) node.setText(result.name());
+		}
+		if(node.getParent().getName().equals(NODE_CASE)){
+			node.getParent().addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime()));
+			Element el = doc.getRootElement().element(NODE_VERDICT).addAttribute(result.name(), "" + doc.selectNodes("//" + NODE_CASE + "[" + NODE_VERDICT + "='" + result.name() + "']").size());
+			int total = Integer.parseInt(el.attributeValue(ATTR_VERDICT_TOTAL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_ERROR)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_FAIL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_OK));
+			el.addAttribute(ATTR_VERDICT_IGNORE, total + "");
 		}
 		if(psb.length() > 0){
 			updateTestResult(psb.deleteCharAt(psb.length() - 1).toString(), result, true);

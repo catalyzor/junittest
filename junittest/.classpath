@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="libs/batik-ext.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/xercesImpl-2.10.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/xml-apis-ext.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/xml-apis.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/iTextAsian.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/fangsongfont.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jasperreports-fonts-5.1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/iText-2.1.7.js2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/groovy-all-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/xalan-2.7.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/commons-digester-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/commons-beanutils-1.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jasperreports-5.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jasperreports-5.1.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/work/java/tools/jasperreports-5.1.2-project.zip!/jasperreports-5.1.2/dist/docs/api"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="libs/jaxen-1.1-beta-6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/dom4j-1.6.1.jar">
 		<attributes>

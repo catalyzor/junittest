@@ -56,7 +56,7 @@
       <view
             class="junittest.view.ProjectView"
             id="junittest.view.ProjectView"
-            name="Project">
+            name="工程">
       </view>
       <view
             class="junittest.view.DescriptionView"
@@ -66,7 +66,7 @@
       <view
             class="junittest.view.LogHistoryView"
             id="junittest.view.LogHistoryView"
-            name="Log History">
+            name="历史日志">
       </view>
       <view
             class="junittest.view.TestStepView"
@@ -76,7 +76,7 @@
       <view
             class="junittest.view.LogView"
             id="junittest.view.LogView"
-            name="Log">
+            name="日志">
       </view>
    </extension>
    <extension
@@ -236,6 +236,10 @@
          <menu
                label="配置"
                tooltip="preference">
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  style="push">
+            </command>
          </menu>
          <menu
                label="报告"
@@ -410,5 +414,19 @@
                priorityLevel="workbench">
          </variable>
       </sourceProvider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="junittest.preferences.RunPreferencePage"
+            id="junittest.preferences.RunPreferencePage"
+            name="运行配置">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="junittest.preferences.PreferenceInitializer">
+      </initializer>
    </extension>
 </plugin>
