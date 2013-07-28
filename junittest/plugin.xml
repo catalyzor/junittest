@@ -196,6 +196,7 @@
       </command>
       <command
             categoryId="junittest.category.report"
+            defaultHandler="junittest.handler.ShowLogHandler"
             id="junittest.command.viewlog"
             name="View Log">
       </command>
@@ -310,12 +311,20 @@
             class="junittest.handler.PauseHandler"
             commandId="junittest.command.pause">
          <enabledWhen>
-            <with
-                  variable="junittest.isRunning">
-               <equals
-                     value="true">
-               </equals>
-            </with>
+            <and>
+               <with
+                     variable="junittest.isRunning">
+                  <equals
+                        value="true">
+                  </equals>
+               </with>
+               <with
+                     variable="junittest.isPaused">
+                  <equals
+                        value="false">
+                  </equals>
+               </with>
+            </and>
          </enabledWhen>
       </handler>
       <handler
@@ -325,6 +334,18 @@
       <handler
             class="junittest.handler.SimpleReportHandler"
             commandId="junittest.command.simplereport">
+      </handler>
+      <handler
+            class="junittest.handler.ResumeHandler"
+            commandId="junittest.command.resumes">
+         <enabledWhen>
+            <with
+                  variable="junittest.isPaused">
+               <equals
+                     value="true">
+               </equals>
+            </with>
+         </enabledWhen>
       </handler>
    </extension>
    <extension
@@ -363,7 +384,7 @@
             locationURI="toolbar:junittest.view.ProjectView">
          <command
                commandId="junittest.commands.start"
-               label="启动"
+               label="运行"
                style="push">
          </command>
          <command
@@ -374,6 +395,11 @@
          <command
                commandId="junittest.command.pause"
                label="暂停"
+               style="push">
+         </command>
+         <command
+               commandId="junittest.command.resumes"
+               label="继续"
                style="push">
          </command>
       </menuContribution>
@@ -411,6 +437,10 @@
             provider="junittest.ui.TestRunningCheckSourceProvider">
          <variable
                name="junittest.isRunning"
+               priorityLevel="workbench">
+         </variable>
+         <variable
+               name="junittest.isPaused"
                priorityLevel="workbench">
          </variable>
       </sourceProvider>

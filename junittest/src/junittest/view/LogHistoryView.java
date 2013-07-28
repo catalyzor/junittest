@@ -4,18 +4,27 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import junittest.debug.JUnitRunner;
+import junittest.Activator;
 import junittest.resource.ResourceManager;
+import junittest.resource.TestResultConstants;
+import junittest.resource.TestResultEnum;
 import junittest.xml.XMLLog;
 
-import org.dom4j.DocumentException;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
@@ -24,17 +33,16 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
-import org.junit.runner.Description;
-import org.junit.runner.Result;
-import org.junit.runner.notification.RunListener;
 
 public class LogHistoryView extends ViewPart {
 	private class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -49,12 +57,22 @@ public class LogHistoryView extends ViewPart {
 					String name = file.getName().substring(0, file.getName().length() - ResourceManager.SUFFIX_CLASS.length() + 1);
 					return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM,SimpleDateFormat.MEDIUM,Locale.CHINA).format(new Date(Long.parseLong(name)));
 				case 1:
+					if(XMLLog.log != null && file.getName().startsWith(XMLLog.log.getTime())){
+						return "正在执行";
+					}
 					return "完成";
 				case 2:
 					try {
-						return XMLLog.getLogTestResult(file.getLocation().toOSString());
-					} catch (DocumentException e) {
-						// TODO Auto-generated catch block
+//						String str = XMLLog.getLogTestResult(file.getLocation().toOSString());
+						String str = XMLLog.getLogTestResult(file);
+						if(str != null && !str.trim().equals("")){
+							str = TestResultConstants.RESULT_NAMES[TestResultEnum.valueOf(str).ordinal()];
+						}
+						return str;
+//					} catch (DocumentException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+					}catch (Exception e){
 						e.printStackTrace();
 					}
 				default:
@@ -69,43 +87,43 @@ public class LogHistoryView extends ViewPart {
 	private Table table;
 	private TableViewer tableViewer;
 
-	private RunListener runListener;
+//	private RunListener runListener;
 //	private IResourceChangeListener resListener;
 	public LogHistoryView() {
-		runListener = new RunListener(){
-
-			@Override
-			public void testRunStarted(Description description)
-					throws Exception {
-				// TODO Auto-generated method stub
-//				super.testRunStarted(description);
-				Display.getDefault().asyncExec(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-
-						refreshView();
-					}
-				});
-			}
-
-			@Override
-			public void testRunFinished(Result result) throws Exception {
-				// TODO Auto-generated method stub
-//				super.testRunFinished(result);
-				Display.getDefault().asyncExec(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-
-						refreshView();
-					}
-				});
-			}
-			
-		};
+//		runListener = new RunListener(){
+//
+//			@Override
+//			public void testRunStarted(Description description)
+//					throws Exception {
+//				// TODO Auto-generated method stub
+////				super.testRunStarted(description);
+//				Display.getDefault().asyncExec(new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//
+//						refreshView();
+//					}
+//				});
+//			}
+//
+//			@Override
+//			public void testRunFinished(Result result) throws Exception {
+//				// TODO Auto-generated method stub
+////				super.testRunFinished(result);
+//				Display.getDefault().asyncExec(new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//
+//						refreshView();
+//					}
+//				});
+//			}
+//			
+//		};
 //		resListener = new IResourceChangeListener() {
 //			
 //			@Override
@@ -122,7 +140,7 @@ public class LogHistoryView extends ViewPart {
 	public void dispose() {
 		// TODO Auto-generated method stub
 //		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resListener);
-		JUnitRunner.getInstance().removeRunListener(runListener);
+//		JUnitRunner.getInstance().removeRunListener(runListener);
 		super.dispose();
 	}
 
@@ -141,6 +159,12 @@ public class LogHistoryView extends ViewPart {
 			{
 				tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
 				table = tableViewer.getTable();
+				table.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseDoubleClick(MouseEvent e) {
+						doDoubleClick();
+					}
+				});
 				table.setHeaderVisible(true);
 				table.setLinesVisible(true);
 				{
@@ -163,7 +187,7 @@ public class LogHistoryView extends ViewPart {
 				}
 				tableViewer.setLabelProvider(new TableLabelProvider());
 				tableViewer.setContentProvider(new ArrayContentProvider());
-				refreshView();
+				refreshView(null);
 			}
 		}
 
@@ -175,20 +199,44 @@ public class LogHistoryView extends ViewPart {
 		Menu menu = mm.createContextMenu(table);
 		table.setMenu(menu);
 		getSite().registerContextMenu(mm, tableViewer);
-		JUnitRunner.getInstance().addRunListener(runListener);
+//		JUnitRunner.getInstance().addRunListener(runListener);
 //		ResourcesPlugin.getWorkspace().addResourceChangeListener(resListener);
 	}
 
-	public void refreshView(){
-		IProject project = ResourceManager.getInstance().getProject();
-		if(project != null){
+	protected void doDoubleClick() {
+		// TODO Auto-generated method stub
+//		IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
+//		if(!selection.isEmpty()){
+//			IResource res = (IResource) selection.getFirstElement();
+//			
+//		}
+		IHandlerService service = (IHandlerService) getSite().getService(IHandlerService.class);
+		if(service != null){
 			try {
-				tableViewer.setInput(project.getFolder(ResourceManager.FOLDER_LOG).members());
-				tableViewer.refresh();
-			} catch (CoreException e) {
+				service.executeCommand("junittest.command.viewlog", null);
+			} catch (ExecutionException | NotDefinedException
+					| NotEnabledException | NotHandledException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				ErrorDialog.openError(getSite().getShell(), "错误", "打开日志失败", new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
+		}
+	}
+
+	public void refreshView(IResource res){
+		if(res == null){
+			IProject project = ResourceManager.getInstance().getProject();
+			if(project != null){
+				try {
+					tableViewer.setInput(project.getFolder(ResourceManager.FOLDER_LOG).members());
+					tableViewer.refresh();
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}else{
+			tableViewer.update(res, null);
 		}
 	}
 	/**

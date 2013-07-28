@@ -1,6 +1,7 @@
 package junittest.ui;
 
 import junittest.Activator;
+import junittest.ISharedImageConstants;
 import junittest.resource.ResourceManager;
 
 import org.eclipse.core.resources.IContainer;
@@ -40,13 +41,15 @@ public class ResourceLabelDecorator implements ILabelDecorator {
 	public Image decorateImage(Image image, Object element) {
         if (Platform.getAdapterManager().getAdapter(element, IContainer.class) != null) {
 //            return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
-        	return Activator.getImageDescriptor("icons/tsuite.gif").createImage();
+//        	return Activator.getImageDescriptor("icons/tsuite.gif").createImage();
+        	return Activator.getDefault().getImageRegistry().get(ISharedImageConstants.TSUITE);
         } else {
 //            return Activator.getDefault().getEditorRegistry()
 //                    .getImageDescriptor(decorateText("", element));
 //        	return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
 			//TODO: what are the implications for content types?  Should I guess?
-        	return Activator.getImageDescriptor("icons/test.gif").createImage();
+//        	return Activator.getImageDescriptor("icons/test.gif").createImage();
+        	return Activator.getDefault().getImageRegistry().get(ISharedImageConstants.TEST);
         }
     }
 

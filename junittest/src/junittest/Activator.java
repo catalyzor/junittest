@@ -1,6 +1,7 @@
 package junittest;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -58,4 +59,23 @@ public class Activator extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
+
+	@Override
+	protected void initializeImageRegistry(ImageRegistry reg) {
+		// TODO Auto-generated method stub
+//		super.initializeImageRegistry(reg);
+		String path = "icons/";
+		reg.put(ISharedImageConstants.TEST, getImageDescriptor(path + ISharedImageConstants.TEST));
+		reg.put(ISharedImageConstants.TESTERR, getImageDescriptor(path + ISharedImageConstants.TESTERR));
+		reg.put(ISharedImageConstants.TESTFAIL, getImageDescriptor(path + ISharedImageConstants.TESTFAIL));
+		reg.put(ISharedImageConstants.TESTOK, getImageDescriptor(path + ISharedImageConstants.TESTOK));
+		reg.put(ISharedImageConstants.TSUITE, getImageDescriptor(path + ISharedImageConstants.TSUITE));
+		reg.put(ISharedImageConstants.TSUITEERROR, getImageDescriptor(path + ISharedImageConstants.TSUITEERROR));
+		reg.put(ISharedImageConstants.TSUITEFAIL, getImageDescriptor(path + ISharedImageConstants.TSUITEFAIL));
+		reg.put(ISharedImageConstants.TSUITEOK, getImageDescriptor(path + ISharedImageConstants.TSUITEOK));
+	}
+	
+//	public static ImageDescriptor getImageFromRegistry(String path){
+//		getDefault().getImageRegistry()
+//	}
 }

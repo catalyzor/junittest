@@ -13,9 +13,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import junittest.Activator;
+import junittest.debug.JUnitTestRunnerJob;
 import junittest.util.ZipUtils;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -82,6 +82,7 @@ public class ResourceManager {
 //			ZipFile zip = new ZipFile(project.getFolder(FOLDER_JAR).getFile(file.getName()).getLocation().toOSString());
 			ZipUtils.unZip(project.getFolder(FOLDER_JAR).members()[0].getLocation().toOSString(), project.getFolder(FOLDER_CASE).getLocation().toOSString());
 			project.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor, 1));
+			setProject(project);
 		}
 		return bool;
 	}
@@ -111,6 +112,8 @@ public class ResourceManager {
 		return project;
 	}
 	public void setProject(IProject project){
+		getMapResult().clear();
+		Job.getJobManager().cancel(JUnitTestRunnerJob.FAMILINAME);
 		if(this.project != null){
 			unloadTestJarClassLoader();
 		}
@@ -140,7 +143,7 @@ public class ResourceManager {
 			String name = entry.getName();
 			if(!entry.isDirectory() && name.endsWith("." + SUFFIX_CLASS)){
 				name = name.substring(0, name.length() - 6).replaceAll("/", ".");
-//				urlClassLoad.loadClass(name);
+				urlClassLoad.loadClass(name);
 			}
 		}
 	}

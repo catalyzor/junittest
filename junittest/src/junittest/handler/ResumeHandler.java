@@ -9,17 +9,15 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.jobs.Job;
 
-public class PauseHandler extends AbstractHandler implements IHandler {
+public class ResumeHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
-//		JUnitRunner.getInstance().pause();
-//		Job.getJobManager().suspend();
-//		Job.getJobManager().sleep(JUnitTestRunnerJob.FAMILINAME);
+//		Job.getJobManager().wakeUp(JUnitTestRunnerJob.FAMILINAME);
 		Job[] jobs = Job.getJobManager().find(JUnitTestRunnerJob.FAMILINAME);
 		if(jobs != null && jobs.length > 0){
-			jobs[0].setProperty(JUnitTestRunnerJob.STATE , "pause");
+			jobs[0].setProperty(JUnitTestRunnerJob.STATE, null);
 		}
 		JUnitRunner.fireStateChange();
 		return null;

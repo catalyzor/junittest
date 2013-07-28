@@ -2,7 +2,7 @@ package junittest.handler;
 
 import java.util.List;
 
-import junittest.debug.JUnitRunner;
+import junittest.debug.JUnitTestRunnerJob;
 import junittest.resource.ResourceManager;
 import junittest.view.ProjectView;
 
@@ -22,17 +22,24 @@ public class RunHandler extends AbstractHandler implements IHandler {
 		ProjectView view = (ProjectView) window.getActivePage().findView(ProjectView.ID);
 		List<String> list = view.getSelectedCases();
 		if(!list.isEmpty()){
-			Class[] classes = new Class[list.size()];
-			for (int i = 0; i < classes.length; i++) {
-				try {
-					classes[i] = ResourceManager.getInstance().urlClassLoad.loadClass(list.get(i));
-					//				classes[i] = Class.forName(list.get(i));
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			JUnitRunner.getInstance().start(classes);
+//			Class[] classes = new Class[list.size()];
+//			for (int i = 0; i < classes.length; i++) {
+//				try {
+////					classes[i] = ResourceManager.getInstance().urlClassLoad.loadClass(list.get(i));
+//									classes[i] = Class.forName(list.get(i),false,ResourceManager.getInstance().urlClassLoad);
+//				} catch (ClassNotFoundException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//			JUnitRunner.getInstance().start(classes);
+			JUnitTestRunnerJob job = new JUnitTestRunnerJob("Ö´ÐÐ²âÊÔ");
+//			job.setClasses(classes);
+			job.setClasses(list);
+			job.setPriority(job.LONG);
+			job.setUser(false);
+//			job.setSystem(true);
+			job.schedule();
 		}
 		return null;
 	}

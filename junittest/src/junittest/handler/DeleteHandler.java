@@ -31,7 +31,7 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 					try {
 						((IResource)obj).delete(true, null);
 						LogHistoryView view = (LogHistoryView) window.getActivePage().findView(LogHistoryView.ID);
-						if(view != null) view.refreshView();
+						if(view != null) view.refreshView(null);
 					} catch (CoreException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

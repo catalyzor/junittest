@@ -1,9 +1,11 @@
 package junittest.xml;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +31,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 public class XMLLog {
@@ -37,6 +40,7 @@ public class XMLLog {
 	public static final String NODE_SUITE = "suite";
 	public static final String NODE_CASE = "case";
 	public static final String NODE_NAME = "name";
+	public static final String NODE_LOG = "logs";
 	public static final String NODE_PROPS = "properties";
 	public static final String NODE_VERDICT = "verdict";
 //	public static final String NODE_ATTR_DATE = "date";
@@ -51,7 +55,14 @@ public class XMLLog {
 	private Document doc;
 	private IProject res;
 	private String fileName;
+	public static XMLLog log;
 	
+	public String getTime() {
+		return time;
+	}
+	public String getFileName() {
+		return fileName;
+	}
 	public Document getDocument(){
 		return doc;
 	}
@@ -60,6 +71,7 @@ public class XMLLog {
 		this.res = res;
 		this.fileName = time + ".xml";
 		doc = DocumentHelper.createDocument();
+		log = this;
 	}
 	
 	public void initStructure(){
@@ -100,9 +112,10 @@ public class XMLLog {
 			}
 		}
 	}
-	public synchronized void saveToFile(){
+	public synchronized IPath saveToFile(){
+		IPath path = res.getFolder(ResourceManager.FOLDER_LOG).getLocation().append(fileName);
 		try {
-			FileWriter writer = new FileWriter(res.getFolder(ResourceManager.FOLDER_LOG).getLocation().append(fileName).toFile());
+			FileWriter writer = new FileWriter(path.toFile());
 //			doc.write(writer);
 			XMLWriter xmlWriter = new XMLWriter(writer, OutputFormat.createPrettyPrint());
 			xmlWriter.write(doc);
@@ -112,6 +125,7 @@ public class XMLLog {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return path;
 	}
 	public void addElement(Element parent, IResource[] ress){
 		for (int i = 0; i < ress.length; i++) {
@@ -143,6 +157,7 @@ public class XMLLog {
 					element = parent.addElement(NODE_CASE).addAttribute(NODE_ATTR_TIME, "");
 					element.addElement(NODE_NAME).addText(name);
 					element.addElement(NODE_VERDICT).addText(TestResultEnum.Ignore.name());
+					element.addElement(NODE_LOG);
 //				}
 			}
 
@@ -226,6 +241,26 @@ public class XMLLog {
 		return null;
 	}
 	
+	public Element getElement(String classname){
+//		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('/').append(NODE_LOG).toString();
+		StringBuffer sb = new StringBuffer("//").append(NODE_ROOT).append("/");
+		String[] names = classname.split("\\.");
+		StringBuffer psb = new StringBuffer();
+		for(int i = 0;i < names.length;i ++){
+			if(i != names.length - 1){
+				sb.append(NODE_SUITE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/");
+				psb.append(names[i]).append(".");
+//				sb.append(NODE_SUITE);
+			}else{
+				sb.append(NODE_CASE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']");
+//				sb.append(NODE_CASE);
+			}
+//			sb.append("[").append(NODE_NAME).append("=").append(names[i]).append("]").append("/")
+		}
+		String path = sb.toString();
+		Node node = doc.selectSingleNode(path);
+		return (Element) node;
+	}
 	public synchronized Element addElement(Element element, String name, String value){
 		if(element == null) return null;
 		Element el = element.addElement(name);
@@ -247,8 +282,30 @@ public class XMLLog {
 //	}
 	
 	public static String getLogTestResult(String filename) throws DocumentException{
-		SAXReader sax = new SAXReader();
-		Document document = sax.read(new File(filename));
-		return document.selectSingleNode("/" + NODE_ROOT + "/" + NODE_VERDICT).getText();
+		Document doc = null;
+		if(log != null && log.time.equals(filename)){
+			doc = log.getDocument();
+		}else{
+			SAXReader sax = new SAXReader();
+			doc = sax.read(new File(filename));
+		}
+		return doc.selectSingleNode("/" + NODE_ROOT + "/" + NODE_VERDICT).getText();
+	}
+	
+	public static String getLogTestResult(IFile file) throws CoreException, IOException{
+		String result = "";
+		if(file.exists()){
+			file.refreshLocal(IResource.DEPTH_ZERO, null);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents(), file.getCharset()));
+			String line = null;
+			while((line = reader.readLine()) != null){
+				if(line.endsWith("</verdict>")){
+					break;
+				}
+			}
+			reader.close();
+			result = line.substring(line.indexOf(">") + 1, line.length() - "</verdict>".length());
+		}
+		return result.trim();
 	}
 }

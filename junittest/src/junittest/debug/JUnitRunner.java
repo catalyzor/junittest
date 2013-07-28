@@ -8,10 +8,19 @@ import java.util.Map;
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
 import junittest.ui.TestRunningCheckSourceProvider;
+import junittest.userlog.UserLogUtil;
+import junittest.view.LogHistoryView;
+import junittest.view.LogView;
 import junittest.xml.XMLLog;
 
+import org.dom4j.Element;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.services.ISourceProviderService;
 import org.junit.runner.Description;
@@ -100,12 +109,16 @@ public class JUnitRunner {
 						ResourceManager.getInstance().getMapResult().put(fail.getDescription().getClassName(), TestResultEnum.FAIL);
 					}
 				}
+				refreshLogHistoryView(null);
 			}
 
 			@Override
 			public void testStarted(Description description) throws Exception {
 				// TODO Auto-generated method stub
 //				super.testStarted(description);
+				Element el = JUnitRunner.getInstance().getXMLLog().getElement(description.getClassName());
+				UserLogUtil.setCurrentNode(el.element(XMLLog.NODE_LOG));
+				refreshLogView(el);
 				if(pause){
 					synchronized (threadStateMark) {
 						threadStateMark.wait();
@@ -133,6 +146,10 @@ public class JUnitRunner {
 					if(!TestResultEnum.FAIL.equals(map.get(description.getClassName())) && !TestResultEnum.ERROR.equals(map.get(description.getClassName()))){
 						ResourceManager.getInstance().getMapResult().put(description.getClassName(), TestResultEnum.OK);
 					}
+
+					Element el = JUnitRunner.getInstance().getXMLLog().getElement(description.getClassName());
+					UserLogUtil.setCurrentNode(el.element(XMLLog.NODE_LOG));
+					refreshLogView(el);
 				}
 			}
 
@@ -198,10 +215,18 @@ public class JUnitRunner {
 		return instance;
 	}
 	
-	public void fireStateChange(){
+	public static void fireStateChange(){
 		ISourceProviderService sourceProviderService = (ISourceProviderService) PlatformUI.getWorkbench().getService(ISourceProviderService.class);
 		TestRunningCheckSourceProvider sourceProvider = (TestRunningCheckSourceProvider) sourceProviderService.getSourceProvider(TestRunningCheckSourceProvider.SOURCE_NAME);
 		sourceProvider.fireStateChange();
+	}
+	public void resume(){
+		if(pause){
+			pause = false;
+			synchronized (pause) {
+				pause.notify();
+			}
+		}
 	}
 	public void start(Class[] classes){
 		if(pause){
@@ -222,6 +247,8 @@ public class JUnitRunner {
 					logger = new XMLLog(name, ResourceManager.getInstance().getProject());
 					logger.initStructure();
 					logger.saveToFile();
+					refreshLogView(null);
+					refreshLogHistoryView(null);
 					try {
 						ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG).refreshLocal(IResource.DEPTH_ONE, null);
 					} catch (CoreException e) {
@@ -237,6 +264,34 @@ public class JUnitRunner {
 		}
 	}
 	
+	protected void refreshLogHistoryView(final IResource res) {
+		// TODO Auto-generated method stub
+		Display.getDefault().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				LogHistoryView view = (LogHistoryView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(LogHistoryView.ID);
+					view.refreshView(res);
+			}
+		});
+	}
+	protected void refreshLogView(final Element el) {
+		// TODO Auto-generated method stub
+		Display.getDefault().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				LogView view = (LogView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(LogView.ID);
+				if(el == null){
+					view.refreshView();
+				}else{
+					view.refreshNode(el);
+				}
+			}
+		});
+	}
 	public void stop(){
 		if(runThread != null){
 			runThread.interrupt();
@@ -245,7 +300,7 @@ public class JUnitRunner {
 	}
 	
 	public void pause(){
-		if(runThread != null && runThread.isAlive()){
+		if(runThread != null){
 //			IProcess process = DebugPlugin.newProcess(null, null, null);
 //			process.
 //			pause = true;
@@ -256,6 +311,14 @@ public class JUnitRunner {
 	}
 	public static void main(String[] args) {
 
+		Job job = new Job("") {
+			
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
 //		Object obj = new Object();
 //		Job job = new Job("aa") {
 //			

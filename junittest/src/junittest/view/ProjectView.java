@@ -1,16 +1,11 @@
 package junittest.view;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import junittest.Activator;
-import junittest.debug.JUnitRunner;
 import junittest.resource.ResourceManager;
 import junittest.util.Utilities;
-import junittest.xml.XMLLog;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -20,11 +15,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -40,90 +31,98 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
-import org.junit.runner.Description;
-import org.junit.runner.Result;
-import org.junit.runner.notification.RunListener;
 
 public class ProjectView extends ViewPart implements IResourceChangeListener {
 
 	public static final String ID = "junittest.view.ProjectView"; //$NON-NLS-1$
 	private CheckboxTreeViewer checkboxTreeViewer;
 
-	private RunListener runListener;
+//	private RunListener runListener;
 	private IProject project;
+	
+	public CheckboxTreeViewer getCheckboxTreeViewer() {
+		return checkboxTreeViewer;
+	}
+
 	public ProjectView() {
-		runListener = new RunListener(){
-
-//			private XMLLog logger;
-			@Override
-			public void testRunFinished(Result result) throws Exception {
-				// TODO Auto-generated method stub
-//				super.testRunFinished(result);
-				Display.getDefault().asyncExec(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						checkboxTreeViewer.refresh(true);
-					}
-				});
-			}
-
-			@Override
-			public void testFinished(final Description description) throws Exception {
-				// TODO Auto-generated method stub
-//				super.testFinished(description);
-				final XMLLog logger = JUnitRunner.getInstance().getXMLLog();
-				if(logger != null){
-					logger.updateTestResult(project.getName() + "." + description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
-					Job job = new Job("update test result."){
-
-						@Override
-						protected IStatus run(IProgressMonitor monitor) {
-							// TODO Auto-generated method stub
-							logger.saveToFile();
-							try {
-								ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG).refreshLocal(IResource.DEPTH_INFINITE, null);
-							} catch (CoreException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							return Status.OK_STATUS;
-						}
-
-					};
-					job.setSystem(true);
-					job.schedule();
-				}
-			}
-
-			@Override
-			public void testRunStarted(Description description)
-					throws Exception {
-				// TODO Auto-generated method stub
-//				super.testRunStarted(description);
-				Job job = new Job("Output log file.") {
-					
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						// TODO Auto-generated method stub
-//						String name = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime());
-						
-						return Status.OK_STATUS;
-					}
-				};
-				job.setSystem(true);
-				job.schedule();
-			}
-			
-		};
-		JUnitRunner.getInstance().addRunListener(runListener);
+//		runListener = new RunListener(){
+//
+////			private XMLLog logger;
+//			@Override
+//			public void testRunFinished(Result result) throws Exception {
+//				// TODO Auto-generated method stub
+////				super.testRunFinished(result);
+//				Display.getDefault().asyncExec(new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//						checkboxTreeViewer.refresh(true);
+//					}
+//				});
+//			}
+//
+//			@Override
+//			public void testStarted(Description description) throws Exception {
+//				// TODO Auto-generated method stub
+//				super.testStarted(description);
+//			}
+//
+//			@Override
+//			public void testFinished(final Description description) throws Exception {
+//				// TODO Auto-generated method stub
+////				super.testFinished(description);
+//				final XMLLog logger = JUnitRunner.getInstance().getXMLLog();
+//				if(logger != null){
+//					logger.updateTestResult(project.getName() + "." + description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
+////					Job job = new Job("update test result."){
+////
+////						@Override
+////						protected IStatus run(IProgressMonitor monitor) {
+//							// TODO Auto-generated method stub
+//							logger.saveToFile();
+//							try {
+//								ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG).refreshLocal(IResource.DEPTH_INFINITE, null);
+//							} catch (CoreException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+////							return Status.OK_STATUS;
+//						}
+//
+////					};
+////					job.setSystem(true);
+////					job.schedule();
+////				}
+//			}
+//
+//			@Override
+//			public void testRunStarted(Description description)
+//					throws Exception {
+//				// TODO Auto-generated method stub
+////				super.testRunStarted(description);
+////				Job job = new Job("Output log file.") {
+////					
+////					@Override
+////					protected IStatus run(IProgressMonitor monitor) {
+////						// TODO Auto-generated method stub
+//////						String name = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime());
+////						
+////						return Status.OK_STATUS;
+////					}
+////				};
+////				job.setSystem(true);
+////				job.schedule();
+//			}
+//			
+//		};
+//		JUnitRunner.getInstance().addRunListener(runListener);
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		JUnitRunner.getInstance().removeRunListener(runListener);
+//		JUnitRunner.getInstance().removeRunListener(runListener);
 		super.dispose();
 	}
 
@@ -348,5 +347,23 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 			if(file != null) list.add(Utilities.getFullClassName(file));
 		}
 		return list;
+	}
+	
+	public void refreshView(String classname){
+		if(classname == null){
+			getCheckboxTreeViewer().refresh(true);
+			return;
+		}
+		String path = classname.replaceAll("\\.", "/") + "." + ResourceManager.SUFFIX_CLASS;
+		IResource res = ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_CASE).findMember(path);
+		refreshView(res);
+	}
+	public void refreshView(IResource res){
+		if(res != null){
+			getCheckboxTreeViewer().update(res, null);
+			if(res.getParent() != null && res.getType() != IResource.PROJECT){
+				refreshView(res.getParent());
+			}
+		}
 	}
 }

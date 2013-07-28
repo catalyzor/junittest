@@ -3,25 +3,23 @@ package junittest.view;
 import java.util.List;
 
 import junittest.Activator;
+import junittest.ISharedImageConstants;
 import junittest.debug.JUnitRunner;
 import junittest.xml.XMLLog;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
 
@@ -31,50 +29,58 @@ public class LogView extends ViewPart {
 			if(element instanceof Element){
 				Element el = (Element) element;
 				String name = el.getName();
-				String path = "icons/test.gif";
+				String path = ISharedImageConstants.TEST;
 				if(name.endsWith(XMLLog.NODE_CASE)){
 					switch (el.elementTextTrim(XMLLog.NODE_VERDICT)) {
 					case "ERROR":
-						path = "icons/testerr.gif";
+						path = ISharedImageConstants.TESTERR;
 						break;
 					case "FAIL":
-						path = "icons/testfail.gif";
+						path = ISharedImageConstants.TESTFAIL;
 						break;
 					case "OK":
-						path = "icons/testok.gif";
+						path = ISharedImageConstants.TESTOK;
 						break;
 					default:
-						path = "icons/test.gif";
+						path = ISharedImageConstants.TEST;
 						break;
 					}
 				}else{
-					switch (el.elementTextTrim(XMLLog.NODE_VERDICT)) {
-					case "ERROR":
-						path = "icons/tsuiteerror.gif";
-						break;
-					case "FAIL":
-						path = "icons/tsuitefail.gif";
-						break;
-					case "OK":
-						path = "icons/tsuiteok.gif";
-						break;
-					default:
-						path = "icons/tsuite.gif";
-						break;
+					if(el.element(XMLLog.NODE_VERDICT) != null){
+						switch (el.elementTextTrim(XMLLog.NODE_VERDICT)) {
+						case "ERROR":
+							path = ISharedImageConstants.TSUITEERROR;
+							break;
+						case "FAIL":
+							path = ISharedImageConstants.TSUITEFAIL;
+							break;
+						case "OK":
+							path = ISharedImageConstants.TSUITEOK;
+							break;
+						default:
+							path = ISharedImageConstants.TSUITE;
+							break;
+						}
 					}
 				}
-				return Activator.getImageDescriptor(path).createImage();
+				return Activator.getDefault().getImageRegistry().get(path);
 			}
 			return super.getImage(element);
 		}
 		public String getText(Object element) {
 			if(element instanceof Element){
 				Element e = (Element) element;
-				String name = e.elementTextTrim(XMLLog.NODE_NAME);
+				if(e.selectSingleNode(XMLLog.NODE_NAME) != null){
+					String name = e.elementTextTrim(XMLLog.NODE_NAME);
+					return name;
+				}else if(e.getName().equals(XMLLog.NODE_LOG)){
+					return e.getName();
+				}else{
+					return e.getTextTrim();
+				}
 //				if(name.endsWith("." + ResourceManager.SUFFIX_CLASS)){
 //					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
 //				}
-				return name;
 			}
 			return super.getText(element);
 		}
@@ -103,12 +109,14 @@ public class LogView extends ViewPart {
 //				}
 //				List<Element> list = element.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | ");
 				if(element.getName().equals(XMLLog.NODE_ROOT) || element.getName().equals(XMLLog.NODE_SUITE)){
-					List<Element> list = element.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | " + XMLLog.NODE_PROPS);
+					List<Element> list = element.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | " + XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG);
 					return list.toArray();
 				}else if(element.getName().equals(XMLLog.NODE_CASE)){
-					List<Element> list = element.selectNodes(XMLLog.NODE_PROPS);
+					List<Element> list = element.selectNodes(XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG);
 					return list.toArray();
 				}else if(element.getName().equals(XMLLog.NODE_PROPS)){
+					return element.content().toArray();
+				}else if(element.getName().equals(XMLLog.NODE_LOG)){
 					return element.content().toArray();
 				}
 //				return list.toArray();
@@ -132,12 +140,14 @@ public class LogView extends ViewPart {
 //				List<Element> list = e.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | ");
 //				return !list.isEmpty();
 				if(e.getName().equals(XMLLog.NODE_ROOT) || e.getName().equals(XMLLog.NODE_SUITE)){
-					List<Element> list = e.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | " + XMLLog.NODE_PROPS);
+					List<Element> list = e.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | " + XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG);
 					return !list.isEmpty();
 				}else if(e.getName().equals(XMLLog.NODE_CASE)){
-					List<Element> list = e.selectNodes(XMLLog.NODE_PROPS);
+					List<Element> list = e.selectNodes(XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG);
 					return !list.isEmpty();
 				}else if(e.getName().equals(XMLLog.NODE_PROPS)){
+					return e.hasContent();
+				}else if(e.getName().equals(XMLLog.NODE_LOG)){
 					return e.hasContent();
 				}
 			}
@@ -147,30 +157,32 @@ public class LogView extends ViewPart {
 
 	public static final String ID = "junittest.view.LogView"; //$NON-NLS-1$
 	private TreeViewer treeViewer;
+	private Document doc;
 
 //	private RunListener runListener;
-	private IResourceChangeListener listener;
+//	private IResourceChangeListener listener;
 	public LogView() {
-		listener = new IResourceChangeListener() {
-			
-			@Override
-			public void resourceChanged(IResourceChangeEvent event) {
-				// TODO Auto-generated method stub
-//				Object obj = event.getSource();
-//				if(obj instanceof IResource){
-
-					Display.getDefault().asyncExec(new Runnable() {
-						
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-	
-							refreshView();
-						}
-					});
-				}
-//			}
-		};
+//		listener = new IResourceChangeListener() {
+//			
+//			@Override
+//			public void resourceChanged(IResourceChangeEvent event) {
+//				// TODO Auto-generated method stub
+////				Object obj = event.getSource();
+////				if(obj instanceof IResource){
+//
+//					Display.getDefault().asyncExec(new Runnable() {
+//						
+//						@Override
+//						public void run() {
+//							// TODO Auto-generated method stub
+//	
+//							setDoc(null);
+//							refreshView();
+//						}
+//					});
+//				}
+////			}
+//		};
 //		runListener = new RunListener(){
 //
 //			@Override
@@ -236,18 +248,45 @@ public class LogView extends ViewPart {
 //			
 //		};
 	}
+	
+	public LogView(String name){
+		
+	}
+
+	public Document getDoc() {
+		if(doc == null){
+			XMLLog logger = JUnitRunner.getInstance().getXMLLog();
+			if(logger != null){
+				doc = logger.getDocument();
+			}
+		}
+		return doc;
+	}
+
+	public void setDoc(Document doc) {
+		this.doc = doc;
+	}
 
 	public void refreshView(){
 
 //		ProjectView projectView = (ProjectView) getSite().getWorkbenchWindow().getActivePage().findView(ProjectView.ID);
 //		if(projectView != null){
-			XMLLog logger = JUnitRunner.getInstance().getXMLLog();
-			if(logger != null){
-				Document doc = logger.getDocument();
-				treeViewer.setInput(doc);
+			
+				treeViewer.setInput(getDoc());
 //			}
 //			treeViewer.refresh();
-		}
+//		}
+	}
+	public void refreshNode(Element element){
+		treeViewer.refresh(element);
+		treeViewer.expandToLevel(element, 1);
+//		treeViewer.setSelection(new StructuredSelection(element));
+		updateNodeParent(element.getParent());
+	}
+	public void updateNodeParent(Element element){
+		if(element == null) return;
+		treeViewer.update(element, null);
+		updateNodeParent(element.getParent());
 	}
 	/**
 	 * Create contents of the view part.
@@ -268,11 +307,11 @@ public class LogView extends ViewPart {
 			}
 		}
 
-		createActions();
-		initializeToolBar();
-		initializeMenu();
+//		createActions();
+//		initializeToolBar();
+//		initializeMenu();
 //		JUnitRunner.getInstance().addRunListener(runListener);
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
+//		if(listener != null)ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
 	}
 
 	
@@ -280,7 +319,7 @@ public class LogView extends ViewPart {
 	public void dispose() {
 		// TODO Auto-generated method stub
 //		JUnitRunner.getInstance().removeRunListener(runListener);
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(listener);
+//		ResourcesPlugin.getWorkspace().removeResourceChangeListener(listener);
 		super.dispose();
 	}
 

@@ -1,6 +1,7 @@
 package junittest.ui;
 
 import junittest.Activator;
+import junittest.ISharedImageConstants;
 import junittest.debug.JUnitRunner;
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
@@ -52,41 +53,41 @@ public class StatusLabelDecorator implements
 		if(res != null){
 			TestResultEnum en = ResourceManager.getInstance().getMapResult().get(Utilities.getFullClassName(res));
 			if(en != null){
-				String pic = "icons/test.gif";
+				String pic = ISharedImageConstants.TEST;
 				switch(en.ordinal()){
 				case 3:
-					pic = "icons/testerr.gif";
+					pic = ISharedImageConstants.TESTERR;
 				break;
 				case 1:
-					pic = "icons/testok.gif";
+					pic = ISharedImageConstants.TESTOK;
 				break;
 				case 2:
-					pic = "icons/testfail.gif";
+					pic = ISharedImageConstants.TESTFAIL;
 				break;
 				default:
-					pic = "icons/test.gif";
+					pic = ISharedImageConstants.TEST;
 				}
-				return Activator.getImageDescriptor(pic).createImage();
+				return Activator.getDefault().getImageRegistry().get(pic);
 			}else{
-				XMLLog log = JUnitRunner.getInstance().getXMLLog();
+				XMLLog log = XMLLog.log;
 				if(log != null){
 					String result = (res.getType() == IResource.PROJECT)?log.getTestResult(res.getName()):log.getTestResult(res.getProject().getName() + "/" + res.getProjectRelativePath().removeFirstSegments(1).toString());
-					String path = null;
+					String path = ISharedImageConstants.TSUITE;
 					switch(result){
 					case "ERROR":
-						path = "icons/tsuiteerror.gif";
+						path = ISharedImageConstants.TSUITEERROR;
 						break;
 					case "FAIL":
-						path = "icons/tsuitefail.gif";
+						path = ISharedImageConstants.TSUITEFAIL;
 						break;
 					case "OK":
-						path = "icons/tsuiteok.gif";
+						path = ISharedImageConstants.TSUITEOK;
 						break;
 					default:
-						path = "icons/tsuite.gif";
+						path = ISharedImageConstants.TSUITE;
 						break;
 					}
-					return Activator.getImageDescriptor(path).createImage();
+					return Activator.getDefault().getImageRegistry().get(path);
 				}
 			}
 		}
