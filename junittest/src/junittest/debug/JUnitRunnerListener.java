@@ -92,9 +92,9 @@ public class JUnitRunnerListener extends RunListener {
 
 	public void checkState() throws Exception{
 
-		if(getMonitor().isCanceled()) throw new Exception("用户取消");
+//		if(getMonitor().isCanceled()) throw new Exception("用户取消");
 		//check pause
-		while(JUnitTestRunnerJob.STATE_PAUSE == job.getProperty(JUnitTestRunnerJob.STATE)){
+		while((JUnitTestRunnerJob.STATE_PAUSE == job.getProperty(JUnitTestRunnerJob.STATE)) && !getMonitor().isCanceled()){
 			Thread.sleep(500);
 		}
 	}

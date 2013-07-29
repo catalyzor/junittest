@@ -1,10 +1,12 @@
 package junittest.view;
 
+import java.util.Arrays;
 import java.util.List;
 
 import junittest.Activator;
 import junittest.ISharedImageConstants;
 import junittest.debug.JUnitRunner;
+import junittest.userlog.NameEnum;
 import junittest.xml.XMLLog;
 
 import org.dom4j.Document;
@@ -13,7 +15,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -36,16 +37,18 @@ public class LogView extends ViewPart {
 						path = ISharedImageConstants.TESTERR;
 						break;
 					case "FAIL":
-						path = ISharedImageConstants.TESTFAIL;
+//						path = ISharedImageConstants.TESTFAIL;
+						path = NameEnum.TAG_RUNFAIL;
 						break;
 					case "OK":
-						path = ISharedImageConstants.TESTOK;
+//						path = ISharedImageConstants.TESTOK;
+						path = NameEnum.TAG_RUNSUCCESS;
 						break;
 					default:
 						path = ISharedImageConstants.TEST;
 						break;
 					}
-				}else{
+				}else if(name.startsWith(XMLLog.NODE_ROOT) || name.startsWith(XMLLog.NODE_SUITE)){
 					if(el.element(XMLLog.NODE_VERDICT) != null){
 						switch (el.elementTextTrim(XMLLog.NODE_VERDICT)) {
 						case "ERROR":
@@ -61,6 +64,12 @@ public class LogView extends ViewPart {
 							path = ISharedImageConstants.TSUITE;
 							break;
 						}
+					}
+				}else{
+					if(Arrays.binarySearch(NameEnum.TAGS, el.getName()) >= 0){
+						path = el.getName();
+					}else{
+						path = NameEnum.TAG_DEFAULT;
 					}
 				}
 				return Activator.getDefault().getImageRegistry().get(path);

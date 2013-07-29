@@ -1,5 +1,8 @@
 package junittest.intro;
 
+import junittest.debug.JUnitTestRunnerJob;
+
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -25,4 +28,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setTitle("RCP Product");
         configurer.setShowProgressIndicator(true);
     }
+
+	@Override
+	public void postWindowClose() {
+		// TODO Auto-generated method stub
+//		super.postWindowClose();
+		Job.getJobManager().cancel(JUnitTestRunnerJob.FAMILINAME);
+	}
 }

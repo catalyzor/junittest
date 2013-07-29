@@ -1,5 +1,7 @@
 package junittest;
 
+import junittest.userlog.NameEnum;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -73,6 +75,10 @@ public class Activator extends AbstractUIPlugin {
 		reg.put(ISharedImageConstants.TSUITEERROR, getImageDescriptor(path + ISharedImageConstants.TSUITEERROR));
 		reg.put(ISharedImageConstants.TSUITEFAIL, getImageDescriptor(path + ISharedImageConstants.TSUITEFAIL));
 		reg.put(ISharedImageConstants.TSUITEOK, getImageDescriptor(path + ISharedImageConstants.TSUITEOK));
+		
+		for(String str : NameEnum.TAGS){
+			reg.put(str, getImageDescriptor(path + str + ".png"));
+		}
 	}
 	
 //	public static ImageDescriptor getImageFromRegistry(String path){
