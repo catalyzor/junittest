@@ -9,7 +9,7 @@ public class ResourceAdapterFactory implements IAdapterFactory {
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		// TODO Auto-generated method stub
-		if(adaptableObject.equals(IPropertySource.class)){
+		if(adapterType.equals(IPropertySource.class)){
 			return new ResourcePropertySource((IResource) adaptableObject);
 		}
 		return null;

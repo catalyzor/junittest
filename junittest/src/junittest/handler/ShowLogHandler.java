@@ -2,6 +2,7 @@ package junittest.handler;
 
 import junittest.Activator;
 import junittest.ui.LogViewer;
+import junittest.view.LogHistoryView;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -15,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -24,7 +26,11 @@ public class ShowLogHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		IStructuredSelection selection = (IStructuredSelection)HandlerUtil.getCurrentSelection(event);
+		IWorkbenchPart part = HandlerUtil.getActivePart(event);
+		if(part == null) return null;
+
+		IStructuredSelection selection = (IStructuredSelection) ((LogHistoryView)part).getTableViewer().getSelection();
+//		IStructuredSelection selection = (IStructuredSelection)HandlerUtil.getCurrentSelection(event);
 		if(!selection.isEmpty()){
 			IResource res = (IResource) selection.getFirstElement();
 			if(res.exists()){

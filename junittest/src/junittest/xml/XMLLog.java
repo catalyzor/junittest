@@ -33,6 +33,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 
 public class XMLLog {
 
@@ -93,11 +94,11 @@ public class XMLLog {
 	public void addProp(Element element, IResource res) throws CoreException, IOException{
 		IFile file = null;
 		if(res.getType() == IResource.FOLDER){
-			file = ((IFolder)res.getAdapter(IFolder.class)).getFile(res.getName() + "." + ResourceManager.SUFFIX_PROPERTIES);
+			IFolder folder = (IFolder) Platform.getAdapterManager().getAdapter(res, IFolder.class);
+			file = folder.getFile(res.getName() + "." + ResourceManager.SUFFIX_PROPERTIES);
 		}else if(res.getType() == IResource.FILE){
-			if(res.getFileExtension() != null && res.getFileExtension().equals(ResourceManager.SUFFIX_CLASS)){
-				file = res.getParent().getFile(Path.fromOSString(res.getName().substring(0, res.getName().length() - ResourceManager.SUFFIX_CLASS.length() - 1) + ResourceManager.SUFFIX_PROPERTIES));
-			}
+			file = res.getParent().getFile(res.getFullPath().removeFileExtension().addFileExtension(ResourceManager.SUFFIX_PROPERTIES).makeRelativeTo(res.getParent().getFullPath()));
+			
 		}
 		if(file != null && file.exists()){
 			Properties prop = new Properties();
@@ -134,6 +135,17 @@ public class XMLLog {
 				element = parent.addElement(NODE_SUITE);
 				element.addElement(NODE_NAME).addText(ress[i].getName());
 				element.addElement(NODE_VERDICT);
+				
+
+				if(element != null){
+					try {
+						addProp(element, ress[i]);
+					} catch (CoreException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
 				try {
 					addElement(element, ((IFolder)ress[i].getAdapter(IFolder.class)).members());
 				} catch (CoreException e) {
@@ -157,16 +169,20 @@ public class XMLLog {
 					element = parent.addElement(NODE_CASE).addAttribute(NODE_ATTR_TIME, "");
 					element.addElement(NODE_NAME).addText(name);
 					element.addElement(NODE_VERDICT).addText(TestResultEnum.Ignore.name());
+
+					if(element != null){
+						try {
+							addProp(element, ress[i]);
+						} catch (CoreException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					
 					element.addElement(NODE_LOG);
 //				}
 			}
 
-			try {
-				addProp(element, ress[i]);
-			} catch (CoreException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 	

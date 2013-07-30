@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
@@ -139,6 +140,7 @@ public class JUnitTestRunnerJob extends Job {
 			}
 		}
 		XMLLog.log = null;
+		this.runListener.refreshLogHistoryView(logfile);
 		return Status.OK_STATUS;
 	}
 
@@ -151,7 +153,7 @@ public class JUnitTestRunnerJob extends Job {
 	@Override
 	public boolean shouldRun() {
 		// TODO Auto-generated method stub
-		return super.shouldRun();
+		return super.shouldRun() && Platform.isRunning();
 	}
 
 }

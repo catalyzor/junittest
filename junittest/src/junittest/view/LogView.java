@@ -1,5 +1,6 @@
 package junittest.view;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -82,8 +83,8 @@ public class LogView extends ViewPart {
 				if(e.selectSingleNode(XMLLog.NODE_NAME) != null){
 					String name = e.elementTextTrim(XMLLog.NODE_NAME);
 					return name;
-				}else if(e.getName().equals(XMLLog.NODE_LOG)){
-					return e.getName();
+				}else if(e.getParent().getName().equals(XMLLog.NODE_PROPS)){
+					return e.getName() + " = " + e.getTextTrim();
 				}else{
 					return e.getTextTrim();
 				}
@@ -118,15 +119,57 @@ public class LogView extends ViewPart {
 //				}
 //				List<Element> list = element.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | ");
 				if(element.getName().equals(XMLLog.NODE_ROOT) || element.getName().equals(XMLLog.NODE_SUITE)){
-					List<Element> list = element.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | " + XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG);
+//					List<Element> list = element.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | " + XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG + "/*");
+					List<Element> list = new ArrayList<>();
+					List list1 = element.elements();
+					for(Object el1 : list1){
+						if(el1 instanceof Element){
+							Element el = (Element) el1;
+							if(el.getName().equals(XMLLog.NODE_SUITE) || el.getName().equals(XMLLog.NODE_CASE)){
+								list.add(el);
+							}else if(el.getName().equals(XMLLog.NODE_LOG) || el.getName().equals(XMLLog.NODE_PROPS)){
+								list.addAll(el.elements());
+							}
+						}
+					}
 					return list.toArray();
 				}else if(element.getName().equals(XMLLog.NODE_CASE)){
-					List<Element> list = element.selectNodes(XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG);
+//					List<Element> list = element.selectNodes(XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG + "/*");
+					List<Element> list = new ArrayList<>();
+					List list1 = element.elements();
+					for(Object el1 : list1){
+						if(el1 instanceof Element){
+							Element el = (Element) el1;
+//							if(el.getName().equals(XMLLog.NODE_PROPS)){
+//								list.add(el);
+//							}else if(el.getName().equals(XMLLog.NODE_LOG)){
+//								list.addAll(el.content());
+							List list2 = el.elements();
+							for(Object obj : list2){
+//								if(obj instanceof DefaultText){
+//									continue;
+//								}
+								if(obj instanceof Element){
+									list.add((Element) obj);
+								}
+							}
+//							}
+						}
+					}
 					return list.toArray();
 				}else if(element.getName().equals(XMLLog.NODE_PROPS)){
-					return element.content().toArray();
-				}else if(element.getName().equals(XMLLog.NODE_LOG)){
-					return element.content().toArray();
+					return element.elements().toArray();
+				}else if(element.selectSingleNode("ancestor::" + XMLLog.NODE_LOG) != null){
+					List list = new ArrayList<>();
+					for(Object obj:element.elements()){
+//						if(obj instanceof DefaultText){
+//							continue;
+//						}
+						if(obj instanceof Element){
+							list.add(obj);
+						}
+					}
+					return list.toArray();
 				}
 //				return list.toArray();
 			}
@@ -141,26 +184,27 @@ public class LogView extends ViewPart {
 		}
 		public boolean hasChildren(Object element) {
 //			return getChildren(element).length > 0;
-			if(element instanceof Element){
-				Element e = (Element) element;
-//				if(e.hasContent() && !DefaultText.class.isInstance(e.content().get(0))){
-//					return true;
+			return true;
+//			if(element instanceof Element){
+//				Element e = (Element) element;
+////				if(e.hasContent() && !DefaultText.class.isInstance(e.content().get(0))){
+////					return true;
+////				}
+////				List<Element> list = e.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | ");
+////				return !list.isEmpty();
+//				if(e.getName().equals(XMLLog.NODE_ROOT) || e.getName().equals(XMLLog.NODE_SUITE)){
+//					List<Element> list = e.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | " + XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG + "/*");
+//					return !list.isEmpty();
+//				}else if(e.getName().equals(XMLLog.NODE_CASE)){
+//					List<Element> list = e.selectNodes(XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG + "/*");
+//					return !list.isEmpty();
+//				}else if(e.getName().equals(XMLLog.NODE_PROPS)){
+//					return e.hasContent();
+//				}else if(e.selectSingleNode("ancestor::" + XMLLog.NODE_LOG) != null){
+//					return e.hasContent();
 //				}
-//				List<Element> list = e.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | ");
-//				return !list.isEmpty();
-				if(e.getName().equals(XMLLog.NODE_ROOT) || e.getName().equals(XMLLog.NODE_SUITE)){
-					List<Element> list = e.selectNodes(XMLLog.NODE_SUITE + " | " + XMLLog.NODE_CASE + " | " + XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG);
-					return !list.isEmpty();
-				}else if(e.getName().equals(XMLLog.NODE_CASE)){
-					List<Element> list = e.selectNodes(XMLLog.NODE_PROPS + " | " + XMLLog.NODE_LOG);
-					return !list.isEmpty();
-				}else if(e.getName().equals(XMLLog.NODE_PROPS)){
-					return e.hasContent();
-				}else if(e.getName().equals(XMLLog.NODE_LOG)){
-					return e.hasContent();
-				}
-			}
-			return false;
+//			}
+//			return false;
 		}
 	}
 
@@ -288,7 +332,7 @@ public class LogView extends ViewPart {
 	}
 	public void refreshNode(Element element){
 		treeViewer.refresh(element);
-		treeViewer.expandToLevel(element, 1);
+		treeViewer.expandToLevel(element, 0);
 //		treeViewer.setSelection(new StructuredSelection(element));
 		updateNodeParent(element.getParent());
 	}

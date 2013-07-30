@@ -87,6 +87,9 @@ public class LogHistoryView extends ViewPart {
 	private Table table;
 	private TableViewer tableViewer;
 
+	public TableViewer getTableViewer(){
+		return tableViewer;
+	}
 //	private RunListener runListener;
 //	private IResourceChangeListener resListener;
 	public LogHistoryView() {
@@ -194,7 +197,7 @@ public class LogHistoryView extends ViewPart {
 		createActions();
 		initializeToolBar();
 		initializeMenu();
-		getSite().setSelectionProvider(tableViewer);
+//		getSite().setSelectionProvider(tableViewer);
 		MenuManager mm = new MenuManager();
 		Menu menu = mm.createContextMenu(table);
 		table.setMenu(menu);

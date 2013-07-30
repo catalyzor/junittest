@@ -3,10 +3,7 @@ package junittest.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
-import java.util.Map.Entry;
-import java.util.Iterator;
 import java.util.Properties;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -15,13 +12,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 public class ResourcePropertySource implements IPropertySource {
 
 	private IResource res;
 	private Properties props;
-	private IPropertyDescriptor[] descs;
+	private IPropertyDescriptor[] descs = new IPropertyDescriptor[0];
 	public ResourcePropertySource(IResource res){
 		this.res = res;
 		IFile file = null;
@@ -29,15 +26,16 @@ public class ResourcePropertySource implements IPropertySource {
 			IFolder folder = (IFolder) Platform.getAdapterManager().getAdapter(res, IFolder.class);
 			file = folder.getFile(res.getName() + "." + ResourceManager.SUFFIX_PROPERTIES);
 		}else if(res.getType() == IResource.FILE){
-			file = res.getParent().getFile(res.getFullPath().removeFileExtension().addFileExtension(ResourceManager.SUFFIX_PROPERTIES));
+			file = res.getParent().getFile(res.getFullPath().removeFileExtension().addFileExtension(ResourceManager.SUFFIX_PROPERTIES).makeRelativeTo(res.getParent().getFullPath()));
 			
 		}
-		if(file.exists()){
+		if(file != null && file.exists()){
 			props = new Properties();
 			try {
 				InputStream is = file.getContents();
 				props.load(is);
 				is.close();
+				buildDescs();
 			} catch (IOException | CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -51,7 +49,7 @@ public class ResourcePropertySource implements IPropertySource {
 		descs = new IPropertyDescriptor[props.size()];
 		for(int i = 0 ;i < descs.length;i ++){
 			String name = (String) en.nextElement();
-			TextPropertyDescriptor txt = new TextPropertyDescriptor(name, name);
+			PropertyDescriptor txt = new PropertyDescriptor(name, name);
 			descs[i] = txt;
 //			txt.set
 		}
