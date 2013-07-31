@@ -1,10 +1,14 @@
 package junittest.preferences;
 
+import junittest.Activator;
+import junittest.util.ReportUtils;
+
+import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.jface.preference.ComboFieldEditor;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class TestReportPreferencePage extends FieldEditorPreferencePage {
+public class TestReportPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage{
 
 	/**
 	 * Create the preference page.
@@ -12,6 +16,7 @@ public class TestReportPreferencePage extends FieldEditorPreferencePage {
 	public TestReportPreferencePage() {
 		super(FLAT);
 		setDescription("\u62A5\u544A\u914D\u7F6E\u4FE1\u606F");
+		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
 	/**
@@ -20,7 +25,7 @@ public class TestReportPreferencePage extends FieldEditorPreferencePage {
 	@Override
 	protected void createFieldEditors() {
 		// Create the field editors
-		addField(new ComboFieldEditor("id", "\u62A5\u544A\u6587\u4EF6\u683C\u5F0F\uFF1A", new String[][]{{"name_1", "value_1"}, {"name_2", "value_2"}}, getFieldEditorParent()));
+		addField(new ComboFieldEditor(PreferenceConstants.REPORT_FILE_TYPE, "\u62A5\u544A\u6587\u4EF6\u683C\u5F0F\uFF1A", new String[][]{{ReportUtils.REPORT_TYPE_PDF, ReportUtils.REPORT_TYPE_PDF}, {ReportUtils.REPORT_TYPE_HTML, ReportUtils.REPORT_TYPE_HTML}}, getFieldEditorParent()));
 	}
 
 	/**

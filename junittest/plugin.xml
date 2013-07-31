@@ -452,6 +452,11 @@
             id="junittest.preferences.RunPreferencePage"
             name="运行配置">
       </page>
+      <page
+            class="junittest.preferences.TestReportPreferencePage"
+            id="junittest.preferences.ReportPreferencePage"
+            name="报告配置">
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
