@@ -192,7 +192,7 @@
       <command
             categoryId="junittest.category.report"
             id="junittest.command.report"
-            name="Report">
+            name="DetailReport">
       </command>
       <command
             categoryId="junittest.category.report"
@@ -346,6 +346,10 @@
                </equals>
             </with>
          </enabledWhen>
+      </handler>
+      <handler
+            class="junittest.handler.DetailReportHandler"
+            commandId="junittest.command.report">
       </handler>
    </extension>
    <extension

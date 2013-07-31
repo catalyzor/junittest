@@ -31,10 +31,10 @@ public class ReportUtils {
 				Map<String, Object> params = new HashMap<>();
 				Document document = JRXmlUtils.parse(JRLoader.getLocationInputStream(logFile.getLocation().toOSString()));
 			    params.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, document);
-//			    params.put(JRXPathQueryExecuterFactory.XML_DATE_PATTERN, "yyyy-MM-dd");
-//			    params.put(JRXPathQueryExecuterFactory.XML_NUMBER_PATTERN, "#,##0.##");
-//			    params.put(JRXPathQueryExecuterFactory.XML_LOCALE, Locale.ENGLISH);
-//			    params.put(JRParameter.REPORT_LOCALE, Locale.US);
+			    params.put(JRXPathQueryExecuterFactory.XML_DATE_PATTERN, "yyyy-MM-dd");
+			    params.put(JRXPathQueryExecuterFactory.XML_NUMBER_PATTERN, "#,##0.##");
+			    params.put(JRXPathQueryExecuterFactory.XML_LOCALE, Locale.ENGLISH);
+			    params.put(JRParameter.REPORT_LOCALE, Locale.US);
 
 				JasperPrint print = JasperFillManager.fillReport(jasperfile, params);
 //				JasperPrint print = JasperFillManager.fillReport(FileLocator.resolve(Activator.getDefault().getBundle().getEntry(jasperfile)).getFile(), new HashMap<String, Object>(), dataSource);

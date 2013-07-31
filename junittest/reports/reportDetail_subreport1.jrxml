@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4_subreport1" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="43b88301-2edd-4113-9309-f717ba026213">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="4ba924e8-2f94-43d2-b1ea-a007caf2402f">
+		<queryString language="xPath">
+			<![CDATA[//case/properties/*]]>
+		</queryString>
+		<field name="Reference" class="java.lang.String">
+			<fieldDescription><![CDATA[child::text()]]></fieldDescription>
+		</field>
+		<field name="Purpose" class="java.lang.String">
+			<fieldDescription><![CDATA[child::text()]]></fieldDescription>
+		</field>
+	</subDataset>
+	<queryString language="xPath">
+		<![CDATA[//case/properties/*]]>
+	</queryString>
+	<field name="Reference" class="java.lang.String">
+		<fieldDescription><![CDATA[name(.)]]></fieldDescription>
+	</field>
+	<field name="Purpose" class="java.lang.String">
+		<fieldDescription><![CDATA[child::text()]]></fieldDescription>
+	</field>
+	<field name="Post" class="java.lang.String">
+		<fieldDescription><![CDATA[child::text()]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="2" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<frame>
+				<reportElement uuid="4a06e8ba-28cc-4203-97fd-d85dd33b82c6" mode="Opaque" x="5" y="0" width="445" height="21" backcolor="#CCFFFF"/>
+				<staticText>
+					<reportElement uuid="3c4ddf86-8cee-4789-855d-8a7443553083" x="45" y="1" width="100" height="20"/>
+					<textElement>
+						<font fontName="仿宋" size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[名称]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="f2b63a5b-90f1-4ea3-8d37-dad021f49c09" x="291" y="1" width="100" height="20"/>
+					<textElement>
+						<font fontName="仿宋" size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[内容]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="9cfbd11a-48f2-4eb7-b5da-c98e40e5e8b8" x="33" y="0" width="100" height="20"/>
+				<textElement>
+					<font fontName="仿宋" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Reference}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="62006287-bf95-4ff2-b6ba-be78eae43b85" x="279" y="0" width="100" height="20"/>
+				<textElement>
+					<font fontName="仿宋" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Purpose}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="2" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="2" splitType="Stretch"/>
+	</summary>
+</jasperReport>
