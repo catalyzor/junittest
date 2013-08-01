@@ -139,6 +139,7 @@ public class JUnitTestRunnerJob extends Job {
 				e.printStackTrace();
 			}
 		}
+		monitor.done();
 		XMLLog.log = null;
 		this.runListener.refreshLogHistoryView(logfile);
 		return Status.OK_STATUS;

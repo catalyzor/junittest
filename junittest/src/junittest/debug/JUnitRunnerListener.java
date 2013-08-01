@@ -1,8 +1,8 @@
 package junittest.debug;
 
-import java.util.Calendar;
 import java.util.Map;
 
+import junit.framework.AssertionFailedError;
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
 import junittest.userlog.UserLogUtil;
@@ -125,7 +125,11 @@ public class JUnitRunnerListener extends RunListener {
 		super.testFailure(failure);
 		logger.debug("fail " + failure.getMessage());
 		if(failure.getDescription().isTest()){
-			ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.FAIL);
+			if(failure.getException() != null && !(failure.getException() instanceof AssertionFailedError)){
+				ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.ERROR);
+			}else{
+				ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.FAIL);
+			}
 		}
 	}
 

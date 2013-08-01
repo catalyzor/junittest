@@ -30,10 +30,10 @@ public class StopHandler extends AbstractHandler implements IHandler {
 				e.printStackTrace();
 			}
 		}
-//		Job[] jobs = Job.getJobManager().find(JUnitTestRunnerJob.FAMILINAME);
-//		if(jobs != null && jobs.length > 0){
-//			jobs[0].getThread().interrupt();
-//		}
+		Job[] jobs = Job.getJobManager().find(JUnitTestRunnerJob.FAMILINAME);
+		if(jobs != null && jobs.length > 0){
+			jobs[0].getThread().interrupt();
+		}
 		return null;
 	}
 

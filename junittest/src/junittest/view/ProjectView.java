@@ -171,29 +171,30 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 //							e.printStackTrace();
 //						}
 //					}
-					IProject project = (IProject) Platform.getAdapterManager().getAdapter(element, IProject.class);
-					IFolder folder = (IFolder) Platform.getAdapterManager().getAdapter(element, IFolder.class);
-					if(project != null){
-						IFolder cases = project.getFolder(ResourceManager.FOLDER_CASE);
-						if(cases.exists()){
-							try {
-								IResource[] children = cases.members();
-								return (children != null) && (children.length > 0);
-							} catch (CoreException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}else if(folder != null){
-						try {
-							IResource[] children = folder.members();
-							return (children != null) && (children.length > 0);
-						} catch (CoreException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					return false;
+//					IProject project = (IProject) Platform.getAdapterManager().getAdapter(element, IProject.class);
+//					IFolder folder = (IFolder) Platform.getAdapterManager().getAdapter(element, IFolder.class);
+//					if(project != null){
+//						IFolder cases = project.getFolder(ResourceManager.FOLDER_CASE);
+//						if(cases.exists()){
+//							try {
+//								IResource[] children = cases.members();
+//								return (children != null) && (children.length > 0);
+//							} catch (CoreException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+//						}
+//					}else if(folder != null){
+//						try {
+//							IResource[] children = folder.members();
+//							return (children != null) && (children.length > 0);
+//						} catch (CoreException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//					}
+//					return false;
+					return true;
 				}
 				
 				@Override
@@ -256,7 +257,7 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 								for(IResource res : children){
 									switch(res.getType()){
 									case IResource.FILE:
-										if(res.getFileExtension() == null && !res.getFileExtension().toUpperCase().equals("CLASS")){
+										if(res.getFileExtension() == null || !res.getFileExtension().toLowerCase().equals(ResourceManager.SUFFIX_CLASS)){
 											break;
 										}
 									case IResource.FOLDER:

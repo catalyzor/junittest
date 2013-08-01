@@ -18,7 +18,7 @@ public class UserLogUtil {
 			public void run() {
 				// TODO Auto-generated method stub
 				LogView view = (LogView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(LogView.ID);
-				view.setDoc(el.getDocument());
+//				view.setDoc(el.getDocument());
 				if(el == null){
 					view.refreshView();
 				}else{
@@ -40,7 +40,7 @@ public class UserLogUtil {
 			el = ((Element)parent).addElement(name).addText(value);
 		}
 		if(el != null){
-			refreshLogView(el);
+//			refreshLogView(el);
 		}
 		return el;
 	}
