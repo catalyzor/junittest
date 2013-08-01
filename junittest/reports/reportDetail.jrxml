@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="33ea499a-c224-4b89-b3e3-463ee518cfdb">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="247"/>
+	<property name="ireport.y" value="250"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -165,6 +165,9 @@
 	<field name="name2" class="java.lang.String">
 		<fieldDescription><![CDATA[/project/suite/name]]></fieldDescription>
 	</field>
+	<field name="id" class="java.lang.String">
+		<fieldDescription><![CDATA[@id]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -278,14 +281,14 @@
 				<text><![CDATA[测试失败]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="11e7c7a4-2f87-4d74-9975-32b3f0e44569" x="280" y="352" width="114" height="20"/>
+				<reportElement uuid="11e7c7a4-2f87-4d74-9975-32b3f0e44569" x="280" y="352" width="127" height="20"/>
 				<textElement>
 					<font fontName="仿宋" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[预置条件执行失败]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="efb06f4d-276b-4524-ab11-db992fbcc8a0" x="280" y="372" width="114" height="20"/>
+				<reportElement uuid="efb06f4d-276b-4524-ab11-db992fbcc8a0" x="280" y="372" width="127" height="20"/>
 				<textElement>
 					<font fontName="仿宋" size="14" isBold="true"/>
 				</textElement>
@@ -359,7 +362,7 @@
 				<textFieldExpression><![CDATA[$F{verdict}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c5247fa9-2869-429e-b2c8-e3420292138d" x="99" y="49" width="120" height="20"/>
+				<reportElement uuid="c5247fa9-2869-429e-b2c8-e3420292138d" x="99" y="49" width="181" height="20"/>
 				<textElement>
 					<font fontName="仿宋" size="14" isBold="false"/>
 				</textElement>
@@ -390,6 +393,9 @@
 				<reportElement uuid="a557eafe-4697-467f-ab2b-631cfbec3118" x="66" y="69" width="465" height="41"/>
 				<subreportParameter name="XML_DATA_DOCUMENT">
 					<subreportParameterExpression><![CDATA[$P{XML_DATA_DOCUMENT}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="case">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "reportDetail_subreport1.jasper"]]></subreportExpression>
 			</subreport>

@@ -255,30 +255,30 @@
 				<text><![CDATA[统计结果：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="14aa2199-7bf1-4536-b723-7858361d6c98" x="280" y="312" width="100" height="20"/>
+				<reportElement uuid="14aa2199-7bf1-4536-b723-7858361d6c98" x="280" y="312" width="113" height="20"/>
 				<textElement>
-					<font fontName="仿宋" size="14"/>
+					<font fontName="仿宋" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[测试通过]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="798fb4c7-31dc-4702-af16-172938984645" x="280" y="332" width="100" height="20"/>
+				<reportElement uuid="798fb4c7-31dc-4702-af16-172938984645" x="280" y="332" width="113" height="20"/>
 				<textElement>
-					<font fontName="仿宋" size="14"/>
+					<font fontName="仿宋" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[测试失败]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="11e7c7a4-2f87-4d74-9975-32b3f0e44569" x="280" y="352" width="114" height="20"/>
+				<reportElement uuid="11e7c7a4-2f87-4d74-9975-32b3f0e44569" x="280" y="352" width="127" height="20"/>
 				<textElement>
-					<font fontName="仿宋" size="14"/>
+					<font fontName="仿宋" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[预置条件执行失败]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="efb06f4d-276b-4524-ab11-db992fbcc8a0" x="280" y="372" width="114" height="20"/>
+				<reportElement uuid="efb06f4d-276b-4524-ab11-db992fbcc8a0" x="280" y="372" width="127" height="20"/>
 				<textElement>
-					<font fontName="仿宋" size="14"/>
+					<font fontName="仿宋" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[非测试项]]></text>
 			</staticText>

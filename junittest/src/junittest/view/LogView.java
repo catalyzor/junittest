@@ -6,7 +6,6 @@ import java.util.List;
 
 import junittest.Activator;
 import junittest.ISharedImageConstants;
-import junittest.debug.JUnitRunner;
 import junittest.userlog.NameEnum;
 import junittest.xml.XMLLog;
 
@@ -27,6 +26,11 @@ import org.eclipse.ui.part.ViewPart;
 
 public class LogView extends ViewPart {
 	private static class ViewerLabelProvider extends LabelProvider {
+		private String[] tags = Arrays.copyOf(NameEnum.TAGS, NameEnum.TAGS.length);
+		public ViewerLabelProvider(){
+			super();
+			Arrays.sort(tags);
+		}
 		public Image getImage(Object element) {
 			if(element instanceof Element){
 				Element el = (Element) element;
@@ -67,7 +71,7 @@ public class LogView extends ViewPart {
 						}
 					}
 				}else{
-					if(Arrays.binarySearch(NameEnum.TAGS, el.getName()) >= 0){
+					if(Arrays.binarySearch(tags, el.getName()) >= 0){
 						path = el.getName();
 					}else{
 						path = NameEnum.TAG_DEFAULT;

@@ -110,7 +110,7 @@ public class JUnitRunnerListener extends RunListener {
 			if(!TestResultEnum.FAIL.equals(map.get(description.getClassName())) && !TestResultEnum.ERROR.equals(map.get(description.getClassName()))){
 				ResourceManager.getInstance().getMapResult().put(description.getClassName(), TestResultEnum.OK);
 			}
-			getXmlLog().updateTestResult(getProject().getName() + "." + description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
+			getXmlLog().updateTestResult(description.getClassName(), ResourceManager.getInstance().getMapResult().get(description.getClassName()));
 			getXmlLog().saveToFile();
 			ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG).refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(getMonitor(), 1));
 			refreshProjectView(description.getClassName());

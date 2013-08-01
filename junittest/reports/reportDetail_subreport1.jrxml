@@ -54,8 +54,9 @@
 			<fieldDescription><![CDATA[child::text()]]></fieldDescription>
 		</field>
 	</subDataset>
+	<parameter name="case" class="java.lang.String"/>
 	<queryString language="xPath">
-		<![CDATA[//case/properties/*]]>
+		<![CDATA[//case[@id='$P{case}']/properties/*]]>
 	</queryString>
 	<field name="Reference" class="java.lang.String">
 		<fieldDescription><![CDATA[name(.)]]></fieldDescription>

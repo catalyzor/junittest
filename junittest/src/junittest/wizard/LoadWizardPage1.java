@@ -25,9 +25,9 @@ public class LoadWizardPage1 extends WizardPage {
 	 * Create the wizard.
 	 */
 	public LoadWizardPage1() {
-		super("wizardPage");
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		super("导入被测试工程");
+		setTitle("导入被测试工程");
+		setDescription("导入被测试的jar文件，并新建测试工程");
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class LoadWizardPage1 extends WizardPage {
 		
 		Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel.setText("Import file:");
+		lblNewLabel.setText("导入 JAR文件:");
 		
 		txtPath = new Text(container, SWT.BORDER);
 		txtPath.addModifyListener(new ModifyListener() {
@@ -62,11 +62,11 @@ public class LoadWizardPage1 extends WizardPage {
 				if(path != null) txtPath.setText(path);
 			}
 		});
-		btnSelect.setText("select");
+		btnSelect.setText("选择");
 		
 		Label lblNewLabel_1 = new Label(container, SWT.NONE);
 		lblNewLabel_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel_1.setText("Project name:");
+		lblNewLabel_1.setText("工程名称:");
 		
 		txtName = new Text(container, SWT.BORDER);
 		txtName.addModifyListener(new ModifyListener() {

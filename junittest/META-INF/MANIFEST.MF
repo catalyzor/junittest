@@ -69,3 +69,4 @@ Export-Package: junittest,
  org.jaxen.saxpath.helpers,
  org.jaxen.util,
  org.jaxen.xom
+Eclipse-BundleShape: dir

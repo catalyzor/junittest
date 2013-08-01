@@ -32,7 +32,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 
 public class XMLLog {
@@ -46,6 +45,7 @@ public class XMLLog {
 	public static final String NODE_VERDICT = "verdict";
 //	public static final String NODE_ATTR_DATE = "date";
 	public static final String NODE_ATTR_TIME = "time";
+	public static final String NODE_ATTR_ID = "id";
 	public static final String ATTR_VERDICT_TOTAL = "total";
 	public static final String ATTR_VERDICT_OK = TestResultEnum.OK.name();
 	public static final String ATTR_VERDICT_FAIL = TestResultEnum.FAIL.name();
@@ -166,7 +166,7 @@ public class XMLLog {
 				if(ress[i].getFileExtension() != null && ress[i].getFileExtension().equals(ResourceManager.SUFFIX_CLASS)){
 					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
 				}
-					element = parent.addElement(NODE_CASE).addAttribute(NODE_ATTR_TIME, "");
+					element = parent.addElement(NODE_CASE).addAttribute(NODE_ATTR_TIME, "").addAttribute(NODE_ATTR_ID, ress[i].getProjectRelativePath().removeFirstSegments(1).removeFileExtension().toString().replaceAll("/", "."));
 					element.addElement(NODE_NAME).addText(name);
 					element.addElement(NODE_VERDICT).addText(TestResultEnum.Ignore.name());
 
@@ -192,40 +192,65 @@ public class XMLLog {
 	public synchronized void updateTestResult(String classname, TestResultEnum result, boolean suite){
 		if(result == null) return;
 //		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
-		StringBuffer sb = new StringBuffer("//");
-		String[] names = classname.split("\\.");
-		StringBuffer psb = new StringBuffer();
-		for(int i = 0;i < names.length;i ++){
-			if(i != names.length - 1){
-				sb.append((i == 0)?NODE_ROOT:NODE_SUITE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/");
-				psb.append(names[i]).append(".");
-//				sb.append(NODE_SUITE);
-			}else{
-				sb.append(suite?((i == 0)?NODE_ROOT:NODE_SUITE):NODE_CASE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/").append(NODE_VERDICT);
-//				sb.append(NODE_CASE);
-			}
-//			sb.append("[").append(NODE_NAME).append("=").append(names[i]).append("]").append("/")
-		}
-		String path = sb.toString();
-		System.out.println(path);
-		Node node = doc.selectSingleNode(path);
+//		StringBuffer sb = new StringBuffer("//");
+//		String[] names = classname.split("\\.");
+//		StringBuffer psb = new StringBuffer();
+//		for(int i = 0;i < names.length;i ++){
+//			if(i != names.length - 1){
+//				sb.append((i == 0)?NODE_ROOT:NODE_SUITE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/");
+//				psb.append(names[i]).append(".");
+////				sb.append(NODE_SUITE);
+//			}else{
+//				sb.append(suite?((i == 0)?NODE_ROOT:NODE_SUITE):NODE_CASE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/").append(NODE_VERDICT);
+////				sb.append(NODE_CASE);
+//			}
+////			sb.append("[").append(NODE_NAME).append("=").append(names[i]).append("]").append("/")
+//		}
+//		String path = sb.toString();
+//		System.out.println(path);
+		System.out.println(classname);
+//		Node node = doc.selectSingleNode(path);
+		Node node = doc.selectSingleNode("//" + NODE_CASE + "[@" + NODE_ATTR_ID + "='" + classname + "']/" + NODE_VERDICT);
 //		node.setText(result.name());
-		if(TestResultEnum.FAIL.equals(result)){
-			node.setText(result.name());
-		}else if(TestResultEnum.ERROR.equals(result)){
-			if(!node.getText().equals(TestResultEnum.FAIL.name())) node.setText(result.name());
-		}else if(TestResultEnum.OK.equals(result)){
-			String str = node.getText();
-			if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) node.setText(result.name());
-		}
-		if(node.getParent().getName().equals(NODE_CASE)){
-			node.getParent().addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime()));
-			Element el = doc.getRootElement().element(NODE_VERDICT).addAttribute(result.name(), "" + doc.selectNodes("//" + NODE_CASE + "[" + NODE_VERDICT + "='" + result.name() + "']").size());
-			int total = Integer.parseInt(el.attributeValue(ATTR_VERDICT_TOTAL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_ERROR)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_FAIL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_OK));
-			el.addAttribute(ATTR_VERDICT_IGNORE, total + "");
-		}
-		if(psb.length() > 0){
-			updateTestResult(psb.deleteCharAt(psb.length() - 1).toString(), result, true);
+		updateTestResult((Element)node, result);
+//		if(TestResultEnum.FAIL.equals(result)){
+//			node.setText(result.name());
+//		}else if(TestResultEnum.ERROR.equals(result)){
+//			if(!node.getText().equals(TestResultEnum.FAIL.name())) node.setText(result.name());
+//		}else if(TestResultEnum.OK.equals(result)){
+//			String str = node.getText();
+//			if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) node.setText(result.name());
+//		}
+//		if(node.getParent().getName().equals(NODE_CASE)){
+//			node.getParent().addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime()));
+//			Element el = doc.getRootElement().element(NODE_VERDICT).addAttribute(result.name(), "" + doc.selectNodes("//" + NODE_CASE + "[" + NODE_VERDICT + "='" + result.name() + "']").size());
+//			int total = Integer.parseInt(el.attributeValue(ATTR_VERDICT_TOTAL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_ERROR)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_FAIL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_OK));
+//			el.addAttribute(ATTR_VERDICT_IGNORE, total + "");
+//		}
+//		if(psb.length() > 0){
+//			updateTestResult(psb.deleteCharAt(psb.length() - 1).toString(), result, true);
+//		}
+	}
+	public void updateTestResult(Element element,TestResultEnum result){
+		if(element!= null){
+			Element node = element.element(NODE_VERDICT);
+			if(node != null){
+				if(TestResultEnum.FAIL.equals(result)){
+					node.setText(result.name());
+				}else if(TestResultEnum.ERROR.equals(result)){
+					if(!node.getText().equals(TestResultEnum.FAIL.name())) node.setText(result.name());
+				}else if(TestResultEnum.OK.equals(result)){
+					String str = node.getText();
+					if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) node.setText(result.name());
+				}
+				element.addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime()));
+				Element el = doc.getRootElement().element(NODE_VERDICT).addAttribute(result.name(), "" + doc.selectNodes("//" + NODE_CASE + "[" + NODE_VERDICT + "='" + result.name() + "']").size());
+				int total = Integer.parseInt(el.attributeValue(ATTR_VERDICT_TOTAL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_ERROR)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_FAIL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_OK));
+				el.addAttribute(ATTR_VERDICT_IGNORE, total + "");
+			}
+			if(element.getParent() != null){
+				updateTestResult(element.getParent(), result);
+			}
 		}
 	}
 	
@@ -246,35 +271,36 @@ public class XMLLog {
 		return result;
 	}
 	
-	public synchronized Element addElement(String classname, String name, String value){
-		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
-		Node node = doc.selectSingleNode(path);
-		if(node instanceof Element){
-			Element element = ((Element)node).addElement(name);
-			element.setText(value);
-			return element;
-		}
-		return null;
-	}
+//	public synchronized Element addElement(String classname, String name, String value){
+//		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
+//		Node node = doc.selectSingleNode(path);
+//		if(node instanceof Element){
+//			Element element = ((Element)node).addElement(name);
+//			element.setText(value);
+//			return element;
+//		}
+//		return null;
+//	}
 	
 	public Element getElement(String classname){
 //		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('/').append(NODE_LOG).toString();
-		StringBuffer sb = new StringBuffer("//").append(NODE_ROOT).append("/");
-		String[] names = classname.split("\\.");
-		StringBuffer psb = new StringBuffer();
-		for(int i = 0;i < names.length;i ++){
-			if(i != names.length - 1){
-				sb.append(NODE_SUITE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/");
-				psb.append(names[i]).append(".");
-//				sb.append(NODE_SUITE);
-			}else{
-				sb.append(NODE_CASE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']");
-//				sb.append(NODE_CASE);
-			}
-//			sb.append("[").append(NODE_NAME).append("=").append(names[i]).append("]").append("/")
-		}
-		String path = sb.toString();
-		Node node = doc.selectSingleNode(path);
+//		StringBuffer sb = new StringBuffer("//").append(NODE_ROOT).append("/");
+//		String[] names = classname.split("\\.");
+//		StringBuffer psb = new StringBuffer();
+//		for(int i = 0;i < names.length;i ++){
+//			if(i != names.length - 1){
+//				sb.append(NODE_SUITE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/");
+//				psb.append(names[i]).append(".");
+////				sb.append(NODE_SUITE);
+//			}else{
+//				sb.append(NODE_CASE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']");
+////				sb.append(NODE_CASE);
+//			}
+////			sb.append("[").append(NODE_NAME).append("=").append(names[i]).append("]").append("/")
+//		}
+//		String path = sb.toString();
+//		Node node = doc.selectSingleNode(path);
+		Node node = doc.selectSingleNode("//" + NODE_CASE + "[@" + NODE_ATTR_ID + "='" + classname + "']");
 		return (Element) node;
 	}
 	public synchronized Element addElement(Element element, String name, String value){
@@ -322,6 +348,6 @@ public class XMLLog {
 			reader.close();
 			result = line.substring(line.indexOf(">") + 1, line.length() - "</verdict>".length());
 		}
-		return result.trim();
+		return result;
 	}
 }

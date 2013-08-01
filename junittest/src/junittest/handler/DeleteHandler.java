@@ -22,7 +22,10 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		ISelection selection = HandlerUtil.getCurrentSelection(event);
+		LogHistoryView view1 = (LogHistoryView) HandlerUtil.getActivePart(event);
+		if(view1 == null) return null;
+//		ISelection selection = HandlerUtil.getCurrentSelection(event);
+		ISelection selection = view1.getTableViewer().getSelection();
 		if(!selection.isEmpty() && IStructuredSelection.class.isInstance(selection) && MessageDialog.openConfirm(window.getShell(), "и╬ЁЩ", "х╥хои╬ЁЩ")){
 			IStructuredSelection ss = (IStructuredSelection)selection;
 			for(Iterator itr = ss.iterator() ; itr.hasNext();){
