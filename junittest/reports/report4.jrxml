@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="33ea499a-c224-4b89-b3e3-463ee518cfdb">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="260"/>
+	<property name="ireport.y" value="126"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -245,7 +245,7 @@
 				<text><![CDATA[硬件信息：]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="19862565-8942-4527-8ece-1a004e77c7f7" x="43" y="300" width="501" height="1"/>
+				<reportElement uuid="19862565-8942-4527-8ece-1a004e77c7f7" x="16" y="300" width="528" height="1"/>
 			</line>
 			<staticText>
 				<reportElement uuid="97559144-932a-4950-8e66-89d5866eccd7" x="16" y="312" width="100" height="20"/>

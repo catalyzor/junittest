@@ -257,7 +257,7 @@
 				<text><![CDATA[硬件信息：]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="19862565-8942-4527-8ece-1a004e77c7f7" x="43" y="300" width="501" height="1"/>
+				<reportElement uuid="19862565-8942-4527-8ece-1a004e77c7f7" x="16" y="300" width="528" height="1"/>
 			</line>
 			<staticText>
 				<reportElement uuid="97559144-932a-4950-8e66-89d5866eccd7" x="16" y="312" width="100" height="20"/>
@@ -337,7 +337,7 @@
 	<columnHeader>
 		<band height="27" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="55129282-4547-493d-ade5-7c4dbd98d05f" x="51" y="7" width="100" height="20"/>
+				<reportElement uuid="55129282-4547-493d-ade5-7c4dbd98d05f" x="20" y="7" width="100" height="20"/>
 				<textElement>
 					<font fontName="仿宋" size="14" isBold="true"/>
 				</textElement>
