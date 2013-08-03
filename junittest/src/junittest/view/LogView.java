@@ -187,8 +187,10 @@ public class LogView extends ViewPart {
 			return null;
 		}
 		public boolean hasChildren(Object element) {
-//			return getChildren(element).length > 0;
-			return true;
+			if(element == null) return false;
+			Object[] objs = getChildren(element);
+			return objs != null && objs.length > 0;
+//			return true;
 //			if(element instanceof Element){
 //				Element e = (Element) element;
 ////				if(e.hasContent() && !DefaultText.class.isInstance(e.content().get(0))){
