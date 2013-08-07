@@ -4,8 +4,9 @@ import java.io.IOException;
 
 import junittest.Activator;
 import junittest.preferences.PreferenceConstants;
+import junittest.resource.ResourceManager;
 import junittest.util.ReportUtils;
-import junittest.view.LogHistoryView;
+import junittest.util.Utilities;
 import net.sf.jasperreports.engine.JRException;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -20,7 +21,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -28,25 +28,25 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class SimpleReportHandler extends AbstractHandler implements IHandler {
+public class QuickSimpleReportHandler extends AbstractHandler implements
+		IHandler {
 
-	public static final String FILE_NAME = "概要报告";
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		LogHistoryView view = (LogHistoryView) HandlerUtil.getActivePart(event);
-		if (view == null) return null;
 		
-		IStructuredSelection selection = (IStructuredSelection) view.getTableViewer().getSelection();
-		if(!selection.isEmpty()){
-			final IResource res = (IResource) selection.getFirstElement();
+			final IResource res = Utilities.getLatestLogfile(ResourceManager.getInstance().getProject());
+			if(res == null){
+				MessageDialog.openError(window.getShell(), "错误", "未找到日志文件");
+				return null;
+			}
 			final String jasperfile = "reports/report4.jasper";
 			final String filetype = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.REPORT_FILE_TYPE);
 //			String destFile = ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_REPORT).getLocation().append(FILE_NAME).addFileExtension(filetype.toLowerCase()).toOSString();
 			FileDialog dialog = new FileDialog(window.getShell(), SWT.SAVE);
 			dialog.setFilterExtensions(new String[]{"*." + filetype.toLowerCase()});
-			dialog.setFileName(FILE_NAME);
+			dialog.setFileName(SimpleReportHandler.FILE_NAME);
 			dialog.setOverwrite(true);
 			final String destFile = dialog.open();
 			if(destFile == null) return null;
@@ -86,7 +86,6 @@ public class SimpleReportHandler extends AbstractHandler implements IHandler {
 			};
 			job.setPriority(Job.LONG);
 			job.schedule();
-		}
 		return null;
 	}
 

@@ -8,6 +8,7 @@ import junittest.debug.JUnitTestRunnerJob;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.AbstractSourceProvider;
 import org.eclipse.ui.ISources;
 
@@ -52,7 +53,14 @@ public class TestRunningCheckSourceProvider extends AbstractSourceProvider imple
 	}
 
 	public void fireStateChange(){
-		fireSourceChanged(ISources.WORKBENCH, getCurrentState());
+		Display.getDefault().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				fireSourceChanged(ISources.WORKBENCH, getCurrentState());
+			}
+		});
 	}
 	@Override
 	public String[] getProvidedSourceNames() {

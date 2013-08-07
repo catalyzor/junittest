@@ -200,6 +200,26 @@
             id="junittest.command.viewlog"
             name="View Log">
       </command>
+      <command
+            defaultHandler="junittest.handler.QuickSimpleReportHandler"
+            id="junittest.command.quicksimplereport"
+            name="生成概要报告">
+      </command>
+      <command
+            defaultHandler="junittest.handler.QuickDetailReportHandler"
+            id="junittest.command.quickdetailreport"
+            name="生成详细报告">
+      </command>
+      <command
+            defaultHandler="junittest.handler.QuickViewLogHandler"
+            id="junittest.command.quickviewlog"
+            name="查看日志">
+      </command>
+      <command
+            defaultHandler="junittest.handler.QuickDeleteHandler"
+            id="junittest.command.quickdeletelog"
+            name="删除日志">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -260,6 +280,31 @@
             <command
                   commandId="junittest.command.close"
                   label="工程关闭"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  label="配置"
+                  style="push">
+            </command>
+            <command
+                  commandId="junittest.command.quicksimplereport"
+                  label="生成概要报告"
+                  style="push">
+            </command>
+            <command
+                  commandId="junittest.command.quickdetailreport"
+                  label="生成详细报告"
+                  style="push">
+            </command>
+            <command
+                  commandId="junittest.command.quickviewlog"
+                  label="查看最新日志"
+                  style="push">
+            </command>
+            <command
+                  commandId="junittest.command.quickdeletelog"
+                  label="删除最新日志"
                   style="push">
             </command>
          </toolbar>
