@@ -27,7 +27,9 @@ Bundle-ClassPath: libs/dom4j-1.6.1.jar,
  libs/xml-apis-ext.jar,
  libs/xml-apis.jar,
  libs/xercesImpl-2.10.0.jar,
- libs/batik-ext.jar
+ libs/batik-ext.jar,
+ libs/ddmlib.jar,
+ libs/devicemanager.jar
 Export-Package: junittest,
  junittest.debug,
  junittest.handler,

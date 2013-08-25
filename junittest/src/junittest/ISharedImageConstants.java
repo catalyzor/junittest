@@ -12,4 +12,6 @@ public interface ISharedImageConstants {
 	public static final String TSUITEFAIL = "tsuitefail.gif";
 	public static final String TSUITEOK = "tsuiteok.gif";
 	
+	public static final String SUCCESS_OVR = "success_ovr.gif";
+	
 }

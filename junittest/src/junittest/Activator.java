@@ -75,6 +75,7 @@ public class Activator extends AbstractUIPlugin {
 		reg.put(ISharedImageConstants.TSUITEERROR, getImageDescriptor(path + ISharedImageConstants.TSUITEERROR));
 		reg.put(ISharedImageConstants.TSUITEFAIL, getImageDescriptor(path + ISharedImageConstants.TSUITEFAIL));
 		reg.put(ISharedImageConstants.TSUITEOK, getImageDescriptor(path + ISharedImageConstants.TSUITEOK));
+		reg.put(ISharedImageConstants.SUCCESS_OVR, getImageDescriptor(path + ISharedImageConstants.SUCCESS_OVR));
 		
 		for(String str : NameEnum.TAGS){
 			reg.put(str, getImageDescriptor(path + str.toLowerCase() + ".png"));

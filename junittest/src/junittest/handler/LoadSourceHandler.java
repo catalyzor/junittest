@@ -3,7 +3,9 @@
  */
 package junittest.handler;
 
+import junittest.device.DeviceManager;
 import junittest.resource.ResourceManager;
+import junittest.view.DeviceView;
 import junittest.view.ProjectView;
 import junittest.wizard.LoadWizard;
 
@@ -18,6 +20,8 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import com.broadthinking.btt.device.ExtDeviceException;
 
 /**
  * @author Michael
@@ -44,6 +48,18 @@ public class LoadSourceHandler extends AbstractHandler implements IHandler {
 			ProjectView view = (ProjectView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ProjectView.ID);
 			if(view != null){
 				view.changePrject(new Object[]{wizard.getProject()});
+			}
+			DeviceView view1 = (DeviceView) window.getActivePage().findView(DeviceView.ID);
+			if(view1 != null){
+				try {
+					view1.setInput(new DeviceManager("Devices", ResourceManager.getInstance().getProject()));
+				} catch (ClassNotFoundException
+						| InstantiationException
+						| IllegalAccessException
+						| ExtDeviceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		return null;

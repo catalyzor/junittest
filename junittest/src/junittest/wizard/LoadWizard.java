@@ -13,9 +13,10 @@ import org.eclipse.jface.wizard.Wizard;
 public class LoadWizard extends Wizard {
 
 	LoadWizardPage1 page1;
+	DeviceWizardPage page2;
 	private String projectName;
 	public LoadWizard() {
-		setWindowTitle("New Wizard");
+		setWindowTitle("Load");
 		setNeedsProgressMonitor(true);
 	}
 
@@ -23,6 +24,9 @@ public class LoadWizard extends Wizard {
 	public void addPages() {
 		page1 = new LoadWizardPage1();
 		addPage(page1);
+		
+		page2 = new DeviceWizardPage();
+		addPage(page2);
 	}
 
 	public IProject getProject(){
@@ -42,6 +46,7 @@ public class LoadWizard extends Wizard {
 						try {
 							projectName = page1.getProjectName();
 							ResourceManager.getInstance().createProject(projectName, page1.getJarPath(), monitor);
+							page2.doPerform();
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

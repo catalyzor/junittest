@@ -16,6 +16,7 @@ import junittest.Activator;
 import junittest.debug.JUnitTestRunnerJob;
 import junittest.util.ZipUtils;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -35,6 +36,8 @@ public class ResourceManager {
 	public static final String FOLDER_LOG = "log";
 	public static final String FOLDER_REPORT = "report";
 	public static final String FOLDER_CASE = "case";
+	
+	public static final String FILE_CONFIG = ".config";
 	public static final String SUFFIX_PROPERTIES = "properties";
 	public static final String SUFFIX_CLASS = "class";
 	
@@ -81,6 +84,8 @@ public class ResourceManager {
 //			}
 //			ZipFile zip = new ZipFile(project.getFolder(FOLDER_JAR).getFile(file.getName()).getLocation().toOSString());
 			ZipUtils.unZip(project.getFolder(FOLDER_JAR).members()[0].getLocation().toOSString(), project.getFolder(FOLDER_CASE).getLocation().toOSString());
+			IFile configFile = project.getFile(FILE_CONFIG);
+			configFile.getLocation().toFile().createNewFile();
 			project.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor, 1));
 			setProject(project);
 		}
@@ -94,6 +99,12 @@ public class ResourceManager {
 			protected IStatus run(IProgressMonitor monitor) {
 				// TODO Auto-generated method stub
 				try {
+					for(IProject prj: projects){
+						//close current opened project.
+						if(prj == project){
+							ResourceManager.getInstance().setProject(null);
+						}
+					}
 					ResourcesPlugin.getWorkspace().delete(projects, true, monitor);
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block

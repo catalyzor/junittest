@@ -1,8 +1,10 @@
 package junittest.handler;
 
 import junittest.debug.JUnitRunner;
+import junittest.device.DeviceManager;
 import junittest.resource.ResourceManager;
 import junittest.ui.ResourceLabelProvider;
+import junittest.view.DeviceView;
 import junittest.view.LogHistoryView;
 import junittest.view.LogView;
 import junittest.view.ProjectView;
@@ -23,6 +25,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import com.broadthinking.btt.device.ExtDeviceException;
 
 public class OpenProjectHandler extends AbstractHandler implements IHandler {
 
@@ -61,6 +65,18 @@ public class OpenProjectHandler extends AbstractHandler implements IHandler {
 									JUnitRunner.getInstance().setXMLLog(null);
 									lv.setDoc(null);
 									lv.refreshView();
+								}
+								DeviceView view = (DeviceView) window.getActivePage().findView(DeviceView.ID);
+								if(view != null){
+									try {
+										view.setInput(new DeviceManager("Devices", ResourceManager.getInstance().getProject()));
+									} catch (ClassNotFoundException
+											| InstantiationException
+											| IllegalAccessException
+											| ExtDeviceException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 								}
 							}
 						});

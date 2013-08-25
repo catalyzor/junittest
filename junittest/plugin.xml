@@ -65,18 +65,25 @@
       </view>
       <view
             class="junittest.view.LogHistoryView"
+            icon="icons/prop_ps.gif"
             id="junittest.view.LogHistoryView"
             name="历史日志">
       </view>
       <view
-            class="junittest.view.TestStepView"
-            id="junittest.view.TestStepView"
-            name="Test Step">
+            class="junittest.view.DeviceView"
+            id="junittest.view.DeviceView"
+            name="设备">
       </view>
       <view
             class="junittest.view.LogView"
             id="junittest.view.LogView"
             name="日志">
+      </view>
+      <view
+            allowMultiple="true"
+            class="junittest.view.AdditionLogView"
+            id="junittest.view.AdditionLogView"
+            name="Addition Log">
       </view>
    </extension>
    <extension
@@ -110,10 +117,11 @@
          </view>
          <view
                closeable="false"
-               id="junittest.view.TestStepView"
+               id="junittest.view.DeviceView"
                minimized="false"
-               relationship="stack"
-               relative="org.eclipse.ui.views.PropertySheet">
+               ratio="0.7"
+               relationship="bottom"
+               relative="junittest.view.ProjectView">
          </view>
          <view
                closeable="false"
@@ -274,36 +282,44 @@
                id="junittest.toolbar1">
             <command
                   commandId="junittest.command.open"
+                  icon="icons/fldr_obj.gif"
                   label="工程打开"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.close"
+                  icon="icons/close_view.gif"
                   label="工程关闭"
                   style="push">
             </command>
             <command
                   commandId="org.eclipse.ui.window.preferences"
+                  icon="icons/bkmrk_nav.gif"
                   label="配置"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.quicksimplereport"
+                  icon="icons/export_wiz.gif"
                   label="生成概要报告"
-                  style="push">
+                  style="push"
+                  tooltip="生成概要报告">
             </command>
             <command
                   commandId="junittest.command.quickdetailreport"
+                  icon="icons/export_wiz.gif"
                   label="生成详细报告"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.quickviewlog"
+                  icon="icons/file_obj.gif"
                   label="查看最新日志"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.quickdeletelog"
+                  icon="icons/delete_obj.gif"
                   label="删除最新日志"
                   style="push">
             </command>
