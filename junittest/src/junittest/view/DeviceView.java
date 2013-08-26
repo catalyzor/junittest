@@ -155,7 +155,7 @@ public class DeviceView extends ViewPart {
 				tree.setLinesVisible(true);
 				{
 					TreeColumn treeColumn = new TreeColumn(tree, SWT.NONE);
-					tcl_composite.setColumnData(treeColumn, new ColumnPixelData(67, true, true));
+					tcl_composite.setColumnData(treeColumn, new ColumnPixelData(93, true, true));
 					treeColumn.setText("\u8BBE\u5907");
 				}
 				{

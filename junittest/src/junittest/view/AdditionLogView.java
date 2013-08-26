@@ -5,17 +5,17 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.custom.StyledText;
 
 public class AdditionLogView extends ViewPart {
 
 	public static final String ID = "junittest.view.AdditionLogView"; //$NON-NLS-1$
-	private StyledText styledText;
 	private Composite composite;
+	private Text text;
 
 	public AdditionLogView() {
 	}
@@ -35,9 +35,10 @@ public class AdditionLogView extends ViewPart {
 			scrolledComposite.setExpandVertical(true);
 			{
 				composite = new Composite(scrolledComposite, SWT.NONE);
-				composite.setLayout(new FillLayout(SWT.HORIZONTAL));
+				composite.setLayout(new GridLayout(1, false));
 				{
-					styledText = new StyledText(composite, SWT.BORDER);
+					text = new Text(composite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
+					text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 				}
 			}
 			scrolledComposite.setContent(composite);
@@ -53,7 +54,11 @@ public class AdditionLogView extends ViewPart {
 		setPartName(title);
 	}
 	public void appendContent(String content){
-		styledText.append(content + '\n');
+		//clear text if text length up to the limit.
+		if(text.getText().length() + content.length() >= text.getTextLimit()){
+			text.setText("");
+		}
+		text.append(content + '\n');
 	}
 	/**
 	 * Create the actions.
