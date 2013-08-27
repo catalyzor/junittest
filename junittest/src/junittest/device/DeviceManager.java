@@ -475,7 +475,7 @@ public class DeviceManager {
 
 			public void cancel() {
 				// TODO Auto-generated method stub
-				bisCancel = false;
+				bisCancel = true;
 			}
 
 
