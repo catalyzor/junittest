@@ -1,7 +1,9 @@
 package junittest.view;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import junittest.Activator;
@@ -231,7 +233,14 @@ public class LogHistoryView extends ViewPart {
 			IProject project = ResourceManager.getInstance().getProject();
 			if(project != null){
 				try {
-					tableViewer.setInput(project.getFolder(ResourceManager.FOLDER_LOG).members());
+					IResource[] files = project.getFolder(ResourceManager.FOLDER_LOG).members();
+					List<IResource> lstFile = new ArrayList<>();
+					for(IResource res1:files){
+						if(res1.getFileExtension() != null && res1.getFileExtension().toLowerCase().equals("xml")){
+							lstFile.add(res1);
+						}
+					}
+					tableViewer.setInput(lstFile);
 					tableViewer.refresh();
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block

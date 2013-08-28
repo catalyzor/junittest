@@ -40,6 +40,7 @@ public class ResourceManager {
 	public static final String FILE_CONFIG = ".config";
 	public static final String SUFFIX_PROPERTIES = "properties";
 	public static final String SUFFIX_CLASS = "class";
+	public static final String SFFFIX_ADDITIONAL_LOG = "txt";
 	
 	private Map<String, TestResultEnum> mapResult;
 	private IProject project;

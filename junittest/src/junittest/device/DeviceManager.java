@@ -1,10 +1,15 @@
 package junittest.device;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +21,7 @@ import junittest.resource.ResourceManager;
 import junittest.view.AdditionLogView;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
@@ -443,8 +449,46 @@ public class DeviceManager {
 		public class Devicelogreceiver implements ILogReceiver{
 			boolean bisCancel = false;
 			@Override
-			public void addOutput(final byte[] data, final int offset, final int length) {
-				
+			public void addOutput(byte[] data, int offset, int length) {
+				final String log = new String(data,offset,length);
+				IFolder folder = ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG);
+				if(folder.exists()){
+					String filename = Device.this.type + "_" + Device.this.name + "." + ResourceManager.SFFFIX_ADDITIONAL_LOG;
+					IFile logfile = folder.getFile(filename);
+					if(!logfile.exists()){
+						try {
+							File file = logfile.getLocation().toFile();
+							if(file.createNewFile()){
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					File file = logfile.getLocation().toFile();
+					
+					try {
+						BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+						writer.write(log);
+						writer.newLine();
+						writer.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(file.length()/(1024 * 1024) >= 3){
+						String str = Device.this.type + "_" + Device.this.name + "_" + new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+						int i = 0;
+						if(!file.renameTo(new File(file.getParentFile(), str + "." + ResourceManager.SFFFIX_ADDITIONAL_LOG))){
+							while(!file.renameTo(new File(file.getParentFile(), str + (++i) + "." + ResourceManager.SFFFIX_ADDITIONAL_LOG))){
+								if(i >= 100){
+									break;
+								}
+							}
+						}
+					}
+				}
 				if (!bisCancel){
 //				System.out.println(new String(data,offset,length));
 					Display.getDefault().asyncExec(new Runnable() {
@@ -456,7 +500,7 @@ public class DeviceManager {
 								AdditionLogView view = (AdditionLogView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(AdditionLogView.ID, Device.this.type + Device.this.name, IWorkbenchPage.VIEW_CREATE);
 								if(view != null){
 									view.updateTitle(Device.this.type + ":" + Device.this.name);
-									view.appendContent(new String(data,offset,length));
+									view.appendContent(log);
 								}
 							} catch (PartInitException e) {
 								// TODO Auto-generated catch block
