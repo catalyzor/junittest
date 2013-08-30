@@ -2,8 +2,9 @@ package junittest.handler;
 
 import java.util.List;
 
+import junittest.Activator;
 import junittest.debug.JUnitTestRunnerJob;
-import junittest.resource.ResourceManager;
+import junittest.preferences.PreferenceConstants;
 import junittest.view.ProjectView;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -34,6 +35,8 @@ public class RunHandler extends AbstractHandler implements IHandler {
 //			}
 //			JUnitRunner.getInstance().start(classes);
 			JUnitTestRunnerJob job = new JUnitTestRunnerJob("÷¥––≤‚ ‘");
+			long time = Activator.getDefault().getPreferenceStore().getLong(PreferenceConstants.RUN_TIMEOUT);
+			job.setMaxTime(time * 1000);
 //			job.setClasses(classes);
 			job.setClasses(list);
 			job.setPriority(job.LONG);

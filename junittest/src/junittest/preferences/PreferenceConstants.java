@@ -15,6 +15,8 @@ public class PreferenceConstants {
 	
 	public static final String RUN_TIMEOUT = "run_timeout";
 	
+	public static final String VIEW_ADDITIONAL_LOG_CACHE = "view_additional_log_cache";
+	
 	public static final String REPORT_FILE_TYPE = "report_file_type";
 	
 	public static final String REPORT_STANDARD_DEFINITION = "report_standard_definition";

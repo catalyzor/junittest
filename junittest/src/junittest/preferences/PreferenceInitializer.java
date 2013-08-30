@@ -5,6 +5,7 @@ import junittest.util.ReportUtils;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Class used to initialize default preference values.
@@ -31,6 +32,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.REPORT_VERDICT_FAIL, true);
 		store.setDefault(PreferenceConstants.REPORT_VERDICT_IGNORE, true);
 		store.setDefault(PreferenceConstants.REPORT_VERDICT_OK, true);
+		store.setDefault(PreferenceConstants.VIEW_ADDITIONAL_LOG_CACHE, 5000);
 	}
 
 }

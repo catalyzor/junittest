@@ -472,7 +472,9 @@ public class DeviceManager {
 			@Override
 			public void addOutput(byte[] data, int offset, int length) {
 				final String log = new String(data,offset,length);
-				IFolder folder = ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG);
+				IProject project = ResourceManager.getInstance().getProject();
+				if(project == null) return;
+				IFolder folder = project.getFolder(ResourceManager.FOLDER_LOG);
 				if(folder.exists()){
 					String filename = Device.this.type + "_" + Device.this.name + "." + ResourceManager.SFFFIX_ADDITIONAL_LOG;
 					IFile logfile = folder.getFile(filename);

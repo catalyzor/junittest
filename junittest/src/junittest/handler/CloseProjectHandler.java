@@ -1,6 +1,7 @@
 package junittest.handler;
 
 import junittest.resource.ResourceManager;
+import junittest.view.AdditionLogView;
 import junittest.view.DeviceView;
 import junittest.view.LogHistoryView;
 import junittest.view.LogView;
@@ -11,7 +12,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -45,10 +46,21 @@ public class CloseProjectHandler extends AbstractHandler implements IHandler {
 			dv.setInput(null);
 		}
 
+//		IViewPart vp = null;
+//		while((vp = window.getActivePage().findView(AdditionLogView.ID)) != null){
+//			window.getActivePage().hideView(vp);
+//		}
+		IViewReference[] vrs = window.getActivePage().getViewReferences();
+		for(IViewReference vr : vrs){
+			if(vr.getId().equals(AdditionLogView.ID)){
+				window.getActivePage().hideView(vr);
+			}
+		}
 		ProjectView view = (ProjectView) window.getActivePage().findView(ProjectView.ID);
 		if(view != null){
-			view.getSite().getSelectionProvider().setSelection(StructuredSelection.EMPTY);
 			view.changePrject(null);
+			window.getActivePage().activate(view);
+			view.getSite().getSelectionProvider().setSelection(view.getCheckboxTreeViewer().getSelection());
 		}
 	}
 

@@ -2,19 +2,25 @@ package junittest.handler;
 
 import java.util.Iterator;
 
+import junittest.resource.ResourceManager;
 import junittest.view.LogHistoryView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.handlers.IHandlerService;
 
 public class DeleteHandler extends AbstractHandler implements IHandler {
 
@@ -32,6 +38,19 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 				Object obj =  itr.next();
 				if(obj instanceof IResource){
 					try {
+						if(obj.equals(ResourceManager.getInstance().getProject())){
+							IHandlerService service = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+							if(service != null){
+								try {
+									service.executeCommand("junittest.command.close", null);
+								} catch (NotDefinedException
+										| NotEnabledException
+										| NotHandledException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}
 						((IResource)obj).delete(true, null);
 						LogHistoryView view = (LogHistoryView) window.getActivePage().findView(LogHistoryView.ID);
 						if(view != null) view.refreshView(null);

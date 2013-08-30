@@ -26,8 +26,19 @@ public class JUnitTestRunnerJob extends Job {
 	private List<String> lstClasses;
 	private JUnitCore jUnitCore;
 	private JUnitRunnerListener runListener;
+	private long startTime;
+	private long maxTime;
 	public static final QualifiedName STATE = new QualifiedName("state", "state");
 	public static final String STATE_PAUSE = "pause";
+	
+	public long getMaxTime() {
+		return maxTime;
+	}
+
+	public void setMaxTime(long maxTime) {
+		this.maxTime = maxTime;
+	}
+
 	public JUnitTestRunnerJob(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
@@ -101,7 +112,8 @@ public class JUnitTestRunnerJob extends Job {
 		// TODO Auto-generated method stub
 		monitor.beginTask("执行测试", lstClasses.size() * 10);
 		ResourceManager.getInstance().getMapResult().clear();
-		String name = Calendar.getInstance().getTimeInMillis() + "";
+		startTime = Calendar.getInstance().getTimeInMillis();
+		String name = startTime + "";
 		this.runListener.setXmlLog(new XMLLog(name, this.runListener.getProject()));
 //		getMonitor().subTask("生成日志文件");
 //		logger.debug("初始化日志结构");
@@ -125,6 +137,7 @@ public class JUnitTestRunnerJob extends Job {
 //			return Status.CANCEL_STATUS;
 //		}
 		for(String c: this.lstClasses){
+			monitor.setCanceled(!checkTime(Calendar.getInstance().getTimeInMillis()));
 			if(monitor.isCanceled()){
 				XMLLog.log = null;
 				this.runListener.refreshLogHistoryView(logfile);
@@ -143,6 +156,11 @@ public class JUnitTestRunnerJob extends Job {
 		XMLLog.log = null;
 		this.runListener.refreshLogHistoryView(logfile);
 		return Status.OK_STATUS;
+	}
+
+	private boolean checkTime(long timeInMillis) {
+		// TODO Auto-generated method stub
+		return (timeInMillis - startTime) < maxTime;
 	}
 
 	@Override

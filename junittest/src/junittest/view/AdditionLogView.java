@@ -1,5 +1,8 @@
 package junittest.view;
 
+import junittest.Activator;
+import junittest.preferences.PreferenceConstants;
+
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
@@ -55,7 +58,8 @@ public class AdditionLogView extends ViewPart {
 	}
 	public void appendContent(String content){
 		//clear text if text length up to the limit.
-		if(text.getText().length() + content.length() >= text.getTextLimit()){
+		int limit = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.VIEW_ADDITIONAL_LOG_CACHE);
+		if(text.getText().length() + content.length() >= limit){
 			text.setText("");
 		}
 		text.append(content + '\n');
