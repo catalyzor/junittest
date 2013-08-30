@@ -246,6 +246,8 @@ public class LogHistoryView extends ViewPart {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}else{
+				tableViewer.setInput(null);
 			}
 		}else{
 			tableViewer.update(res, null);

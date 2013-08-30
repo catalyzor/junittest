@@ -19,6 +19,14 @@ public class DeviceTreeContentProvider implements ITreeContentProvider {
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		// TODO Auto-generated method stub
+		if(oldInput != null && oldInput instanceof DeviceManager){
+			try {
+				((DeviceManager)oldInput).disconnectAllDevices();
+			} catch (ExtDeviceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		this.input = newInput;
 	}
 
@@ -50,7 +58,7 @@ public class DeviceTreeContentProvider implements ITreeContentProvider {
 				}
 //			}
 		}else if(parentElement instanceof DeviceManager){
-			return ((DeviceManager)parentElement).getDeviceTypes();
+			return ((DeviceManager)parentElement).getProjectDeviceTypes().toArray();
 		}
 		return null;
 	}

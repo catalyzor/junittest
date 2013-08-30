@@ -158,6 +158,7 @@ public class ResourceManager {
 				urlClassLoad.loadClass(name);
 			}
 		}
+		jar.close();
 	}
 	
 	public void unloadTestJarClassLoader(){

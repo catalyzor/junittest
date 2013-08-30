@@ -75,4 +75,10 @@ public class LoadWizard extends Wizard {
 		return true;
 	}
 
+	@Override
+	public boolean canFinish() {
+		// TODO Auto-generated method stub
+		return super.canFinish() && getContainer().getCurrentPage() == page2;
+	}
+
 }

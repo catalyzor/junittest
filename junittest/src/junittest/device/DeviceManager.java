@@ -50,6 +50,12 @@ public class DeviceManager {
 	public Map<String, Device> mapDevice = new HashMap<>();
 	private String name;
 	private IProject project;
+	private List<String> lstProjectDeviceType;
+	
+	public List<String> getProjectDeviceTypes(){
+		if(lstProjectDeviceType == null) lstProjectDeviceType = new ArrayList<>();
+		return lstProjectDeviceType;
+	}
 	
 	public List<Device> getDevices(String type) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ExtDeviceException{
 		init();
@@ -71,6 +77,16 @@ public class DeviceManager {
 
 	public void setDevices(Map<String, Device> mapDevice) {
 		this.mapDevice = mapDevice;
+	}
+	
+	public void disconnectAllDevices() throws ExtDeviceException{
+		Iterator<Device> itr = getAllDevices().values().iterator();
+		while(itr.hasNext()){
+			Device device = itr.next();
+			if(device.isConncted()){
+				device.disconnnect();
+			}
+		}
 	}
 
 	public String getName() {
@@ -100,6 +116,11 @@ public class DeviceManager {
 //		updateUI(project);
 		List<DeviceConfig> lstConfig = getProjectDeviceConfigs(project);
 		for(DeviceConfig config: lstConfig){
+
+			if(!getProjectDeviceTypes().contains(config.getType())){
+				getProjectDeviceTypes().add(config.getType());
+			}
+			
 			if(config.getType().equals(TYPE_PHONE)){
 				IExtDevice device = ExtDeviceManager.getInstance("com.broadthinking.btt.phone.AdbSocketPhone");
 				String[] devices = device.listDevices();
