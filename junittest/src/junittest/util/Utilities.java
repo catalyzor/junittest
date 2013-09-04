@@ -2,6 +2,7 @@ package junittest.util;
 
 import java.util.Arrays;
 
+import junit.framework.TestCase;
 import junittest.resource.ResourceManager;
 
 import org.eclipse.core.resources.IFolder;
@@ -22,6 +23,16 @@ public class Utilities {
 			return false;
 		}else if(res.getType() == IResource.FILE){
 			if(res.getFileExtension() != null && res.getFileExtension().toLowerCase().equals("class")){
+				try {
+					Class clazz = ResourceManager.getInstance().urlClassLoad.loadClass(getFullClassName(res));
+//					if(clazz.isAssignableFrom(TestCase.class)){
+//						return false;
+//					}
+					return !checkExtendsRelation(clazz, TestCase.class);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return false;
 			}
 			return true;
@@ -29,6 +40,17 @@ public class Utilities {
 		return false;
 	}
 
+	public static boolean checkExtendsRelation(Class subclass ,Class superclass){
+		boolean bool = false;
+		if(subclass.getSuperclass() != null){
+			if(subclass.getSuperclass().equals(superclass)){
+				bool = true;
+			}else{
+				bool = checkExtendsRelation(subclass.getSuperclass(), superclass);
+			}
+		}
+		return bool;
+	}
 	public static IResource getLatestLogfile(IProject project){
 		IResource res = null;
 		if(project != null){

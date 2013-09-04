@@ -260,6 +260,9 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 										if(res.getFileExtension() == null || !res.getFileExtension().toLowerCase().equals(ResourceManager.SUFFIX_CLASS)){
 											break;
 										}
+										if(Utilities.isFilted(res)){
+											break;
+										}
 									case IResource.FOLDER:
 										list.add(res);
 									}
