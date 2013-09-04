@@ -63,6 +63,14 @@ public class ResourceManager {
 		return deviceManager;
 	}
 	public void setDeviceManager(DeviceManager deviceManager) {
+		if(this.deviceManager != null){
+			try {
+				this.deviceManager.disconnectAllDevices();
+			} catch (ExtDeviceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		this.deviceManager = deviceManager;
 	}
 	public boolean createProject(String name, String jarPath, IProgressMonitor monitor) throws Exception{
