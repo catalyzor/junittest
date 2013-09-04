@@ -1,7 +1,6 @@
 package junittest.handler;
 
 import junittest.debug.JUnitRunner;
-import junittest.device.DeviceManager;
 import junittest.resource.ResourceManager;
 import junittest.ui.ResourceLabelProvider;
 import junittest.view.DeviceView;
@@ -68,15 +67,7 @@ public class OpenProjectHandler extends AbstractHandler implements IHandler {
 								}
 								DeviceView view = (DeviceView) window.getActivePage().findView(DeviceView.ID);
 								if(view != null){
-									try {
-										view.setInput(new DeviceManager("Devices", ResourceManager.getInstance().getProject()));
-									} catch (ClassNotFoundException
-											| InstantiationException
-											| IllegalAccessException
-											| ExtDeviceException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
+										view.setInput(ResourceManager.getInstance().getDeviceManager());
 								}
 							}
 						});

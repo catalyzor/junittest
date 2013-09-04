@@ -14,6 +14,7 @@ import java.util.jar.JarFile;
 
 import junittest.Activator;
 import junittest.debug.JUnitTestRunnerJob;
+import junittest.device.DeviceManager;
 import junittest.util.ZipUtils;
 
 import org.eclipse.core.resources.IFile;
@@ -30,6 +31,8 @@ import org.eclipse.core.runtime.jobs.Job;
 
 import sun.misc.ClassLoaderUtil;
 
+import com.broadthinking.btt.device.ExtDeviceException;
+
 public class ResourceManager {
 
 	public static final String FOLDER_JAR = "jar";
@@ -45,6 +48,7 @@ public class ResourceManager {
 	private Map<String, TestResultEnum> mapResult;
 	private IProject project;
 	public URLClassLoader urlClassLoad;
+	private DeviceManager deviceManager;
 	private static ResourceManager instance;
 	private ResourceManager(String path){
 //		ResourcesPlugin.getWorkspace().getRoot()
@@ -55,6 +59,12 @@ public class ResourceManager {
 		return instance;
 	}
 	
+	public DeviceManager getDeviceManager() {
+		return deviceManager;
+	}
+	public void setDeviceManager(DeviceManager deviceManager) {
+		this.deviceManager = deviceManager;
+	}
 	public boolean createProject(String name, String jarPath, IProgressMonitor monitor) throws Exception{
 		boolean bool = false;
 		File file = new File(jarPath);
@@ -130,8 +140,10 @@ public class ResourceManager {
 			unloadTestJarClassLoader();
 		}
 		this.project = project;
+		setDeviceManager(null);
 		if(this.project != null){
 			try {
+				setDeviceManager(new DeviceManager("Devices", getProject()));
 				String str = this.project.getFolder(FOLDER_JAR).members()[0].getLocation().toOSString();
 				loadTestJar(str);
 			} catch (CoreException e) {
@@ -141,6 +153,15 @@ public class ResourceManager {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExtDeviceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
