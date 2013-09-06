@@ -47,6 +47,7 @@ public class LoadWizard extends Wizard {
 							projectName = page1.getProjectName();
 							ResourceManager.getInstance().createProject(projectName, page1.getJarPath(), monitor);
 							page2.doPerform();
+							ResourceManager.getInstance().getDeviceManager().init();
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

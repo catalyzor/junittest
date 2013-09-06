@@ -51,6 +51,7 @@ public class DeviceWizardPage extends WizardPage {
 
 			combo[i] = new Combo(container, SWT.READ_ONLY);
 			combo[i].setItems(DeviceManager.getDeviceTypes());
+			combo[i].add("", 0);
 			combo[i].setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 			Label label_1 = new Label(container, SWT.NONE);

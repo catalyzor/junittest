@@ -412,6 +412,10 @@
             class="junittest.handler.DetailReportHandler"
             commandId="junittest.command.report">
       </handler>
+      <handler
+            class="junittest.handler.DeviceRefreshHandler"
+            commandId="org.eclipse.ui.file.refresh">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
@@ -543,5 +547,18 @@
                type="org.eclipse.ui.views.properties.IPropertySource">
          </adapter>
       </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:junittest.view.DeviceView?after=additions">
+         <command
+               commandId="org.eclipse.ui.file.refresh"
+               label="刷新"
+               style="push"
+               tooltip="刷新设备">
+         </command>
+      </menuContribution>
    </extension>
 </plugin>

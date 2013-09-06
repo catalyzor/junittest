@@ -194,6 +194,9 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 //						}
 //					}
 //					return false;
+					if(element instanceof IFile){
+						return false;
+					}
 					return true;
 				}
 				

@@ -39,9 +39,9 @@ public class UserLogUtil {
 		}else if(parent instanceof Element){
 			el = ((Element)parent).addElement(name).addText(value);
 		}
-		if(el != null){
+//		if(el != null){
 //			refreshLogView(el);
-		}
+//		}
 		return el;
 	}
 	

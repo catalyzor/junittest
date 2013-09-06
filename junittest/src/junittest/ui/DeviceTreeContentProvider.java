@@ -1,6 +1,7 @@
 package junittest.ui;
 
 import junittest.device.DeviceManager;
+import junittest.device.DeviceManager.Device;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -72,6 +73,11 @@ public class DeviceTreeContentProvider implements ITreeContentProvider {
 	@Override
 	public boolean hasChildren(Object element) {
 		// TODO Auto-generated method stub
+		if(element instanceof DeviceManager){
+			return true;
+		}else if(element instanceof Device){
+			return false;
+		}
 		return true;
 	}
 

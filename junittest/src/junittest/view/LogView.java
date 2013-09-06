@@ -15,6 +15,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -340,7 +341,7 @@ public class LogView extends ViewPart {
 	public void refreshNode(Element element){
 		treeViewer.refresh(element);
 		treeViewer.expandToLevel(element, 0);
-//		treeViewer.setSelection(new StructuredSelection(element));
+		treeViewer.setSelection(new StructuredSelection(element));
 		updateNodeParent(element.getParent());
 	}
 	public void updateNodeParent(Element element){

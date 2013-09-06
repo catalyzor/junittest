@@ -23,6 +23,7 @@ import junittest.view.AdditionLogView;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
@@ -58,7 +59,7 @@ public class DeviceManager {
 	}
 	
 	public List<Device> getDevices(String type) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ExtDeviceException{
-		init();
+//		init();
 		List<Device> lstDevice = new ArrayList<>();
 //		if(type.equals(TYPE_PHONE)){
 			Iterator<Entry<String, Device>> itr = mapDevice.entrySet().iterator();
@@ -111,9 +112,13 @@ public class DeviceManager {
 		init();
 	}
 	
-	private void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, ExtDeviceException {
+	public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, ExtDeviceException {
 		// TODO Auto-generated method stub
 //		updateUI(project);
+		//release all devices
+		disconnectAllDevices();
+		getAllDevices().clear();
+		
 		List<DeviceConfig> lstConfig = getProjectDeviceConfigs(project);
 		for(DeviceConfig config: lstConfig){
 
@@ -204,6 +209,12 @@ public class DeviceManager {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		try {
+			file.refreshLocal(IResource.DEPTH_ZERO, null);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
