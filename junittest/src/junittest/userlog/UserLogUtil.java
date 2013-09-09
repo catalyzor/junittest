@@ -9,7 +9,7 @@ import org.eclipse.ui.PlatformUI;
 public class UserLogUtil {
 
 	private static Element currentNode;
-	public static int counter = 1;
+	public static int counter = 0;
 
 	protected static void refreshLogView(final Element el) {
 		// TODO Auto-generated method stub
@@ -44,7 +44,7 @@ public class UserLogUtil {
 		counter ++;
 		if(el != null && counter >= 10){
 			refreshLogView(el);
-			counter = 1;
+			counter = 0;
 		}
 		return el;
 	}
