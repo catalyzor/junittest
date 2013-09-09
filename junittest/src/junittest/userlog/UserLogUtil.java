@@ -61,6 +61,35 @@ public class UserLogUtil {
 	public static void setCurrentNode(Object node){
 		currentNode = (Element) node;
 	}
+	public static Object getGrandFatherNode(){
+		return currentNode.getParent().getParent();
+	}
+	public static Object getFatherNode(){
+		return currentNode.getParent();
+	}
+	public static Object getSonNode(){
+		return (Element) currentNode.selectSingleNode("/[last()]");
+	}
+	public static Object getGrandSonNode(){
+		return (Element) currentNode.selectSingleNode("/[last()]").selectSingleNode("/[last()]");
+	}
+	
+	
+	public static void setGrandFatherAsCur(){
+		currentNode = (Element) getGrandFatherNode();
+	}
+
+	public static void setFatherAsCur(){
+		currentNode = (Element) getFatherNode();
+	}
+
+	public static void setSonAsCur(){
+		currentNode = (Element) getSonNode();
+	}
+
+	public static void setGrandSonAsCur(){
+		currentNode = (Element) getGrandSonNode();
+	}
 	
 	public static Object addBrotherLog(String name, String value){
 //		Element el = currentNode.getParent().addElement(name).addText(value);

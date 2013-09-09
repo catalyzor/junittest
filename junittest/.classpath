@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="libs/devicemanager.jar" sourcepath="/deviceManager/src"/>
+	<classpathentry exported="true" kind="lib" path="libs/BTT.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/ddmlib.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/batik-ext.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/xercesImpl-2.10.0.jar"/>

@@ -8,6 +8,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.broadthinking.btt.device.ExtDeviceException;
@@ -17,7 +18,8 @@ public class DeviceRefreshHandler extends AbstractHandler implements IHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
-		DeviceView view = (DeviceView) HandlerUtil.getActivePart(event);
+		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+		DeviceView view = (DeviceView) window.getActivePage().findView(DeviceView.ID);
 		DeviceManager device = ResourceManager.getInstance().getDeviceManager();
 		if(device != null){
 			try {
@@ -28,7 +30,7 @@ public class DeviceRefreshHandler extends AbstractHandler implements IHandler {
 				e.printStackTrace();
 			}
 		}
-		view.setInput(device);
+		if(view != null) view.setInput(device);
 		return null;
 	}
 

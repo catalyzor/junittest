@@ -31,7 +31,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import com.android.ddmlib.DdmPreferences;
-import com.broadthinking.btt.card.SampleCard;
+import com.broadthinking.btt.smartcard.SPISmartCard;
+import com.broadthinking.btt.smartcard.SampleCard;
 import com.broadthinking.btt.device.ExtDeviceException;
 import com.broadthinking.btt.device.ExtDeviceManager;
 import com.broadthinking.btt.device.IExtDevice;
@@ -40,13 +41,23 @@ import com.broadthinking.btt.phone.AdbSocketPhone;
 import com.broadthinking.btt.phone.SamplePhone;
 
 public class DeviceManager {
-
+	
 	public static final String TYPE_PHONE = "Phone";
+	public static final String TYPE_SPISMARTCARD = "SmartCard";	
 	public static final String TYPE_SAMPLE_PHONE = "SamplePhone";
 	public static final String TYPE_SAMPLE_CARD = "SampleCard";
+
+	public static final String CLASSNAME_PHONE = AdbSocketPhone.class.getName();
+	public static final String CLASSNAME_SPISMARTCARD = SPISmartCard.class.getName();	
+	public static final String CLASSNAME_SAMPLE_PHONE = SamplePhone.class.getName();
+	public static final String CLASSNAME_SAMPLE_CARD = SampleCard.class.getName();
+	
 //	public static Map<String, Phone> mapPhone = new HashMap<>();
 	public static String[] getDeviceTypes(){
-		return new String[]{TYPE_PHONE, TYPE_SAMPLE_PHONE, TYPE_SAMPLE_CARD};
+		return new String[]{TYPE_PHONE, TYPE_SPISMARTCARD, TYPE_SAMPLE_PHONE, TYPE_SAMPLE_CARD};
+	}
+	public static String[] getDeviceClassname(){
+		return new String[]{CLASSNAME_PHONE, CLASSNAME_SPISMARTCARD, CLASSNAME_SAMPLE_PHONE, CLASSNAME_SAMPLE_CARD};
 	}
 	public Map<String, Device> mapDevice = new HashMap<>();
 	private String name;
@@ -56,6 +67,22 @@ public class DeviceManager {
 	public List<String> getProjectDeviceTypes(){
 		if(lstProjectDeviceType == null) lstProjectDeviceType = new ArrayList<>();
 		return lstProjectDeviceType;
+	}
+	
+	public List<Device> getConnectedDevices(String classnameString){
+		List<Device> lstDevice = new ArrayList<Device>();
+		
+		Iterator<Entry<String, Device>> itr = mapDevice.entrySet().iterator();
+		
+		while(itr.hasNext()){
+			Device device = itr.next().getValue();
+			
+			if(device.getDevice().getClass().getName().equals(classnameString) && device.isConncted()){
+				lstDevice.add(device);
+			}
+		}
+		
+		return lstDevice;
 	}
 	
 	public List<Device> getDevices(String type) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ExtDeviceException{
@@ -111,6 +138,7 @@ public class DeviceManager {
 		this.project = project;
 		init();
 	}
+	static IExtDevice[] sIExtDevices = null;
 	
 	public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, ExtDeviceException {
 		// TODO Auto-generated method stub
@@ -120,12 +148,40 @@ public class DeviceManager {
 		getAllDevices().clear();
 		
 		List<DeviceConfig> lstConfig = getProjectDeviceConfigs(project);
+		String[] typeStrings = getDeviceTypes();
+		String[] classnameStrings = getDeviceClassname();
+		
+		if (sIExtDevices == null){
+			sIExtDevices = new IExtDevice[typeStrings.length];
+			
+			//init devices list 
+			for (int i =0; i < typeStrings.length; i++){
+				sIExtDevices[i] = ExtDeviceManager.getInstance(classnameStrings[i]);				
+			}
+		}
 		for(DeviceConfig config: lstConfig){
-
 			if(!getProjectDeviceTypes().contains(config.getType())){
 				getProjectDeviceTypes().add(config.getType());
 			}
-			
+			for (int i =0; i < typeStrings.length; i++){
+				if(config.getType().equals(typeStrings[i])){
+					String[] devices = sIExtDevices[i].listDevices();
+					if(devices != null){
+						for(String name: devices){
+							Device dev = new Device(typeStrings[i], name, config.num, config.log, classnameStrings[i]);
+							if(!mapDevice.containsKey(name)){
+								mapDevice.put(name, dev);
+							}else{
+								Device dd = mapDevice.get(name);
+								dd.setLog(config.log);
+								dd.setNum(config.num);
+							}
+						}
+					}
+					break;
+				}
+			}
+			/**
 			if(config.getType().equals(TYPE_PHONE)){
 				IExtDevice device = ExtDeviceManager.getInstance("com.broadthinking.btt.phone.AdbSocketPhone");
 				String[] devices = device.listDevices();
@@ -172,6 +228,7 @@ public class DeviceManager {
 					}
 				}
 			}
+			*/
 		}
 	}
 
@@ -367,7 +424,7 @@ public class DeviceManager {
 	
 	public static class Device{
 		private boolean log;
-		private boolean conncted;
+		//private boolean conncted;
 		private IExtDevice device;
 		private String name;
 		private String type;
@@ -376,7 +433,8 @@ public class DeviceManager {
 		private junittest.device.DeviceManager.Device.Devicelogreceiver adDevicelogreceiver;
 		
 		public boolean isConncted() {
-			return conncted;
+			//return conncted;
+			return device.isConnect();
 		}
 		public int getNum() {
 			return num;
@@ -429,18 +487,19 @@ public class DeviceManager {
 //			conncted = device.connectDevice(devicename);
 //		}
 		public void connect() throws ExtDeviceException{
-			conncted = device.connectDevice(name);
-			log(conncted);
+			device.connectDevice(name);
+			//conncted = true;
+			log(true);
 		}
 		
 		public void disconnnect() throws ExtDeviceException{
-			conncted = false;
-			log(conncted);
+			//conncted = false;
+			log(false);
 			device.disconnectDevice();
 		}
 		
 		public void restart() throws ExtDeviceException{
-			device.resetDevice();
+			device.resetDevice(0);
 		}
 		
 		public void log(boolean bool){
