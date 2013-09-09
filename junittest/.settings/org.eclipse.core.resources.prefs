@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding//src/junittest/debug/messages.properties=ISO-8859-1
+encoding//src/junittest/device/messages.properties=ISO-8859-1
+encoding//src/junittest/handler/messages.properties=ISO-8859-1
+encoding//src/junittest/intro/messages.properties=ISO-8859-1
+encoding//src/junittest/preferences/messages.properties=ISO-8859-1
+encoding//src/junittest/resource/messages.properties=ISO-8859-1
+encoding//src/junittest/ui/messages.properties=ISO-8859-1
+encoding//src/junittest/userlog/messages.properties=ISO-8859-1
+encoding//src/junittest/util/messages.properties=ISO-8859-1
+encoding//src/junittest/view/messages.properties=ISO-8859-1
+encoding//src/junittest/wizard/messages.properties=ISO-8859-1
+encoding//src/junittest/xml/messages.properties=ISO-8859-1
