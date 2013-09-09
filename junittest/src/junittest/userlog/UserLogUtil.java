@@ -102,4 +102,8 @@ public class UserLogUtil {
 //		return el;
 		return p_LevelLog(currentNode, name, value);
 	}
+	
+	public static Object addGrandSonLog(String name, String value){
+		return p_LevelLog(getSonNode(), name, value);
+	}
 }
