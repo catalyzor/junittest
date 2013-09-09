@@ -14,10 +14,10 @@ import org.eclipse.ui.ISources;
 
 public class TestRunningCheckSourceProvider extends AbstractSourceProvider implements IJobChangeListener {
 
-	public static final String SOURCE_NAME = "junittest.isRunning";
-	public static final String PAUSE = "junittest.isPaused";
-	public static final String STATE_TRUE = "true";
-	public static final String STATE_FALSE = "false";
+	public static final String SOURCE_NAME = Messages.TestRunningCheckSourceProvider_0;
+	public static final String PAUSE = Messages.TestRunningCheckSourceProvider_1;
+	public static final String STATE_TRUE = Messages.TestRunningCheckSourceProvider_2;
+	public static final String STATE_FALSE = Messages.TestRunningCheckSourceProvider_3;
 	public TestRunningCheckSourceProvider() {
 		// TODO Auto-generated constructor stub
 		Job.getJobManager().addJobChangeListener(this);

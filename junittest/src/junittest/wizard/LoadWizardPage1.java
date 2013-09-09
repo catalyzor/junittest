@@ -25,9 +25,9 @@ public class LoadWizardPage1 extends WizardPage {
 	 * Create the wizard.
 	 */
 	public LoadWizardPage1() {
-		super("导入被测试工程");
-		setTitle("导入被测试工程");
-		setDescription("导入被测试的jar文件，并新建测试工程");
+		super(Messages.LoadWizardPage1_0);
+		setTitle(Messages.LoadWizardPage1_1);
+		setDescription(Messages.LoadWizardPage1_2);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class LoadWizardPage1 extends WizardPage {
 		
 		Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel.setText("导入 JAR文件:");
+		lblNewLabel.setText(Messages.LoadWizardPage1_3);
 		
 		txtPath = new Text(container, SWT.BORDER);
 		txtPath.addModifyListener(new ModifyListener() {
@@ -57,16 +57,16 @@ public class LoadWizardPage1 extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(getShell());
-				dialog.setFilterExtensions(new String[]{"*.jar", "*.*"});
+				dialog.setFilterExtensions(new String[]{Messages.LoadWizardPage1_4, Messages.LoadWizardPage1_5});
 				String path = dialog.open();
 				if(path != null) txtPath.setText(path);
 			}
 		});
-		btnSelect.setText("选择");
+		btnSelect.setText(Messages.LoadWizardPage1_6);
 		
 		Label lblNewLabel_1 = new Label(container, SWT.NONE);
 		lblNewLabel_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel_1.setText("工程名称:");
+		lblNewLabel_1.setText(Messages.LoadWizardPage1_7);
 		
 		txtName = new Text(container, SWT.BORDER);
 		txtName.addModifyListener(new ModifyListener() {
@@ -82,14 +82,14 @@ public class LoadWizardPage1 extends WizardPage {
 	protected void validation() {
 		// TODO Auto-generated method stub
 		String error = null;
-		if(txtPath.getText().trim().equals("")){
-			error = "请选择需要导入的文件";
+		if(txtPath.getText().trim().equals(Messages.LoadWizardPage1_8)){
+			error = Messages.LoadWizardPage1_9;
 		}else if(!new File(txtPath.getText()).exists()){
-			error = txtPath.getText() + "文件不存在";
-		}else if(txtName.getText().trim().equals("")){
-			error = "请输入工程名称";
+			error = txtPath.getText() + Messages.LoadWizardPage1_10;
+		}else if(txtName.getText().trim().equals(Messages.LoadWizardPage1_11)){
+			error = Messages.LoadWizardPage1_12;
 		}else if(ResourcesPlugin.getWorkspace().getRoot().getProject(txtName.getText().trim()).exists()){
-			error = "工程名已存在，请重新输入";
+			error = Messages.LoadWizardPage1_13;
 		}
 		setErrorMessage(error);
 		setPageComplete(error == null);

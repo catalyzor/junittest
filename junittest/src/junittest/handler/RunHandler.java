@@ -34,7 +34,7 @@ public class RunHandler extends AbstractHandler implements IHandler {
 //				}
 //			}
 //			JUnitRunner.getInstance().start(classes);
-			JUnitTestRunnerJob job = new JUnitTestRunnerJob("÷¥––≤‚ ‘");
+			JUnitTestRunnerJob job = new JUnitTestRunnerJob(Messages.RunHandler_0);
 			long time = Activator.getDefault().getPreferenceStore().getLong(PreferenceConstants.RUN_TIMEOUT);
 			job.setMaxTime(time * 1000);
 //			job.setClasses(classes);

@@ -35,15 +35,15 @@ import com.broadthinking.btt.device.ExtDeviceException;
 
 public class ResourceManager {
 
-	public static final String FOLDER_JAR = "jar";
-	public static final String FOLDER_LOG = "log";
-	public static final String FOLDER_REPORT = "report";
-	public static final String FOLDER_CASE = "case";
+	public static final String FOLDER_JAR = Messages.ResourceManager_0;
+	public static final String FOLDER_LOG = Messages.ResourceManager_1;
+	public static final String FOLDER_REPORT = Messages.ResourceManager_2;
+	public static final String FOLDER_CASE = Messages.ResourceManager_3;
 	
-	public static final String FILE_CONFIG = ".config";
-	public static final String SUFFIX_PROPERTIES = "properties";
-	public static final String SUFFIX_CLASS = "class";
-	public static final String SFFFIX_ADDITIONAL_LOG = "txt";
+	public static final String FILE_CONFIG = Messages.ResourceManager_4;
+	public static final String SUFFIX_PROPERTIES = Messages.ResourceManager_5;
+	public static final String SUFFIX_CLASS = Messages.ResourceManager_6;
+	public static final String SFFFIX_ADDITIONAL_LOG = Messages.ResourceManager_7;
 	
 	private Map<String, TestResultEnum> mapResult;
 	private IProject project;
@@ -112,7 +112,7 @@ public class ResourceManager {
 	}
 	
 	public void deleteProject(final IProject[] projects){
-		Job job = new Job("Delete jobs") {
+		Job job = new Job(Messages.ResourceManager_8) {
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -128,7 +128,7 @@ public class ResourceManager {
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "delete projects error", e);
+					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.ResourceManager_9, e);
 				}
 				return Status.OK_STATUS;
 			}
@@ -151,7 +151,7 @@ public class ResourceManager {
 		setDeviceManager(null);
 		if(this.project != null){
 			try {
-				setDeviceManager(new DeviceManager("Devices", getProject()));
+				setDeviceManager(new DeviceManager(Messages.ResourceManager_10, getProject()));
 				String str = this.project.getFolder(FOLDER_JAR).members()[0].getLocation().toOSString();
 				loadTestJar(str);
 			} catch (CoreException e) {
@@ -176,14 +176,14 @@ public class ResourceManager {
 		}
 	}
 	public void loadTestJar(String jarPath) throws IOException, ClassNotFoundException{
-		urlClassLoad = URLClassLoader.newInstance(new URL[]{new URL("file:" + jarPath)}, getClass().getClassLoader());
+		urlClassLoad = URLClassLoader.newInstance(new URL[]{new URL(Messages.ResourceManager_11 + jarPath)}, getClass().getClassLoader());
 		JarFile jar = new JarFile(jarPath);
 		Enumeration<JarEntry> e = jar.entries();
 		while(e.hasMoreElements()){
 			JarEntry entry = e.nextElement();
 			String name = entry.getName();
-			if(!entry.isDirectory() && name.endsWith("." + SUFFIX_CLASS)){
-				name = name.substring(0, name.length() - 6).replaceAll("/", ".");
+			if(!entry.isDirectory() && name.endsWith(Messages.ResourceManager_12 + SUFFIX_CLASS)){
+				name = name.substring(0, name.length() - 6).replaceAll(Messages.ResourceManager_13, Messages.ResourceManager_14);
 				urlClassLoad.loadClass(name);
 			}
 		}

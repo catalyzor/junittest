@@ -42,10 +42,10 @@ import com.broadthinking.btt.phone.SamplePhone;
 
 public class DeviceManager {
 	
-	public static final String TYPE_PHONE = "Phone";
-	public static final String TYPE_SPISMARTCARD = "SmartCard";	
-	public static final String TYPE_SAMPLE_PHONE = "SamplePhone";
-	public static final String TYPE_SAMPLE_CARD = "SampleCard";
+	public static final String TYPE_PHONE = Messages.DeviceManager_0;
+	public static final String TYPE_SPISMARTCARD = Messages.DeviceManager_1;	
+	public static final String TYPE_SAMPLE_PHONE = Messages.DeviceManager_2;
+	public static final String TYPE_SAMPLE_CARD = Messages.DeviceManager_3;
 
 	public static final String CLASSNAME_PHONE = AdbSocketPhone.class.getName();
 	public static final String CLASSNAME_SPISMARTCARD = SPISmartCard.class.getName();	
@@ -234,7 +234,7 @@ public class DeviceManager {
 
 	public static void addDeviceConfig(IProject project, String type, int num, boolean log){
 		Properties properties = new Properties();
-		properties.put("device0",type + ";" + num + ";" + log);
+		properties.put(Messages.DeviceManager_4,type + Messages.DeviceManager_5 + num + Messages.DeviceManager_6 + log);
 		IFile file = project.getFile(ResourceManager.FILE_CONFIG);
 		if(file.exists()){
 			try {
@@ -251,7 +251,7 @@ public class DeviceManager {
 		Properties properties = new Properties();
 		for(int i = 0;i < deviceConfigs.length;i ++){
 			if(deviceConfigs[i] != null){
-				properties.put("device" + i + "", deviceConfigs[i].getType() + ";" + deviceConfigs[i].getNum() + ";" + deviceConfigs[i].isLog());
+				properties.put(Messages.DeviceManager_7 + i + Messages.DeviceManager_8, deviceConfigs[i].getType() + Messages.DeviceManager_9 + deviceConfigs[i].getNum() + Messages.DeviceManager_10 + deviceConfigs[i].isLog());
 			}
 //			properties.put("device" + i + ".num", deviceConfigs[i].getNum());
 //			properties.put("device" + i + ".log", deviceConfigs[i].isLog());
@@ -285,10 +285,10 @@ public class DeviceManager {
 			Iterator<Entry<Object, Object>> itr = properties.entrySet().iterator();
 			while(itr.hasNext()){
 				Entry<Object, Object> entry = itr.next();
-				if(entry.getKey().toString().startsWith("device")){
+				if(entry.getKey().toString().startsWith(Messages.DeviceManager_11)){
 					String value = (String) entry.getValue();
 					if(value != null){
-						String[] strs = value.split(";");
+						String[] strs = value.split(Messages.DeviceManager_12);
 						DeviceConfig config = new DeviceConfig(strs[0].trim(), Integer.parseInt(strs[1]), Boolean.parseBoolean(strs[2]));
 						lstConfig.add(config);
 					}
@@ -546,7 +546,7 @@ public class DeviceManager {
 				if(project == null) return;
 				IFolder folder = project.getFolder(ResourceManager.FOLDER_LOG);
 				if(folder.exists()){
-					String filename = Device.this.type + "_" + Device.this.name + "." + ResourceManager.SFFFIX_ADDITIONAL_LOG;
+					String filename = Device.this.type + Messages.DeviceManager_13 + Device.this.name + Messages.DeviceManager_14 + ResourceManager.SFFFIX_ADDITIONAL_LOG;
 					IFile logfile = folder.getFile(filename);
 					if(!logfile.exists()){
 						try {
@@ -571,10 +571,10 @@ public class DeviceManager {
 						e.printStackTrace();
 					}
 					if(file.length()/(1024 * 1024) >= 3){
-						String str = Device.this.type + "_" + Device.this.name + "_" + new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+						String str = Device.this.type + Messages.DeviceManager_15 + Device.this.name + Messages.DeviceManager_16 + new SimpleDateFormat(Messages.DeviceManager_17).format(Calendar.getInstance().getTime());
 						int i = 0;
-						if(!file.renameTo(new File(file.getParentFile(), str + "." + ResourceManager.SFFFIX_ADDITIONAL_LOG))){
-							while(!file.renameTo(new File(file.getParentFile(), str + (++i) + "." + ResourceManager.SFFFIX_ADDITIONAL_LOG))){
+						if(!file.renameTo(new File(file.getParentFile(), str + Messages.DeviceManager_18 + ResourceManager.SFFFIX_ADDITIONAL_LOG))){
+							while(!file.renameTo(new File(file.getParentFile(), str + (++i) + Messages.DeviceManager_19 + ResourceManager.SFFFIX_ADDITIONAL_LOG))){
 								if(i >= 100){
 									break;
 								}
@@ -592,7 +592,7 @@ public class DeviceManager {
 							try {
 								AdditionLogView view = (AdditionLogView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(AdditionLogView.ID, Device.this.type + Device.this.name, IWorkbenchPage.VIEW_CREATE);
 								if(view != null){
-									view.updateTitle(Device.this.type + ":" + Device.this.name);
+									view.updateTitle(Device.this.type + Messages.DeviceManager_20 + Device.this.name);
 									view.appendContent(log);
 								}
 							} catch (PartInitException e) {

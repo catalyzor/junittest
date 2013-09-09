@@ -22,7 +22,7 @@ public class DeleteProjectHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		ListSelectionDialog dialog = new ListSelectionDialog(window.getShell(), ResourcesPlugin.getWorkspace().getRoot().getProjects(), new ArrayContentProvider(), new DecoratingLabelProvider(new WorkbenchLabelProvider(), window.getWorkbench().getDecoratorManager().getLabelDecorator()), "选择要删除的工程");
+		ListSelectionDialog dialog = new ListSelectionDialog(window.getShell(), ResourcesPlugin.getWorkspace().getRoot().getProjects(), new ArrayContentProvider(), new DecoratingLabelProvider(new WorkbenchLabelProvider(), window.getWorkbench().getDecoratorManager().getLabelDecorator()), Messages.DeleteProjectHandler_0);
 		if(dialog.open() == IDialogConstants.OK_ID){
 			Object[] objs = dialog.getResult();
 			if(objs != null && objs.length > 0){

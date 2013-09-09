@@ -28,7 +28,7 @@ public class QuickViewLogHandler extends AbstractHandler implements IHandler {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		IResource res = Utilities.getLatestLogfile(ResourceManager.getInstance().getProject());
 		if(res == null){
-			MessageDialog.openError(window.getShell(), "错误", "未找到日志文件");
+			MessageDialog.openError(window.getShell(), Messages.QuickViewLogHandler_0, Messages.QuickViewLogHandler_1);
 			return null;
 		}
 		if(res.exists()){
@@ -40,7 +40,7 @@ public class QuickViewLogHandler extends AbstractHandler implements IHandler {
 			} catch (DocumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				ErrorDialog.openError(window.getShell(), "错误", "打开日志文件失败", new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
+				ErrorDialog.openError(window.getShell(), Messages.QuickViewLogHandler_2, Messages.QuickViewLogHandler_3, new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 		return null;

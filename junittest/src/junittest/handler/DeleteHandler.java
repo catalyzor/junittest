@@ -32,7 +32,7 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 		if(view1 == null) return null;
 //		ISelection selection = HandlerUtil.getCurrentSelection(event);
 		ISelection selection = view1.getTableViewer().getSelection();
-		if(!selection.isEmpty() && IStructuredSelection.class.isInstance(selection) && MessageDialog.openConfirm(window.getShell(), "и╬ЁЩ", "х╥хои╬ЁЩ")){
+		if(!selection.isEmpty() && IStructuredSelection.class.isInstance(selection) && MessageDialog.openConfirm(window.getShell(), Messages.DeleteHandler_0, Messages.DeleteHandler_1)){
 			IStructuredSelection ss = (IStructuredSelection)selection;
 			for(Iterator itr = ss.iterator() ; itr.hasNext();){
 				Object obj =  itr.next();
@@ -42,7 +42,7 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 							IHandlerService service = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
 							if(service != null){
 								try {
-									service.executeCommand("junittest.command.close", null);
+									service.executeCommand(Messages.DeleteHandler_2, null);
 								} catch (NotDefinedException
 										| NotEnabledException
 										| NotHandledException e) {

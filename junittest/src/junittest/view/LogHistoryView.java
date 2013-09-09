@@ -60,14 +60,14 @@ public class LogHistoryView extends ViewPart {
 					return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM,SimpleDateFormat.MEDIUM,Locale.CHINA).format(new Date(Long.parseLong(name)));
 				case 1:
 					if(XMLLog.log != null && file.getName().startsWith(XMLLog.log.getTime())){
-						return "正在执行";
+						return Messages.LogHistoryView_0;
 					}
-					return "完成";
+					return Messages.LogHistoryView_1;
 				case 2:
 					try {
 //						String str = XMLLog.getLogTestResult(file.getLocation().toOSString());
 						String str = XMLLog.getLogTestResult(file);
-						if(str != null && !str.trim().equals("")){
+						if(str != null && !str.trim().equals(Messages.LogHistoryView_2)){
 							str = TestResultConstants.RESULT_NAMES[TestResultEnum.valueOf(str).ordinal()];
 						}
 						return str;
@@ -176,19 +176,19 @@ public class LogHistoryView extends ViewPart {
 					TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 					TableColumn tblclmnNewColumn = tableViewerColumn.getColumn();
 					tcl_composite.setColumnData(tblclmnNewColumn, new ColumnPixelData(150, true, true));
-					tblclmnNewColumn.setText("\u6267\u884C\u65F6\u95F4");
+					tblclmnNewColumn.setText(Messages.LogHistoryView_3);
 				}
 				{
 					TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 					TableColumn tblclmnNewColumn_1 = tableViewerColumn.getColumn();
 					tcl_composite.setColumnData(tblclmnNewColumn_1, new ColumnPixelData(150, true, true));
-					tblclmnNewColumn_1.setText("\u72B6\u6001");
+					tblclmnNewColumn_1.setText(Messages.LogHistoryView_4);
 				}
 				{
 					TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 					TableColumn tblclmnNewColumn_2 = tableViewerColumn.getColumn();
 					tcl_composite.setColumnData(tblclmnNewColumn_2, new ColumnPixelData(150, true, true));
-					tblclmnNewColumn_2.setText("\u7ED3\u679C");
+					tblclmnNewColumn_2.setText(Messages.LogHistoryView_5);
 				}
 				tableViewer.setLabelProvider(new TableLabelProvider());
 				tableViewer.setContentProvider(new ArrayContentProvider());
@@ -218,12 +218,12 @@ public class LogHistoryView extends ViewPart {
 		IHandlerService service = (IHandlerService) getSite().getService(IHandlerService.class);
 		if(service != null){
 			try {
-				service.executeCommand("junittest.command.viewlog", null);
+				service.executeCommand(Messages.LogHistoryView_6, null);
 			} catch (ExecutionException | NotDefinedException
 					| NotEnabledException | NotHandledException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				ErrorDialog.openError(getSite().getShell(), "错误", "打开日志失败", new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
+				ErrorDialog.openError(getSite().getShell(), Messages.LogHistoryView_7, Messages.LogHistoryView_8, new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 	}
@@ -236,7 +236,7 @@ public class LogHistoryView extends ViewPart {
 					IResource[] files = project.getFolder(ResourceManager.FOLDER_LOG).members();
 					List<IResource> lstFile = new ArrayList<>();
 					for(IResource res1:files){
-						if(res1.getFileExtension() != null && res1.getFileExtension().toLowerCase().equals("xml")){
+						if(res1.getFileExtension() != null && res1.getFileExtension().toLowerCase().equals(Messages.LogHistoryView_9)){
 							lstFile.add(res1);
 						}
 					}

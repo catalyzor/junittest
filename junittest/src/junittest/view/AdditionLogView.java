@@ -60,7 +60,7 @@ public class AdditionLogView extends ViewPart {
 		//clear text if text length up to the limit.
 		int limit = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.VIEW_ADDITIONAL_LOG_CACHE);
 		if(text.getText().length() + content.length() >= limit){
-			text.setText("");
+			text.setText(Messages.AdditionLogView_0);
 		}
 		text.append(content + '\n');
 	}

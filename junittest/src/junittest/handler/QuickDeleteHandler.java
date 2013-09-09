@@ -21,12 +21,12 @@ public class QuickDeleteHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		if(!MessageDialog.openConfirm(window.getShell(), "确认", "确定删除最新日志吗？")){
+		if(!MessageDialog.openConfirm(window.getShell(), Messages.QuickDeleteHandler_0, Messages.QuickDeleteHandler_1)){
 			return null;
 		}
 		IResource res = Utilities.getLatestLogfile(ResourceManager.getInstance().getProject());
 		if(res == null){
-			MessageDialog.openError(window.getShell(), "错误", "未找到日志文件");
+			MessageDialog.openError(window.getShell(), Messages.QuickDeleteHandler_2, Messages.QuickDeleteHandler_3);
 			return null;
 		}
 

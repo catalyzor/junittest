@@ -80,7 +80,7 @@ public class JUnitRunner {
 						setPause(false);
 					}
 				}
-				System.out.println("testRunStarted:" + description.getDisplayName());
+				System.out.println(Messages.JUnitRunner_0 + description.getDisplayName());
 				if(description.isSuite()){
 					for(Description des : description.getChildren()){
 						if(des.isTest()){
@@ -103,7 +103,7 @@ public class JUnitRunner {
 						setPause(false);
 					}
 				}
-				System.out.println("testRunFinished:" + result.getRunTime());
+				System.out.println(Messages.JUnitRunner_1 + result.getRunTime());
 				if(!result.wasSuccessful()){
 					for(Failure fail: result.getFailures()){
 						ResourceManager.getInstance().getMapResult().put(fail.getDescription().getClassName(), TestResultEnum.FAIL);
@@ -126,7 +126,7 @@ public class JUnitRunner {
 						setPause(false);
 					}
 				}
-				System.out.println("testStarted:" + description.getDisplayName() + "start");
+				System.out.println(Messages.JUnitRunner_2 + description.getDisplayName() + Messages.JUnitRunner_3);
 			}
 
 			@Override
@@ -140,7 +140,7 @@ public class JUnitRunner {
 						setPause(false);
 					}
 				}
-				System.out.println("testFinished:" + description.getDisplayName() + "finished");
+				System.out.println(Messages.JUnitRunner_4 + description.getDisplayName() + Messages.JUnitRunner_5);
 				if(description.isTest()){
 					Map<String, TestResultEnum> map = ResourceManager.getInstance().getMapResult();
 					if(!TestResultEnum.FAIL.equals(map.get(description.getClassName())) && !TestResultEnum.ERROR.equals(map.get(description.getClassName()))){
@@ -164,7 +164,7 @@ public class JUnitRunner {
 						setPause(false);
 					}
 				}
-				System.out.println("testFailure:" + failure.getMessage());
+				System.out.println(Messages.JUnitRunner_6 + failure.getMessage());
 				if(failure.getDescription().isTest()){
 					ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.FAIL);
 				}
@@ -186,7 +186,7 @@ public class JUnitRunner {
 						setPause(false);
 					}
 				}
-				System.out.println("testAssumptionFailure:" + failure.getMessage());
+				System.out.println(Messages.JUnitRunner_7 + failure.getMessage());
 				if(failure.getDescription().isTest()){
 					ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.ERROR);
 				}
@@ -203,7 +203,7 @@ public class JUnitRunner {
 						setPause(false);
 					}
 				}
-				System.out.println("testIgnored:" + description.getDisplayName() + "ignored");
+				System.out.println(Messages.JUnitRunner_8 + description.getDisplayName() + Messages.JUnitRunner_9);
 			}
 			
 		});
@@ -237,13 +237,13 @@ public class JUnitRunner {
 		}else{
 			ResourceManager.getInstance().getMapResult().clear();
 			this.classes = classes;
-			runThread = new Thread("Run Tests"){
+			runThread = new Thread(Messages.JUnitRunner_10){
 
 				@Override
 				public void run() {
 					fireStateChange();
 					// TODO Auto-generated method stub
-					String name = Calendar.getInstance().getTimeInMillis() + "";
+					String name = Calendar.getInstance().getTimeInMillis() + Messages.JUnitRunner_11;
 					logger = new XMLLog(name, ResourceManager.getInstance().getProject());
 					logger.initStructure();
 					logger.saveToFile();
@@ -311,7 +311,7 @@ public class JUnitRunner {
 	}
 	public static void main(String[] args) {
 
-		Job job = new Job("") {
+		Job job = new Job(Messages.JUnitRunner_12) {
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -349,7 +349,7 @@ public class JUnitRunner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("thread wait...");
+		System.out.println(Messages.JUnitRunner_13);
 //		try {
 			t.setBool(true);
 //			job.sleep();
@@ -364,7 +364,7 @@ public class JUnitRunner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("thread notify...");
+		System.out.println(Messages.JUnitRunner_14);
 //		t.notify();
 		synchronized (t.getObj()) {
 
@@ -378,7 +378,7 @@ public class JUnitRunner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("thread stop...");
+		System.out.println(Messages.JUnitRunner_15);
 //		t.;
 	}
 

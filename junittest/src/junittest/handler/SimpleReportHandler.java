@@ -30,7 +30,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SimpleReportHandler extends AbstractHandler implements IHandler {
 
-	public static final String FILE_NAME = "概要报告";
+	public static final String FILE_NAME = Messages.SimpleReportHandler_0;
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
@@ -41,21 +41,21 @@ public class SimpleReportHandler extends AbstractHandler implements IHandler {
 		IStructuredSelection selection = (IStructuredSelection) view.getTableViewer().getSelection();
 		if(!selection.isEmpty()){
 			final IResource res = (IResource) selection.getFirstElement();
-			final String jasperfile = "reports/report4.jasper";
+			final String jasperfile = Messages.SimpleReportHandler_1;
 			final String filetype = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.REPORT_FILE_TYPE);
 //			String destFile = ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_REPORT).getLocation().append(FILE_NAME).addFileExtension(filetype.toLowerCase()).toOSString();
 			FileDialog dialog = new FileDialog(window.getShell(), SWT.SAVE);
-			dialog.setFilterExtensions(new String[]{"*." + filetype.toLowerCase()});
+			dialog.setFilterExtensions(new String[]{Messages.SimpleReportHandler_2 + filetype.toLowerCase()});
 			dialog.setFileName(FILE_NAME);
 			dialog.setOverwrite(true);
 			final String destFile = dialog.open();
 			if(destFile == null) return null;
-			Job job = new Job("生成报告") {
+			Job job = new Job(Messages.SimpleReportHandler_3) {
 				
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					// TODO Auto-generated method stub
-					monitor.beginTask("生成报告", IProgressMonitor.UNKNOWN);
+					monitor.beginTask(Messages.SimpleReportHandler_4, IProgressMonitor.UNKNOWN);
 					try {
 //						InputStream is = Activator.getDefault().getBundle().getEntry(jasperfile).openStream();
 						ReportUtils.generateReport(res, FileLocator.resolve(Activator.getDefault().getBundle().getEntry(jasperfile)).getFile(), filetype, destFile);
@@ -65,7 +65,7 @@ public class SimpleReportHandler extends AbstractHandler implements IHandler {
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								MessageDialog.openInformation(new Shell(), "提示", "报告生成成功，路径为" + destFile);
+								MessageDialog.openInformation(new Shell(), Messages.SimpleReportHandler_5, Messages.SimpleReportHandler_6 + destFile);
 							}
 						});
 					} catch (JRException | IOException e) {
@@ -76,7 +76,7 @@ public class SimpleReportHandler extends AbstractHandler implements IHandler {
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								ErrorDialog.openError(new Shell(), "错误", "生成报告失败", new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(),e));
+								ErrorDialog.openError(new Shell(), Messages.SimpleReportHandler_7, Messages.SimpleReportHandler_8, new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(),e));
 							}
 						});
 					}

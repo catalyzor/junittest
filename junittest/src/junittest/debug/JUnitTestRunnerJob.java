@@ -21,15 +21,15 @@ import org.junit.runner.Result;
 
 public class JUnitTestRunnerJob extends Job {
 
-	public static final String FAMILINAME = "JUnitTestRunnerFamily";
+	public static final String FAMILINAME = Messages.JUnitTestRunnerJob_0;
 //	private Class[] classes;
 	private List<String> lstClasses;
 	private JUnitCore jUnitCore;
 	private JUnitRunnerListener runListener;
 	private long startTime;
 	private long maxTime;
-	public static final QualifiedName STATE = new QualifiedName("state", "state");
-	public static final String STATE_PAUSE = "pause";
+	public static final QualifiedName STATE = new QualifiedName(Messages.JUnitTestRunnerJob_1, Messages.JUnitTestRunnerJob_2);
+	public static final String STATE_PAUSE = Messages.JUnitTestRunnerJob_3;
 	
 	public long getMaxTime() {
 		return maxTime;
@@ -110,10 +110,10 @@ public class JUnitTestRunnerJob extends Job {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
-		monitor.beginTask("执行测试", lstClasses.size() * 10);
+		monitor.beginTask(Messages.JUnitTestRunnerJob_4, lstClasses.size() * 10);
 		ResourceManager.getInstance().getMapResult().clear();
 		startTime = Calendar.getInstance().getTimeInMillis();
-		String name = startTime + "";
+		String name = startTime + Messages.JUnitTestRunnerJob_5;
 		this.runListener.setXmlLog(new XMLLog(name, this.runListener.getProject()));
 //		getMonitor().subTask("生成日志文件");
 //		logger.debug("初始化日志结构");

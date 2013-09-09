@@ -25,7 +25,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setShowMenuBar(true);
         configurer.setShowCoolBar(true);
         configurer.setShowStatusLine(true);
-        configurer.setTitle("RCP Product");
+        configurer.setTitle(Messages.ApplicationWorkbenchWindowAdvisor_0);
         configurer.setShowProgressIndicator(true);
     }
 

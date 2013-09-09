@@ -37,18 +37,18 @@ public class OpenProjectHandler extends AbstractHandler implements IHandler {
 //                new WorkbenchLabelProvider(), Activator.getDefault().getWorkbench()
 //                .getDecoratorManager().getLabelDecorator()));
 		final ElementListSelectionDialog dialog = new ElementListSelectionDialog(window.getShell(), new ResourceLabelProvider());
-		dialog.setTitle("选择要打开的工程");
+		dialog.setTitle(Messages.OpenProjectHandler_0);
 		dialog.setElements(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 		dialog.setMultipleSelection(false);
 		if(dialog.open() == IDialogConstants.OK_ID){
 			final ProjectView view = (ProjectView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ProjectView.ID);
 			if(view != null){
-				Job job = new Job("open project...") {
+				Job job = new Job(Messages.OpenProjectHandler_1) {
 					
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
 						// TODO Auto-generated method stub
-						monitor.beginTask("open project...", IProgressMonitor.UNKNOWN);
+						monitor.beginTask(Messages.OpenProjectHandler_2, IProgressMonitor.UNKNOWN);
 						ResourceManager.getInstance().setProject((IProject) dialog.getFirstResult());
 						Display.getDefault().asyncExec(new Runnable() {
 							

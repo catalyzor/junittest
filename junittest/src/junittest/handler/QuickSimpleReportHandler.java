@@ -38,24 +38,24 @@ public class QuickSimpleReportHandler extends AbstractHandler implements
 		
 			final IResource res = Utilities.getLatestLogfile(ResourceManager.getInstance().getProject());
 			if(res == null){
-				MessageDialog.openError(window.getShell(), "错误", "未找到日志文件");
+				MessageDialog.openError(window.getShell(), Messages.QuickSimpleReportHandler_0, Messages.QuickSimpleReportHandler_1);
 				return null;
 			}
-			final String jasperfile = "reports/report4.jasper";
+			final String jasperfile = Messages.QuickSimpleReportHandler_2;
 			final String filetype = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.REPORT_FILE_TYPE);
 //			String destFile = ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_REPORT).getLocation().append(FILE_NAME).addFileExtension(filetype.toLowerCase()).toOSString();
 			FileDialog dialog = new FileDialog(window.getShell(), SWT.SAVE);
-			dialog.setFilterExtensions(new String[]{"*." + filetype.toLowerCase()});
+			dialog.setFilterExtensions(new String[]{Messages.QuickSimpleReportHandler_3 + filetype.toLowerCase()});
 			dialog.setFileName(SimpleReportHandler.FILE_NAME);
 			dialog.setOverwrite(true);
 			final String destFile = dialog.open();
 			if(destFile == null) return null;
-			Job job = new Job("生成报告") {
+			Job job = new Job(Messages.QuickSimpleReportHandler_4) {
 				
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					// TODO Auto-generated method stub
-					monitor.beginTask("生成报告", IProgressMonitor.UNKNOWN);
+					monitor.beginTask(Messages.QuickSimpleReportHandler_5, IProgressMonitor.UNKNOWN);
 					try {
 //						InputStream is = Activator.getDefault().getBundle().getEntry(jasperfile).openStream();
 						ReportUtils.generateReport(res, FileLocator.resolve(Activator.getDefault().getBundle().getEntry(jasperfile)).getFile(), filetype, destFile);
@@ -65,7 +65,7 @@ public class QuickSimpleReportHandler extends AbstractHandler implements
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								MessageDialog.openInformation(new Shell(), "提示", "报告生成成功，路径为" + destFile);
+								MessageDialog.openInformation(new Shell(), Messages.QuickSimpleReportHandler_6, Messages.QuickSimpleReportHandler_7 + destFile);
 							}
 						});
 					} catch (JRException | IOException e) {
@@ -76,7 +76,7 @@ public class QuickSimpleReportHandler extends AbstractHandler implements
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								ErrorDialog.openError(new Shell(), "错误", "生成报告失败", new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(),e));
+								ErrorDialog.openError(new Shell(), Messages.QuickSimpleReportHandler_8, Messages.QuickSimpleReportHandler_9, new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(),e));
 							}
 						});
 					}

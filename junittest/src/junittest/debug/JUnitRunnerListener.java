@@ -66,8 +66,8 @@ public class JUnitRunnerListener extends RunListener {
 	public void testRunStarted(Description description) throws Exception {
 		// TODO Auto-generated method stub
 		super.testRunStarted(description);
-		logger.debug("开始执行测试。。。");
-		getMonitor().beginTask("执行测试", description.testCount() * 10);
+		logger.debug(Messages.JUnitRunnerListener_0);
+		getMonitor().beginTask(Messages.JUnitRunnerListener_1, description.testCount() * 10);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class JUnitRunnerListener extends RunListener {
 		// TODO Auto-generated method stub
 		checkState();
 		super.testStarted(description);
-		logger.debug("running " + description.getClassName());
+		logger.debug(Messages.JUnitRunnerListener_2 + description.getClassName());
 		getMonitor().subTask(description.getClassName());
 		Element el = getXmlLog().getElement(description.getClassName());
 		UserLogUtil.setCurrentNode(el.element(XMLLog.NODE_LOG));
@@ -101,7 +101,7 @@ public class JUnitRunnerListener extends RunListener {
 	@Override
 	public void testFinished(Description description) throws Exception {
 		// TODO Auto-generated method stub
-		logger.debug("finish " + description.getClassName());
+		logger.debug(Messages.JUnitRunnerListener_3 + description.getClassName());
 		checkState();
 		super.testFinished(description);
 		if(description.isTest()){
@@ -123,7 +123,7 @@ public class JUnitRunnerListener extends RunListener {
 	public void testFailure(Failure failure) throws Exception {
 		// TODO Auto-generated method stub
 		super.testFailure(failure);
-		logger.debug("fail " + failure.getMessage());
+		logger.debug(Messages.JUnitRunnerListener_4 + failure.getMessage());
 		if(failure.getDescription().isTest()){
 			if(failure.getException() != null && !(failure.getException() instanceof AssertionFailedError)){
 				ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.ERROR);
@@ -137,7 +137,7 @@ public class JUnitRunnerListener extends RunListener {
 	public void testAssumptionFailure(Failure failure) {
 		// TODO Auto-generated method stub
 		super.testAssumptionFailure(failure);
-		logger.debug("aussumptionfailuer " + failure.getMessage());
+		logger.debug(Messages.JUnitRunnerListener_5 + failure.getMessage());
 		if(failure.getDescription().isTest()){
 			ResourceManager.getInstance().getMapResult().put(failure.getDescription().getClassName(), TestResultEnum.ERROR);
 		}
@@ -147,7 +147,7 @@ public class JUnitRunnerListener extends RunListener {
 	public void testIgnored(Description description) throws Exception {
 		// TODO Auto-generated method stub
 		super.testIgnored(description);
-		logger.debug(description.getClassName() + " ignored");
+		logger.debug(description.getClassName() + Messages.JUnitRunnerListener_6);
 	}
 
 	protected void refreshProjectView(final String classname){

@@ -16,9 +16,9 @@ public class LogViewPreferencePage extends FieldEditorPreferencePage implements
 	 */
 	public LogViewPreferencePage() {
 		super(FLAT);
-		setMessage("\u914D\u7F6E\u65E5\u5FD7\u76F8\u5173\u4FE1\u606F");
+		setMessage(Messages.LogViewPreferencePage_0);
 //		setTitle("\u65E5\u5FD7\u914D\u7F6E");
-		setDescription("\u65E5\u5FD7\u914D\u7F6E");
+		setDescription(Messages.LogViewPreferencePage_1);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
@@ -29,7 +29,7 @@ public class LogViewPreferencePage extends FieldEditorPreferencePage implements
 	protected void createFieldEditors() {
 		{
 			// Create the field editors
-			IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor("id", "\u8BBE\u5907\u65E5\u5FD7\u5B57\u7B26\u4E0A\u9650", getFieldEditorParent());
+			IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor(Messages.LogViewPreferencePage_2, Messages.LogViewPreferencePage_3, getFieldEditorParent());
 			integerFieldEditor.setValidRange(1, Text.LIMIT);
 			addField(integerFieldEditor);
 		}

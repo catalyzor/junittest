@@ -36,17 +36,17 @@ import org.eclipse.core.runtime.Platform;
 
 public class XMLLog {
 
-	public static final String NODE_ROOT = "project";
-	public static final String NODE_SUITE = "suite";
-	public static final String NODE_CASE = "case";
-	public static final String NODE_NAME = "name";
-	public static final String NODE_LOG = "logs";
-	public static final String NODE_PROPS = "properties";
-	public static final String NODE_VERDICT = "verdict";
+	public static final String NODE_ROOT = Messages.XMLLog_0;
+	public static final String NODE_SUITE = Messages.XMLLog_1;
+	public static final String NODE_CASE = Messages.XMLLog_2;
+	public static final String NODE_NAME = Messages.XMLLog_3;
+	public static final String NODE_LOG = Messages.XMLLog_4;
+	public static final String NODE_PROPS = Messages.XMLLog_5;
+	public static final String NODE_VERDICT = Messages.XMLLog_6;
 //	public static final String NODE_ATTR_DATE = "date";
-	public static final String NODE_ATTR_TIME = "time";
-	public static final String NODE_ATTR_ID = "id";
-	public static final String ATTR_VERDICT_TOTAL = "total";
+	public static final String NODE_ATTR_TIME = Messages.XMLLog_7;
+	public static final String NODE_ATTR_ID = Messages.XMLLog_8;
+	public static final String ATTR_VERDICT_TOTAL = Messages.XMLLog_9;
 	public static final String ATTR_VERDICT_OK = TestResultEnum.OK.name();
 	public static final String ATTR_VERDICT_FAIL = TestResultEnum.FAIL.name();
 	public static final String ATTR_VERDICT_ERROR = TestResultEnum.ERROR.name();
@@ -70,7 +70,7 @@ public class XMLLog {
 	public XMLLog(String time, IProject res){
 		this.time = time;
 		this.res = res;
-		this.fileName = time + ".xml";
+		this.fileName = time + Messages.XMLLog_10;
 		doc = DocumentHelper.createDocument();
 		log = this;
 	}
@@ -78,7 +78,7 @@ public class XMLLog {
 	public void initStructure(){
 		Element root = doc.addElement(NODE_ROOT).addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(new Date(Long.parseLong(time))));
 		root.addElement(NODE_NAME).addText(res.getName());
-		root.addElement(NODE_VERDICT).addAttribute(ATTR_VERDICT_TOTAL, "0").addAttribute(ATTR_VERDICT_OK, "0").addAttribute(ATTR_VERDICT_FAIL, "0").addAttribute(ATTR_VERDICT_ERROR, "0").addAttribute(ATTR_VERDICT_IGNORE, "0");
+		root.addElement(NODE_VERDICT).addAttribute(ATTR_VERDICT_TOTAL, Messages.XMLLog_11).addAttribute(ATTR_VERDICT_OK, Messages.XMLLog_12).addAttribute(ATTR_VERDICT_FAIL, Messages.XMLLog_13).addAttribute(ATTR_VERDICT_ERROR, Messages.XMLLog_14).addAttribute(ATTR_VERDICT_IGNORE, Messages.XMLLog_15);
 		try {
 			addElement(root, res.getFolder(ResourceManager.FOLDER_CASE).members());
 		} catch (CoreException e) {
@@ -86,8 +86,8 @@ public class XMLLog {
 			e.printStackTrace();
 		}
 		//add count
-		StringBuffer buf = new StringBuffer().append("//").append(NODE_CASE);
-		root.element(NODE_VERDICT).addAttribute(ATTR_VERDICT_TOTAL, "" + root.selectNodes(buf.toString()).size());
+		StringBuffer buf = new StringBuffer().append(Messages.XMLLog_16).append(NODE_CASE);
+		root.element(NODE_VERDICT).addAttribute(ATTR_VERDICT_TOTAL, Messages.XMLLog_17 + root.selectNodes(buf.toString()).size());
 //		saveToFile();
 	}
 	
@@ -95,7 +95,7 @@ public class XMLLog {
 		IFile file = null;
 		if(res.getType() == IResource.FOLDER){
 			IFolder folder = (IFolder) Platform.getAdapterManager().getAdapter(res, IFolder.class);
-			file = folder.getFile(res.getName() + "." + ResourceManager.SUFFIX_PROPERTIES);
+			file = folder.getFile(res.getName() + Messages.XMLLog_18 + ResourceManager.SUFFIX_PROPERTIES);
 		}else if(res.getType() == IResource.FILE){
 			file = res.getParent().getFile(res.getFullPath().removeFileExtension().addFileExtension(ResourceManager.SUFFIX_PROPERTIES).makeRelativeTo(res.getParent().getFullPath()));
 			
@@ -166,7 +166,7 @@ public class XMLLog {
 				if(ress[i].getFileExtension() != null && ress[i].getFileExtension().equals(ResourceManager.SUFFIX_CLASS)){
 					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
 				}
-					element = parent.addElement(NODE_CASE).addAttribute(NODE_ATTR_TIME, "").addAttribute(NODE_ATTR_ID, ress[i].getProjectRelativePath().removeFirstSegments(1).removeFileExtension().toString().replaceAll("/", "."));
+					element = parent.addElement(NODE_CASE).addAttribute(NODE_ATTR_TIME, Messages.XMLLog_19).addAttribute(NODE_ATTR_ID, ress[i].getProjectRelativePath().removeFirstSegments(1).removeFileExtension().toString().replaceAll(Messages.XMLLog_20, Messages.XMLLog_21));
 					element.addElement(NODE_NAME).addText(name);
 					element.addElement(NODE_VERDICT).addText(TestResultEnum.Ignore.name());
 
@@ -210,7 +210,7 @@ public class XMLLog {
 //		System.out.println(path);
 		System.out.println(classname);
 //		Node node = doc.selectSingleNode(path);
-		Node node = doc.selectSingleNode("//" + NODE_CASE + "[@" + NODE_ATTR_ID + "='" + classname + "']/" + NODE_VERDICT);
+		Node node = doc.selectSingleNode(Messages.XMLLog_22 + NODE_CASE + Messages.XMLLog_23 + NODE_ATTR_ID + Messages.XMLLog_24 + classname + Messages.XMLLog_25 + NODE_VERDICT);
 //		node.setText(result.name());
 		updateTestResult((Element)node, result);
 //		if(TestResultEnum.FAIL.equals(result)){
@@ -244,9 +244,9 @@ public class XMLLog {
 					if(!str.equals(TestResultEnum.ERROR.name()) && !str.equals(TestResultEnum.FAIL.name())) node.setText(result.name());
 				}
 				element.addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime()));
-				Element el = doc.getRootElement().element(NODE_VERDICT).addAttribute(result.name(), "" + doc.selectNodes("//" + NODE_CASE + "[" + NODE_VERDICT + "='" + result.name() + "']").size());
+				Element el = doc.getRootElement().element(NODE_VERDICT).addAttribute(result.name(), Messages.XMLLog_26 + doc.selectNodes(Messages.XMLLog_27 + NODE_CASE + Messages.XMLLog_28 + NODE_VERDICT + Messages.XMLLog_29 + result.name() + Messages.XMLLog_30).size());
 				int total = Integer.parseInt(el.attributeValue(ATTR_VERDICT_TOTAL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_ERROR)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_FAIL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_OK));
-				el.addAttribute(ATTR_VERDICT_IGNORE, total + "");
+				el.addAttribute(ATTR_VERDICT_IGNORE, total + Messages.XMLLog_31);
 			}
 			if(element.getParent() != null){
 				updateTestResult(element.getParent(), result);
@@ -255,13 +255,13 @@ public class XMLLog {
 	}
 	
 	public String getTestResult(String xpath){
-		String[] names = xpath.split("/");
-		StringBuffer sb = new StringBuffer("/");
+		String[] names = xpath.split(Messages.XMLLog_32);
+		StringBuffer sb = new StringBuffer(Messages.XMLLog_33);
 		for(int i = 0;i < names.length;i ++){
-			sb.append((i == 0)?NODE_ROOT:NODE_SUITE).append("[").append(NODE_NAME).append("='").append(names[i]).append("']").append("/");
+			sb.append((i == 0)?NODE_ROOT:NODE_SUITE).append(Messages.XMLLog_34).append(NODE_NAME).append(Messages.XMLLog_35).append(names[i]).append(Messages.XMLLog_36).append(Messages.XMLLog_37);
 		}
 		sb.append(NODE_VERDICT);
-		String result = "";
+		String result = Messages.XMLLog_38;
 		if(doc != null){
 			Node node = doc.selectSingleNode(sb.toString());
 			if(node instanceof Element){
@@ -300,7 +300,7 @@ public class XMLLog {
 //		}
 //		String path = sb.toString();
 //		Node node = doc.selectSingleNode(path);
-		Node node = doc.selectSingleNode("//" + NODE_CASE + "[@" + NODE_ATTR_ID + "='" + classname + "']");
+		Node node = doc.selectSingleNode(Messages.XMLLog_39 + NODE_CASE + Messages.XMLLog_40 + NODE_ATTR_ID + Messages.XMLLog_41 + classname + Messages.XMLLog_42);
 		return (Element) node;
 	}
 	public synchronized Element addElement(Element element, String name, String value){
@@ -331,22 +331,22 @@ public class XMLLog {
 			SAXReader sax = new SAXReader();
 			doc = sax.read(new File(filename));
 		}
-		return doc.selectSingleNode("/" + NODE_ROOT + "/" + NODE_VERDICT).getText();
+		return doc.selectSingleNode(Messages.XMLLog_43 + NODE_ROOT + Messages.XMLLog_44 + NODE_VERDICT).getText();
 	}
 	
 	public static String getLogTestResult(IFile file) throws CoreException, IOException{
-		String result = "";
+		String result = Messages.XMLLog_45;
 		if(file.exists()){
 			file.refreshLocal(IResource.DEPTH_ZERO, null);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents(), file.getCharset()));
 			String line = null;
 			while((line = reader.readLine()) != null){
-				if(line.endsWith("</verdict>")){
+				if(line.endsWith(Messages.XMLLog_46)){
 					break;
 				}
 			}
 			reader.close();
-			result = line.substring(line.indexOf(">") + 1, line.length() - "</verdict>".length());
+			result = line.substring(line.indexOf(Messages.XMLLog_47) + 1, line.length() - Messages.XMLLog_48.length());
 		}
 		return result;
 	}

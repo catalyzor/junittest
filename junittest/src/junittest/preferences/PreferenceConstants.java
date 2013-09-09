@@ -13,24 +13,24 @@ public class PreferenceConstants {
 //
 //	public static final String P_STRING = "stringPreference";
 	
-	public static final String RUN_TIMEOUT = "run_timeout";
+	public static final String RUN_TIMEOUT = Messages.PreferenceConstants_0;
 	
-	public static final String VIEW_ADDITIONAL_LOG_CACHE = "view_additional_log_cache";
+	public static final String VIEW_ADDITIONAL_LOG_CACHE = Messages.PreferenceConstants_1;
 	
-	public static final String REPORT_FILE_TYPE = "report_file_type";
+	public static final String REPORT_FILE_TYPE = Messages.PreferenceConstants_2;
 	
-	public static final String REPORT_STANDARD_DEFINITION = "report_standard_definition";
+	public static final String REPORT_STANDARD_DEFINITION = Messages.PreferenceConstants_3;
 	
-	public static final String REPORT_LOG_MAIN = "report_log_main";
+	public static final String REPORT_LOG_MAIN = Messages.PreferenceConstants_4;
 	
-	public static final String REPORT_LOG_ADDITIONAL = "report_log_additional";
+	public static final String REPORT_LOG_ADDITIONAL = Messages.PreferenceConstants_5;
 	
-	public static final String REPORT_VERDICT_OK = "report_verdict_ok";
+	public static final String REPORT_VERDICT_OK = Messages.PreferenceConstants_6;
 	
-	public static final String REPORT_VERDICT_ERROR = "report_verdict_error";
+	public static final String REPORT_VERDICT_ERROR = Messages.PreferenceConstants_7;
 	
-	public static final String REPORT_VERDICT_IGNORE = "report_verdict_ignore";
+	public static final String REPORT_VERDICT_IGNORE = Messages.PreferenceConstants_8;
 	
-	public static final String REPORT_VERDICT_FAIL = "report_verdict_fail";
+	public static final String REPORT_VERDICT_FAIL = Messages.PreferenceConstants_9;
 	
 }

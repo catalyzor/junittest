@@ -24,7 +24,7 @@ public class ResourcePropertySource implements IPropertySource {
 		IFile file = null;
 		if(res.getType() == IResource.FOLDER){
 			IFolder folder = (IFolder) Platform.getAdapterManager().getAdapter(res, IFolder.class);
-			file = folder.getFile(res.getName() + "." + ResourceManager.SUFFIX_PROPERTIES);
+			file = folder.getFile(res.getName() + Messages.ResourcePropertySource_0 + ResourceManager.SUFFIX_PROPERTIES);
 		}else if(res.getType() == IResource.FILE){
 			file = res.getParent().getFile(res.getFullPath().removeFileExtension().addFileExtension(ResourceManager.SUFFIX_PROPERTIES).makeRelativeTo(res.getParent().getFullPath()));
 			

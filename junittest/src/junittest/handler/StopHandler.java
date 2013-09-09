@@ -23,7 +23,7 @@ public class StopHandler extends AbstractHandler implements IHandler {
 		IHandlerService service = (IHandlerService) HandlerUtil.getActiveWorkbenchWindow(event).getService(IHandlerService.class);
 		if(service != null){
 			try {
-				service.executeCommand("junittest.command.resumes", null);
+				service.executeCommand(Messages.StopHandler_0, null);
 			} catch (NotDefinedException | NotEnabledException
 					| NotHandledException e) {
 				// TODO Auto-generated catch block

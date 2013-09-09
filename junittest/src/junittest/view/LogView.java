@@ -39,14 +39,14 @@ public class LogView extends ViewPart {
 				String path = ISharedImageConstants.TEST;
 				if(name.endsWith(XMLLog.NODE_CASE)){
 					switch (el.elementTextTrim(XMLLog.NODE_VERDICT)) {
-					case "ERROR":
+					case "ERROR": //$NON-NLS-1$
 						path = ISharedImageConstants.TESTERR;
 						break;
-					case "FAIL":
+					case "FAIL": //$NON-NLS-1$
 //						path = ISharedImageConstants.TESTFAIL;
 						path = NameEnum.TAG_RUNFAIL;
 						break;
-					case "OK":
+					case "OK": //$NON-NLS-1$
 //						path = ISharedImageConstants.TESTOK;
 						path = NameEnum.TAG_RUNSUCCESS;
 						break;
@@ -57,13 +57,13 @@ public class LogView extends ViewPart {
 				}else if(name.startsWith(XMLLog.NODE_ROOT) || name.startsWith(XMLLog.NODE_SUITE)){
 					if(el.element(XMLLog.NODE_VERDICT) != null){
 						switch (el.elementTextTrim(XMLLog.NODE_VERDICT)) {
-						case "ERROR":
+						case "ERROR": //$NON-NLS-1$
 							path = ISharedImageConstants.TSUITEERROR;
 							break;
-						case "FAIL":
+						case "FAIL": //$NON-NLS-1$
 							path = ISharedImageConstants.TSUITEFAIL;
 							break;
-						case "OK":
+						case "OK": //$NON-NLS-1$
 							path = ISharedImageConstants.TSUITEOK;
 							break;
 						default:
@@ -89,7 +89,7 @@ public class LogView extends ViewPart {
 					String name = e.elementTextTrim(XMLLog.NODE_NAME);
 					return name;
 				}else if(e.getParent().getName().equals(XMLLog.NODE_PROPS)){
-					return e.getName() + " = " + e.getTextTrim();
+					return e.getName() + Messages.LogView_14 + e.getTextTrim();
 				}else{
 					return e.getTextTrim();
 				}
@@ -164,7 +164,7 @@ public class LogView extends ViewPart {
 					return list.toArray();
 				}else if(element.getName().equals(XMLLog.NODE_PROPS)){
 					return element.elements().toArray();
-				}else if(element.selectSingleNode("ancestor::" + XMLLog.NODE_LOG) != null){
+				}else if(element.selectSingleNode(Messages.LogView_15 + XMLLog.NODE_LOG) != null){
 					List list = new ArrayList<>();
 					for(Object obj:element.elements()){
 //						if(obj instanceof DefaultText){

@@ -42,7 +42,7 @@ public class ShowLogHandler extends AbstractHandler implements IHandler {
 				} catch (DocumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					ErrorDialog.openError(window.getShell(), "错误", "打开日志文件失败", new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
+					ErrorDialog.openError(window.getShell(), Messages.ShowLogHandler_0, Messages.ShowLogHandler_1, new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 			}
 		}

@@ -361,7 +361,7 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 			getCheckboxTreeViewer().refresh(true);
 			return;
 		}
-		String path = classname.replaceAll("\\.", "/") + "." + ResourceManager.SUFFIX_CLASS;
+		String path = classname.replaceAll(Messages.ProjectView_0, Messages.ProjectView_1) + Messages.ProjectView_2 + ResourceManager.SUFFIX_CLASS;
 		IResource res = ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_CASE).findMember(path);
 		refreshView(res);
 	}

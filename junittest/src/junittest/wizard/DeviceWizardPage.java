@@ -26,9 +26,9 @@ public class DeviceWizardPage extends WizardPage {
 	 * Create the wizard.
 	 */
 	public DeviceWizardPage() {
-		super("设备");
-		setTitle("设备");
-		setDescription("配置设备信息");
+		super(Messages.DeviceWizardPage_0);
+		setTitle(Messages.DeviceWizardPage_1);
+		setDescription(Messages.DeviceWizardPage_2);
 		combo = new Combo[DeviceManager.getDeviceTypes().length];
 		spinner = new Spinner[DeviceManager.getDeviceTypes().length];
 		btnCheckButton = new Button[DeviceManager.getDeviceTypes().length];
@@ -47,20 +47,20 @@ public class DeviceWizardPage extends WizardPage {
 		for(int i = 0;i < DeviceManager.getDeviceTypes().length;i ++){
 			Label label = new Label(container, SWT.NONE);
 			label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-			label.setText("\u8BBE\u5907\uFF1A");
+			label.setText(Messages.DeviceWizardPage_3);
 
 			combo[i] = new Combo(container, SWT.READ_ONLY);
 			combo[i].setItems(DeviceManager.getDeviceTypes());
-			combo[i].add("", 0);
+			combo[i].add(Messages.DeviceWizardPage_4, 0);
 			combo[i].setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 			Label label_1 = new Label(container, SWT.NONE);
-			label_1.setText("\u6570\u91CF\uFF1A");
+			label_1.setText(Messages.DeviceWizardPage_5);
 
 			spinner[i] = new Spinner(container, SWT.BORDER);
 
 			Label label_2 = new Label(container, SWT.NONE);
-			label_2.setText("\u663E\u793A\u65E5\u5FD7\uFF1A");
+			label_2.setText(Messages.DeviceWizardPage_6);
 
 			btnCheckButton[i] = new Button(container, SWT.CHECK);
 		}

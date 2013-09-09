@@ -68,10 +68,10 @@ public class UserLogUtil {
 		return currentNode.getParent();
 	}
 	public static Object getSonNode(){
-		return (Element) currentNode.selectSingleNode("/[last()]");
+		return (Element) currentNode.selectSingleNode(Messages.UserLogUtil_0);
 	}
 	public static Object getGrandSonNode(){
-		return (Element) currentNode.selectSingleNode("/[last()]").selectSingleNode("/[last()]");
+		return (Element) currentNode.selectSingleNode(Messages.UserLogUtil_1).selectSingleNode(Messages.UserLogUtil_2);
 	}
 	
 	

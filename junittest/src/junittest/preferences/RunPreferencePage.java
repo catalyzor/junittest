@@ -28,7 +28,7 @@ public class RunPreferencePage
 	public RunPreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("\u914D\u7F6E\u8FD0\u884C\u76F8\u5173\u53C2\u6570");
+		setDescription(Messages.RunPreferencePage_0);
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public class RunPreferencePage
 //		}, getFieldEditorParent()));
 //		addField(
 //			new StringFieldEditor(PreferenceConstants.P_STRING, "A &text preference:", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceConstants.RUN_TIMEOUT, "³¬Ê±Ê±¼ä£º", getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceConstants.RUN_TIMEOUT, Messages.RunPreferencePage_1, getFieldEditorParent()));
 	}
 
 	/* (non-Javadoc)

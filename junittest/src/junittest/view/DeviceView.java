@@ -65,7 +65,7 @@ public class DeviceView extends ViewPart {
 				case 0:
 					return device.getName();
 				case 1:
-					return device.isConncted()?"connected":"disconnect";
+					return device.isConncted()?Messages.DeviceView_0:Messages.DeviceView_1;
 				}
 			}
 			return null;
@@ -138,7 +138,7 @@ public class DeviceView extends ViewPart {
 									if(num < device.getNum()){
 										device.connect();
 									}else{
-										MessageDialog.openInformation(getSite().getShell(), "提示", "无法连接，设备连接数已达上限");
+										MessageDialog.openInformation(getSite().getShell(), Messages.DeviceView_2, Messages.DeviceView_3);
 									}
 								}
 							} catch (ExtDeviceException e1) {
@@ -156,12 +156,12 @@ public class DeviceView extends ViewPart {
 				{
 					TreeColumn treeColumn = new TreeColumn(tree, SWT.NONE);
 					tcl_composite.setColumnData(treeColumn, new ColumnPixelData(93, true, true));
-					treeColumn.setText("\u8BBE\u5907");
+					treeColumn.setText(Messages.DeviceView_4);
 				}
 				{
 					TreeColumn treeColumn = new TreeColumn(tree, SWT.NONE);
 					tcl_composite.setColumnData(treeColumn, new ColumnPixelData(86, true, true));
-					treeColumn.setText("\u72B6\u6001");
+					treeColumn.setText(Messages.DeviceView_5);
 				}
 				treeViewer.setLabelProvider(new ViewerLabelProvider());
 				treeViewer.setContentProvider(new DeviceTreeContentProvider());

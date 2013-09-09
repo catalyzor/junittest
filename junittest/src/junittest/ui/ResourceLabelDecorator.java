@@ -58,7 +58,7 @@ public class ResourceLabelDecorator implements ILabelDecorator {
 		// TODO Auto-generated method stub
 		if(element instanceof IResource){
 			String name = ((IResource)element).getName();
-			if(name.endsWith("." + ResourceManager.SUFFIX_CLASS)){
+			if(name.endsWith(Messages.ResourceLabelDecorator_0 + ResourceManager.SUFFIX_CLASS)){
 				name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
 			}
 			return name;

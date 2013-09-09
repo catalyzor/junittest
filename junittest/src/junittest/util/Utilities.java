@@ -12,17 +12,17 @@ import org.eclipse.core.resources.IResource;
 public class Utilities {
 
 	public static String getFullClassName(IResource res){
-		return res.getProjectRelativePath().removeFirstSegments(1).removeFileExtension().toString().replaceAll("/", ".");
+		return res.getProjectRelativePath().removeFirstSegments(1).removeFileExtension().toString().replaceAll(Messages.Utilities_0, Messages.Utilities_1);
 	}
 	
 	public static boolean isFilted(IResource res){
 		if(res.getType() == IResource.FOLDER){
-			if(res.getName().toUpperCase().equals("META-INF")){
+			if(res.getName().toUpperCase().equals(Messages.Utilities_2)){
 				return true;
 			}
 			return false;
 		}else if(res.getType() == IResource.FILE){
-			if(res.getFileExtension() != null && res.getFileExtension().toLowerCase().equals("class")){
+			if(res.getFileExtension() != null && res.getFileExtension().toLowerCase().equals(Messages.Utilities_3)){
 				try {
 					Class clazz = ResourceManager.getInstance().urlClassLoad.loadClass(getFullClassName(res));
 //					if(clazz.isAssignableFrom(TestCase.class)){

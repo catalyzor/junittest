@@ -71,16 +71,16 @@ public class StatusLabelDecorator implements
 			}else{
 				XMLLog log = XMLLog.log;
 				if(log != null){
-					String result = (res.getType() == IResource.PROJECT)?log.getTestResult(res.getName()):log.getTestResult(res.getProject().getName() + "/" + res.getProjectRelativePath().removeFirstSegments(1).toString());
+					String result = (res.getType() == IResource.PROJECT)?log.getTestResult(res.getName()):log.getTestResult(res.getProject().getName() + Messages.StatusLabelDecorator_4 + res.getProjectRelativePath().removeFirstSegments(1).toString());
 					String path = ISharedImageConstants.TSUITE;
 					switch(result){
-					case "ERROR":
+					case "ERROR": //$NON-NLS-1$
 						path = ISharedImageConstants.TSUITEERROR;
 						break;
-					case "FAIL":
+					case "FAIL": //$NON-NLS-1$
 						path = ISharedImageConstants.TSUITEFAIL;
 						break;
-					case "OK":
+					case "OK": //$NON-NLS-1$
 						path = ISharedImageConstants.TSUITEOK;
 						break;
 					default:

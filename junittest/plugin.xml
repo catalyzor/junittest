@@ -14,7 +14,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
+            name="%perspective.name"
             class="junittest.intro.Perspective"
             id="junittest.perspective">
       </perspective>
@@ -24,7 +24,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="junittest.application"
-            name="RCP Product">
+            name="%product.name">
          <property
                name="windowImages"
                value="icons/alt_window_16.gif,icons/alt_window_32.gif">
@@ -56,34 +56,34 @@
       <view
             class="junittest.view.ProjectView"
             id="junittest.view.ProjectView"
-            name="工程">
+            name="%view.name">
       </view>
       <view
             class="junittest.view.DescriptionView"
             id="junittest.view.DescriptionView"
-            name="Description">
+            name="%view.name.0">
       </view>
       <view
             class="junittest.view.LogHistoryView"
             icon="icons/prop_ps.gif"
             id="junittest.view.LogHistoryView"
-            name="历史日志">
+            name="%view.name.1">
       </view>
       <view
             class="junittest.view.DeviceView"
             id="junittest.view.DeviceView"
-            name="设备">
+            name="%view.name.2">
       </view>
       <view
             class="junittest.view.LogView"
             id="junittest.view.LogView"
-            name="日志">
+            name="%view.name.3">
       </view>
       <view
             allowMultiple="true"
             class="junittest.view.AdditionLogView"
             id="junittest.view.AdditionLogView"
-            name="Addition Log">
+            name="%view.name.4">
       </view>
    </extension>
    <extension
@@ -137,96 +137,96 @@
          point="org.eclipse.ui.commands">
       <category
             id="junittest.category.project"
-            name="Project">
+            name="%category.name">
       </category>
       <command
             categoryId="junittest.category.project"
             id="junittest.command.open"
-            name="Open">
+            name="%command.name">
       </command>
       <command
             categoryId="junittest.category.project"
             id="junittest.command.close"
-            name="Close">
+            name="%command.name.0">
       </command>
       <command
             categoryId="junittest.category.project"
             id="junittest.command.recent"
-            name="Recent">
+            name="%command.name.1">
       </command>
       <command
             categoryId="junittest.category.project"
             id="junittest.command.load"
-            name="Load">
+            name="%command.name.2">
       </command>
       <command
             categoryId="junittest.category.project"
             id="junittest.command.delete"
-            name="Delete">
+            name="%command.name.3">
       </command>
       <category
             id="junittest.category.run"
-            name="Run">
+            name="%category.name.0">
       </category>
       <command
             categoryId="junittest.category.run"
             id="junittest.commands.start"
-            name="Start">
+            name="%command.name.4">
       </command>
       <command
             categoryId="junittest.category.run"
             id="junittest.command.stop"
-            name="Stop">
+            name="%command.name.5">
       </command>
       <command
             categoryId="junittest.category.run"
             id="junittest.command.pause"
-            name="Pause">
+            name="%command.name.6">
       </command>
       <command
             categoryId="junittest.category.run"
             id="junittest.command.resumes"
-            name="Resumes">
+            name="%command.name.7">
       </command>
       <category
             id="junittest.category.report"
-            name="Report">
+            name="%category.name.1">
       </category>
       <command
             categoryId="junittest.category.report"
             id="junittest.command.simplereport"
-            name="SimpleReport">
+            name="%command.name.8">
       </command>
       <command
             categoryId="junittest.category.report"
             id="junittest.command.report"
-            name="DetailReport">
+            name="%command.name.9">
       </command>
       <command
             categoryId="junittest.category.report"
             defaultHandler="junittest.handler.ShowLogHandler"
             id="junittest.command.viewlog"
-            name="View Log">
+            name="%command.name.10">
       </command>
       <command
             defaultHandler="junittest.handler.QuickSimpleReportHandler"
             id="junittest.command.quicksimplereport"
-            name="生成概要报告">
+            name="%command.name.11">
       </command>
       <command
             defaultHandler="junittest.handler.QuickDetailReportHandler"
             id="junittest.command.quickdetailreport"
-            name="生成详细报告">
+            name="%command.name.12">
       </command>
       <command
             defaultHandler="junittest.handler.QuickViewLogHandler"
             id="junittest.command.quickviewlog"
-            name="查看日志">
+            name="%command.name.13">
       </command>
       <command
             defaultHandler="junittest.handler.QuickDeleteHandler"
             id="junittest.command.quickdeletelog"
-            name="删除日志">
+            name="%command.name.14">
       </command>
    </extension>
    <extension
@@ -234,45 +234,45 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               label="工程"
-               tooltip="project">
+               label="%menu.label"
+               tooltip="%menu.tooltip">
             <command
                   commandId="junittest.command.open"
-                  label="打开"
+                  label="%command.label"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.close"
-                  label="闭关"
+                  label="%command.label.0"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.recent"
-                  label="最近"
+                  label="%command.label.1"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.load"
-                  label="加载"
+                  label="%command.label.2"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.delete"
-                  label="删除"
+                  label="%command.label.3"
                   style="push">
             </command>
          </menu>
          <menu
-               label="配置"
-               tooltip="preference">
+               label="%menu.label.0"
+               tooltip="%menu.tooltip.0">
             <command
                   commandId="org.eclipse.ui.window.preferences"
                   style="push">
             </command>
          </menu>
          <menu
-               label="报告"
-               tooltip="report">
+               label="%menu.label.1"
+               tooltip="%menu.tooltip.1">
          </menu>
       </menuContribution>
       <menuContribution
@@ -283,44 +283,44 @@
             <command
                   commandId="junittest.command.open"
                   icon="icons/fldr_obj.gif"
-                  label="工程打开"
+                  label="%command.label.4"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.close"
                   icon="icons/close_view.gif"
-                  label="工程关闭"
+                  label="%command.label.5"
                   style="push">
             </command>
             <command
                   commandId="org.eclipse.ui.window.preferences"
                   icon="icons/bkmrk_nav.gif"
-                  label="配置"
+                  label="%command.label.6"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.quicksimplereport"
                   icon="icons/export_wiz.gif"
-                  label="生成概要报告"
+                  label="%command.label.7"
                   style="push"
-                  tooltip="生成概要报告">
+                  tooltip="%command.tooltip">
             </command>
             <command
                   commandId="junittest.command.quickdetailreport"
                   icon="icons/export_wiz.gif"
-                  label="生成详细报告"
+                  label="%command.label.8"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.quickviewlog"
                   icon="icons/file_obj.gif"
-                  label="查看最新日志"
+                  label="%command.label.9"
                   style="push">
             </command>
             <command
                   commandId="junittest.command.quickdeletelog"
                   icon="icons/delete_obj.gif"
-                  label="删除最新日志"
+                  label="%command.label.10"
                   style="push">
             </command>
          </toolbar>
@@ -423,7 +423,7 @@
             adaptable="true"
             class="junittest.ui.ResourceLabelDecorator"
             id="junittest.decorator1"
-            label="resource"
+            label="%decorator.label"
             location="REPLACE"
             state="true">
          <enablement>
@@ -436,7 +436,7 @@
             adaptable="true"
             class="junittest.ui.StatusLabelDecorator"
             id="junittest.decorator.status"
-            label="status"
+            label="%decorator.label.0"
             location="BOTTOM_LEFT"
             state="true">
          <enablement>
@@ -453,22 +453,22 @@
             locationURI="toolbar:junittest.view.ProjectView">
          <command
                commandId="junittest.commands.start"
-               label="运行"
+               label="%command.label.11"
                style="push">
          </command>
          <command
                commandId="junittest.command.stop"
-               label="停止"
+               label="%command.label.12"
                style="push">
          </command>
          <command
                commandId="junittest.command.pause"
-               label="暂停"
+               label="%command.label.13"
                style="push">
          </command>
          <command
                commandId="junittest.command.resumes"
-               label="继续"
+               label="%command.label.14"
                style="push">
          </command>
       </menuContribution>
@@ -480,22 +480,22 @@
             locationURI="popup:junittest.view.LogHistoryView">
          <command
                commandId="junittest.command.simplereport"
-               label="生成概要报告"
+               label="%command.label.15"
                style="push">
          </command>
          <command
                commandId="junittest.command.report"
-               label="生成详细报告"
+               label="%command.label.16"
                style="push">
          </command>
          <command
                commandId="junittest.command.viewlog"
-               label="查看日志"
+               label="%command.label.17"
                style="push">
          </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
-               label="删除"
+               label="%command.label.18"
                style="push">
          </command>
       </menuContribution>
@@ -519,17 +519,17 @@
       <page
             class="junittest.preferences.RunPreferencePage"
             id="junittest.preferences.RunPreferencePage"
-            name="运行配置">
+            name="%page.name">
       </page>
       <page
             class="junittest.preferences.TestReportPreferencePage"
             id="junittest.preferences.ReportPreferencePage"
-            name="报告配置">
+            name="%page.name.0">
       </page>
       <page
             class="junittest.preferences.LogViewPreferencePage"
             id="junittest.preferences.LogViewPreferencePage"
-            name="日志配置">
+            name="%page.name.1">
       </page>
    </extension>
    <extension
@@ -555,9 +555,9 @@
             locationURI="toolbar:junittest.view.DeviceView?after=additions">
          <command
                commandId="org.eclipse.ui.file.refresh"
-               label="刷新"
+               label="%command.label.19"
                style="push"
-               tooltip="刷新设备">
+               tooltip="%command.tooltip.0">
          </command>
       </menuContribution>
    </extension>

@@ -16,7 +16,7 @@ public class LoadWizard extends Wizard {
 	DeviceWizardPage page2;
 	private String projectName;
 	public LoadWizard() {
-		setWindowTitle("Load");
+		setWindowTitle(Messages.LoadWizard_0);
 		setNeedsProgressMonitor(true);
 	}
 

@@ -15,7 +15,7 @@ public class TestReportPreferencePage extends FieldEditorPreferencePage implemen
 	 */
 	public TestReportPreferencePage() {
 		super(FLAT);
-		setDescription("\u62A5\u544A\u914D\u7F6E\u4FE1\u606F");
+		setDescription(Messages.TestReportPreferencePage_0);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
@@ -25,7 +25,7 @@ public class TestReportPreferencePage extends FieldEditorPreferencePage implemen
 	@Override
 	protected void createFieldEditors() {
 		// Create the field editors
-		addField(new ComboFieldEditor(PreferenceConstants.REPORT_FILE_TYPE, "\u62A5\u544A\u6587\u4EF6\u683C\u5F0F\uFF1A", new String[][]{{ReportUtils.REPORT_TYPE_PDF, ReportUtils.REPORT_TYPE_PDF}, {ReportUtils.REPORT_TYPE_HTML, ReportUtils.REPORT_TYPE_HTML}}, getFieldEditorParent()));
+		addField(new ComboFieldEditor(PreferenceConstants.REPORT_FILE_TYPE, Messages.TestReportPreferencePage_1, new String[][]{{ReportUtils.REPORT_TYPE_PDF, ReportUtils.REPORT_TYPE_PDF}, {ReportUtils.REPORT_TYPE_HTML, ReportUtils.REPORT_TYPE_HTML}}, getFieldEditorParent()));
 	}
 
 	/**
