@@ -339,6 +339,7 @@ public class LogView extends ViewPart {
 //		}
 	}
 	public void refreshNode(Element element){
+//		Thread.currentThread().yield();
 		treeViewer.refresh(element);
 		treeViewer.expandToLevel(element, 0);
 		treeViewer.setSelection(new StructuredSelection(element));
