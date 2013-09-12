@@ -106,4 +106,12 @@ public class UserLogUtil {
 	public static Object addGrandSonLog(String name, String value){
 		return p_LevelLog(getSonNode(), name, value);
 	}
+	
+	public static void updateNodeName(Object node, String name){
+		if(node instanceof Element){
+			Element element = (Element)node;
+			element.setName(name);
+		}
+	}
+	
 }
