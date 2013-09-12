@@ -63,6 +63,7 @@ public class DeviceWizardPage extends WizardPage {
 			label_2.setText(Messages.DeviceWizardPage_6);
 
 			btnCheckButton[i] = new Button(container, SWT.CHECK);
+			btnCheckButton[i].setSelection(true);
 		}
 	}
 	
