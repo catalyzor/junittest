@@ -29,7 +29,7 @@ public class LogViewPreferencePage extends FieldEditorPreferencePage implements
 	protected void createFieldEditors() {
 		{
 			// Create the field editors
-			IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor(Messages.LogViewPreferencePage_2, Messages.LogViewPreferencePage_3, getFieldEditorParent());
+			IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor(PreferenceConstants.VIEW_ADDITIONAL_LOG_CACHE, Messages.LogViewPreferencePage_3, getFieldEditorParent());
 			integerFieldEditor.setValidRange(1, Text.LIMIT);
 			addField(integerFieldEditor);
 		}

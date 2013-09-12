@@ -6,7 +6,6 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "junittest.preferences.messages"; //$NON-NLS-1$
 	public static String LogViewPreferencePage_0;
 	public static String LogViewPreferencePage_1;
-	public static String LogViewPreferencePage_2;
 	public static String LogViewPreferencePage_3;
 	public static String PreferenceConstants_0;
 	public static String PreferenceConstants_1;
