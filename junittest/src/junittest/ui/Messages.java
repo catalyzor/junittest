@@ -14,6 +14,10 @@ public class Messages extends NLS {
 	public static String TestRunningCheckSourceProvider_1;
 	public static String TestRunningCheckSourceProvider_2;
 	public static String TestRunningCheckSourceProvider_3;
+	public static String WorkbenchWindowControlContributionStatus_0;
+	public static String WorkbenchWindowControlContributionStatus_1;
+	public static String WorkbenchWindowControlContributionStatus_2;
+	public static String WorkbenchWindowControlContributionStatus_3;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
