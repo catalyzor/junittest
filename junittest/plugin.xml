@@ -325,6 +325,16 @@
             </command>
          </toolbar>
       </menuContribution>
+         <menuContribution
+            locationURI="toolbar:org.eclipse.ui.trim.status">
+         <toolbar
+               id="junittest.toolbar.status"
+               label="Status">
+            <control
+                  class="junittest.ui.WorkbenchWindowControlContributionStatus">
+            </control>
+         </toolbar>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">

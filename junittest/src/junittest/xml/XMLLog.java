@@ -70,7 +70,7 @@ public class XMLLog {
 	public XMLLog(String time, IProject res){
 		this.time = time;
 		this.res = res;
-		this.fileName = time + Messages.XMLLog_10;
+		this.fileName = time + "." + ResourceManager.SUFFIX_LOG;
 		doc = DocumentHelper.createDocument();
 		log = this;
 	}

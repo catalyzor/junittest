@@ -43,7 +43,8 @@ public class ResourceManager {
 	public static final String FILE_CONFIG = Messages.ResourceManager_4;
 	public static final String SUFFIX_PROPERTIES = Messages.ResourceManager_5;
 	public static final String SUFFIX_CLASS = Messages.ResourceManager_6;
-	public static final String SFFFIX_ADDITIONAL_LOG = Messages.ResourceManager_7;
+	public static final String SUFFIX_ADDITIONAL_LOG = Messages.ResourceManager_7;
+	public static final String SUFFIX_LOG = Messages.ResourceManager_15;
 	
 	private Map<String, TestResultEnum> mapResult;
 	private IProject project;

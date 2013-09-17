@@ -11,6 +11,7 @@ public class Messages extends NLS {
 	public static String ResourceManager_12;
 	public static String ResourceManager_13;
 	public static String ResourceManager_14;
+	public static String ResourceManager_15;
 	public static String ResourceManager_2;
 	public static String ResourceManager_3;
 	public static String ResourceManager_4;

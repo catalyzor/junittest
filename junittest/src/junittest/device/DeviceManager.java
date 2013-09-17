@@ -546,7 +546,7 @@ public class DeviceManager {
 				if(project == null) return;
 				IFolder folder = project.getFolder(ResourceManager.FOLDER_LOG);
 				if(folder.exists()){
-					String filename = Device.this.type + Messages.DeviceManager_13 + Device.this.name + Messages.DeviceManager_14 + ResourceManager.SFFFIX_ADDITIONAL_LOG;
+					String filename = Device.this.type + Messages.DeviceManager_13 + Device.this.name + Messages.DeviceManager_14 + ResourceManager.SUFFIX_ADDITIONAL_LOG;
 					IFile logfile = folder.getFile(filename);
 					if(!logfile.exists()){
 						try {
@@ -573,8 +573,8 @@ public class DeviceManager {
 					if(file.length()/(1024 * 1024) >= 3){
 						String str = Device.this.type + Messages.DeviceManager_15 + Device.this.name + Messages.DeviceManager_16 + new SimpleDateFormat(Messages.DeviceManager_17).format(Calendar.getInstance().getTime());
 						int i = 0;
-						if(!file.renameTo(new File(file.getParentFile(), str + Messages.DeviceManager_18 + ResourceManager.SFFFIX_ADDITIONAL_LOG))){
-							while(!file.renameTo(new File(file.getParentFile(), str + (++i) + Messages.DeviceManager_19 + ResourceManager.SFFFIX_ADDITIONAL_LOG))){
+						if(!file.renameTo(new File(file.getParentFile(), str + Messages.DeviceManager_18 + ResourceManager.SUFFIX_ADDITIONAL_LOG))){
+							while(!file.renameTo(new File(file.getParentFile(), str + (++i) + Messages.DeviceManager_19 + ResourceManager.SUFFIX_ADDITIONAL_LOG))){
 								if(i >= 100){
 									break;
 								}

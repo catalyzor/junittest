@@ -58,7 +58,12 @@ public class Utilities {
 			if(folder.exists()){
 				String[] filenames = folder.getLocation().toFile().list();
 				Arrays.sort(filenames);
-				res = folder.getFile(filenames[filenames.length - 1]);
+				for(int i = filenames.length; i > 0;i --){
+					if(filenames[i - 1].endsWith(ResourceManager.SUFFIX_LOG)){
+						res = folder.getFile(filenames[i - 1]);
+						break;
+					}
+				}
 			}
 		}
 		return res;
