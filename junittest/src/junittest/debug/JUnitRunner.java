@@ -14,11 +14,13 @@ import junittest.view.LogView;
 import junittest.xml.XMLLog;
 
 import org.dom4j.Element;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -244,7 +246,16 @@ public class JUnitRunner {
 					fireStateChange();
 					// TODO Auto-generated method stub
 					String name = Calendar.getInstance().getTimeInMillis() + Messages.JUnitRunner_11;
-					logger = new XMLLog(name, ResourceManager.getInstance().getProject());
+					IFolder folder = ResourceManager.getInstance().getProject().getFolder(ResourceManager.FOLDER_LOG).getFolder(name);
+					if(!folder.exists()){
+						try {
+							folder.create(true, true, null);
+						} catch (CoreException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					logger = new XMLLog(name, folder);
 					logger.initStructure();
 					logger.saveToFile();
 					refreshLogView(null);

@@ -64,6 +64,12 @@ public class AdditionLogView extends ViewPart {
 		}
 		text.append(content + '\n');
 	}
+	
+	public void setContent(String content){
+		if(content != null){
+			text.setText(content);
+		}
+	}
 	/**
 	 * Create the actions.
 	 */

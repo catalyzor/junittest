@@ -31,14 +31,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import com.android.ddmlib.DdmPreferences;
-import com.broadthinking.btt.smartcard.SPISmartCard;
-import com.broadthinking.btt.smartcard.SampleCard;
 import com.broadthinking.btt.device.ExtDeviceException;
 import com.broadthinking.btt.device.ExtDeviceManager;
 import com.broadthinking.btt.device.IExtDevice;
 import com.broadthinking.btt.device.ILogReceiver;
 import com.broadthinking.btt.phone.AdbSocketPhone;
 import com.broadthinking.btt.phone.SamplePhone;
+import com.broadthinking.btt.smartcard.SPISmartCard;
+import com.broadthinking.btt.smartcard.SampleCard;
 
 public class DeviceManager {
 	
@@ -114,6 +114,13 @@ public class DeviceManager {
 			if(device.isConncted()){
 				device.disconnnect();
 			}
+		}
+	}
+	
+	public void logAllDevice(boolean log){
+		List<Device> lstDevices = (List<Device>) getAllDevices().values();
+		for(Device dev : lstDevices){
+			dev.log(log);
 		}
 	}
 
@@ -505,12 +512,13 @@ public class DeviceManager {
 		public void log(boolean bool){
 
 			if(isLog()){
+				if(adDevicelogreceiver == null) adDevicelogreceiver  = new Devicelogreceiver();
 				if(bool){
-					adDevicelogreceiver  = new Devicelogreceiver();
-//					if(t1 == null){
+					
+					if(t1 == null){
 						t1 = new Thread(new runlog(device, adDevicelogreceiver));
-						t1.start();
-//					}
+					}
+					t1.start();
 				}else{
 					adDevicelogreceiver.cancel();
 				}
@@ -544,7 +552,8 @@ public class DeviceManager {
 				final String log = new String(data,offset,length);
 				IProject project = ResourceManager.getInstance().getProject();
 				if(project == null) return;
-				IFolder folder = project.getFolder(ResourceManager.FOLDER_LOG);
+//				IFolder folder = project.getFolder(ResourceManager.FOLDER_LOG);
+				IFolder folder = ResourceManager.logFolder;
 				if(folder.exists()){
 					String filename = Device.this.type + Messages.DeviceManager_13 + Device.this.name + Messages.DeviceManager_14 + ResourceManager.SUFFIX_ADDITIONAL_LOG;
 					IFile logfile = folder.getFile(filename);

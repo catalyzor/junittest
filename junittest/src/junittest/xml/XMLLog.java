@@ -28,7 +28,6 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -54,7 +53,7 @@ public class XMLLog {
 	
 	private String time;
 	private Document doc;
-	private IProject res;
+	private IFolder folder;
 	private String fileName;
 	public static XMLLog log;
 	
@@ -67,9 +66,9 @@ public class XMLLog {
 	public Document getDocument(){
 		return doc;
 	}
-	public XMLLog(String time, IProject res){
+	public XMLLog(String time, IFolder folder){
 		this.time = time;
-		this.res = res;
+		this.folder = folder;
 		this.fileName = time + "." + ResourceManager.SUFFIX_LOG;
 		doc = DocumentHelper.createDocument();
 		log = this;
@@ -77,10 +76,10 @@ public class XMLLog {
 	
 	public void initStructure(){
 		Element root = doc.addElement(NODE_ROOT).addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(new Date(Long.parseLong(time))));
-		root.addElement(NODE_NAME).addText(res.getName());
+		root.addElement(NODE_NAME).addText(folder.getProject().getName());
 		root.addElement(NODE_VERDICT).addAttribute(ATTR_VERDICT_TOTAL, Messages.XMLLog_11).addAttribute(ATTR_VERDICT_OK, Messages.XMLLog_12).addAttribute(ATTR_VERDICT_FAIL, Messages.XMLLog_13).addAttribute(ATTR_VERDICT_ERROR, Messages.XMLLog_14).addAttribute(ATTR_VERDICT_IGNORE, Messages.XMLLog_15);
 		try {
-			addElement(root, res.getFolder(ResourceManager.FOLDER_CASE).members());
+			addElement(root, folder.members());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,7 +113,7 @@ public class XMLLog {
 		}
 	}
 	public synchronized IPath saveToFile(){
-		IPath path = res.getFolder(ResourceManager.FOLDER_LOG).getLocation().append(fileName);
+		IPath path = folder.getLocation().append(fileName);
 		try {
 			FileWriter writer = new FileWriter(path.toFile());
 //			doc.write(writer);
@@ -191,7 +190,7 @@ public class XMLLog {
 	}
 	public synchronized void updateTestResult(String classname, TestResultEnum result, boolean suite){
 		if(result == null) return;
-//		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
+//		String path = new StringBuffer("/").append(folder.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
 //		StringBuffer sb = new StringBuffer("//");
 //		String[] names = classname.split("\\.");
 //		StringBuffer psb = new StringBuffer();
@@ -272,7 +271,7 @@ public class XMLLog {
 	}
 	
 //	public synchronized Element addElement(String classname, String name, String value){
-//		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
+//		String path = new StringBuffer("/").append(folder.getName()).append("/").append(classname.replace('.', '/')).append('.').append(ResourceManager.SUFFIX_CLASS).toString();
 //		Node node = doc.selectSingleNode(path);
 //		if(node instanceof Element){
 //			Element element = ((Element)node).addElement(name);
@@ -283,7 +282,7 @@ public class XMLLog {
 //	}
 	
 	public Element getElement(String classname){
-//		String path = new StringBuffer("/").append(res.getName()).append("/").append(classname.replace('.', '/')).append('/').append(NODE_LOG).toString();
+//		String path = new StringBuffer("/").append(folder.getName()).append("/").append(classname.replace('.', '/')).append('/').append(NODE_LOG).toString();
 //		StringBuffer sb = new StringBuffer("//").append(NODE_ROOT).append("/");
 //		String[] names = classname.split("\\.");
 //		StringBuffer psb = new StringBuffer();

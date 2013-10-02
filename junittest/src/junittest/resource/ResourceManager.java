@@ -18,6 +18,7 @@ import junittest.device.DeviceManager;
 import junittest.util.ZipUtils;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -49,6 +50,8 @@ public class ResourceManager {
 	private Map<String, TestResultEnum> mapResult;
 	private IProject project;
 	public URLClassLoader urlClassLoad;
+	public static IFolder logFolder;
+	public static String caseName;
 	private DeviceManager deviceManager;
 	private static ResourceManager instance;
 	private ResourceManager(String path){

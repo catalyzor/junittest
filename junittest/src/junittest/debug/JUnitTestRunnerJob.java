@@ -3,9 +3,11 @@ package junittest.debug;
 import java.util.Calendar;
 import java.util.List;
 
+import junittest.device.DeviceManager;
 import junittest.resource.ResourceManager;
 import junittest.xml.XMLLog;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -114,7 +116,16 @@ public class JUnitTestRunnerJob extends Job {
 		ResourceManager.getInstance().getMapResult().clear();
 		startTime = Calendar.getInstance().getTimeInMillis();
 		String name = startTime + Messages.JUnitTestRunnerJob_5;
-		this.runListener.setXmlLog(new XMLLog(name, this.runListener.getProject()));
+		IFolder folder = this.runListener.getProject().getFolder(ResourceManager.FOLDER_LOG).getFolder(name);
+		if(!folder.exists()){
+			try {
+				folder.create(true, true, new SubProgressMonitor(monitor, 1));
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		this.runListener.setXmlLog(new XMLLog(name, folder));
 //		getMonitor().subTask("生成日志文件");
 //		logger.debug("初始化日志结构");
 		getXmlLog().initStructure();
@@ -136,6 +147,7 @@ public class JUnitTestRunnerJob extends Job {
 //		}catch(Exception e){
 //			return Status.CANCEL_STATUS;
 //		}
+		
 		for(String c: this.lstClasses){
 			monitor.setCanceled(!checkTime(Calendar.getInstance().getTimeInMillis()));
 			if(monitor.isCanceled()){
@@ -143,6 +155,9 @@ public class JUnitTestRunnerJob extends Job {
 				this.runListener.refreshLogHistoryView(logfile);
 				return Status.CANCEL_STATUS;
 			}
+			ResourceManager.caseName = c;
+			ResourceManager.logFolder = folder;
+			ResourceManager.getInstance().getDeviceManager().logAllDevice(true);
 			runListener.setMonitor(new SubProgressMonitor(monitor, 10));
 			
 			try {
@@ -152,6 +167,7 @@ public class JUnitTestRunnerJob extends Job {
 				e.printStackTrace();
 			}
 		}
+		ResourceManager.getInstance().getDeviceManager().logAllDevice(false);
 		monitor.done();
 		XMLLog.log = null;
 		this.runListener.refreshLogHistoryView(logfile);
