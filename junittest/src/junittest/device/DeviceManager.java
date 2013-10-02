@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 
 import junittest.resource.ResourceManager;
 import junittest.view.AdditionLogView;
@@ -118,9 +119,9 @@ public class DeviceManager {
 	}
 	
 	public void logAllDevice(boolean log){
-		List<Device> lstDevices = (List<Device>) getAllDevices().values();
-		for(Device dev : lstDevices){
-			dev.log(log);
+		Set<Entry<String,Device>> lstDevices = getAllDevices().entrySet();
+		for(Entry<String,Device> entry : lstDevices){
+			entry.getValue().log(log);
 		}
 	}
 

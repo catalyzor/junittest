@@ -17,6 +17,7 @@ import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -236,8 +237,17 @@ public class LogHistoryView extends ViewPart {
 					IResource[] files = project.getFolder(ResourceManager.FOLDER_LOG).members();
 					List<IResource> lstFile = new ArrayList<>();
 					for(IResource res1:files){
-						if(res1.getFileExtension() != null && res1.getFileExtension().toLowerCase().equals(Messages.LogHistoryView_9)){
-							lstFile.add(res1);
+//						if(res1.getFileExtension() != null && res1.getFileExtension().toLowerCase().equals(Messages.LogHistoryView_9)){
+//							lstFile.add(res1);
+//						}
+						if(res1.getType() == IResource.FOLDER){
+							IResource[] files2 = ((IFolder) res1).members();
+							for(IResource res2 : files2){
+								if(res2.getFileExtension() != null && res2.getFileExtension().toLowerCase().equals(Messages.LogHistoryView_9)){
+									lstFile.add(res2);
+									break;
+								}
+							}
 						}
 					}
 					tableViewer.setInput(lstFile);
