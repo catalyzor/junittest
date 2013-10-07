@@ -21,11 +21,11 @@ public class WorkbenchWindowControlContributionStatus extends
 	@Override
 	protected Control createControl(Composite parent) {
 		Label label = new Label(parent, SWT.NONE);
-		String strSum = Messages.WorkbenchWindowControlContributionStatus_0;
-		String strOK = Messages.WorkbenchWindowControlContributionStatus_1;
-		String strFail = Messages.WorkbenchWindowControlContributionStatus_2;
-		String strError = Messages.WorkbenchWindowControlContributionStatus_3;
-		label.setText(strSum + strOK + strFail + strError);
+//		String strSum = Messages.WorkbenchWindowControlContributionStatus_0;
+//		String strOK = Messages.WorkbenchWindowControlContributionStatus_1;
+//		String strFail = Messages.WorkbenchWindowControlContributionStatus_2;
+//		String strError = Messages.WorkbenchWindowControlContributionStatus_3;
+//		label.setText(strSum + strOK + strFail + strError);
 		return label;
 	}
 

@@ -12,6 +12,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -50,6 +51,11 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 									e.printStackTrace();
 								}
 							}
+						}
+						//If parent's name equales name then remove the log folder. Parent is the log folder. 
+						IContainer parent = ((IResource)obj).getParent();
+						if(((IResource)obj).getName().startsWith(parent.getName())){
+							obj = parent;
 						}
 						((IResource)obj).delete(true, null);
 						LogHistoryView view = (LogHistoryView) window.getActivePage().findView(LogHistoryView.ID);

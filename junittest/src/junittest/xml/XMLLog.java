@@ -79,7 +79,7 @@ public class XMLLog {
 		root.addElement(NODE_NAME).addText(folder.getProject().getName());
 		root.addElement(NODE_VERDICT).addAttribute(ATTR_VERDICT_TOTAL, Messages.XMLLog_11).addAttribute(ATTR_VERDICT_OK, Messages.XMLLog_12).addAttribute(ATTR_VERDICT_FAIL, Messages.XMLLog_13).addAttribute(ATTR_VERDICT_ERROR, Messages.XMLLog_14).addAttribute(ATTR_VERDICT_IGNORE, Messages.XMLLog_15);
 		try {
-			addElement(root, folder.members());
+			addElement(root, folder.getProject().getFolder(ResourceManager.FOLDER_CASE).members());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -345,7 +345,9 @@ public class XMLLog {
 				}
 			}
 			reader.close();
-			result = line.substring(line.indexOf(Messages.XMLLog_47) + 1, line.length() - Messages.XMLLog_48.length());
+			if(line != null){
+				result = line.substring(line.indexOf(Messages.XMLLog_47) + 1, line.length() - Messages.XMLLog_48.length());
+			}
 		}
 		return result;
 	}

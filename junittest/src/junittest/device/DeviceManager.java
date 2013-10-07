@@ -146,7 +146,7 @@ public class DeviceManager {
 		this.project = project;
 		init();
 	}
-	static IExtDevice[] sIExtDevices = null;
+	public static IExtDevice[] sIExtDevices = null;
 	
 	public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, ExtDeviceException {
 		// TODO Auto-generated method stub
@@ -164,7 +164,11 @@ public class DeviceManager {
 			
 			//init devices list 
 			for (int i =0; i < typeStrings.length; i++){
-				sIExtDevices[i] = ExtDeviceManager.getInstance(classnameStrings[i]);				
+				try{
+					sIExtDevices[i] = ExtDeviceManager.getInstance(classnameStrings[i]);				
+				}catch(Error e){
+					e.printStackTrace();
+				}
 			}
 		}
 		for(DeviceConfig config: lstConfig){
@@ -518,8 +522,9 @@ public class DeviceManager {
 					
 					if(t1 == null){
 						t1 = new Thread(new runlog(device, adDevicelogreceiver));
+						t1.start();
 					}
-					t1.start();
+					adDevicelogreceiver.resume();
 				}else{
 					adDevicelogreceiver.cancel();
 				}
@@ -547,7 +552,7 @@ public class DeviceManager {
 			
 		}
 		public class Devicelogreceiver implements ILogReceiver{
-			boolean bisCancel = false;
+			boolean bisCancel = true;
 			@Override
 			public void addOutput(byte[] data, int offset, int length) {
 				final String log = new String(data,offset,length);
@@ -555,8 +560,8 @@ public class DeviceManager {
 				if(project == null) return;
 //				IFolder folder = project.getFolder(ResourceManager.FOLDER_LOG);
 				IFolder folder = ResourceManager.logFolder;
-				if(folder.exists()){
-					String filename = Device.this.type + Messages.DeviceManager_13 + Device.this.name + Messages.DeviceManager_14 + ResourceManager.SUFFIX_ADDITIONAL_LOG;
+				if(folder != null && folder.exists()){
+					String filename = Device.this.type + Messages.DeviceManager_13 + Device.this.name + Messages.DeviceManager_13 + ResourceManager.caseName + Messages.DeviceManager_14 + ResourceManager.SUFFIX_ADDITIONAL_LOG;
 					IFile logfile = folder.getFile(filename);
 					if(!logfile.exists()){
 						try {
@@ -591,28 +596,28 @@ public class DeviceManager {
 							}
 						}
 					}
-				}
-				if (!bisCancel){
-//				System.out.println(new String(data,offset,length));
-					Display.getDefault().asyncExec(new Runnable() {
-						
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							try {
-								AdditionLogView view = (AdditionLogView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(AdditionLogView.ID, Device.this.type + Device.this.name, IWorkbenchPage.VIEW_CREATE);
-								if(view != null){
-									view.updateTitle(Device.this.type + Messages.DeviceManager_20 + Device.this.name);
-									view.appendContent(log);
+					if (!bisCancel){
+//						System.out.println(new String(data,offset,length));
+							Display.getDefault().asyncExec(new Runnable() {
+								
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									try {
+										AdditionLogView view = (AdditionLogView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(AdditionLogView.ID, Device.this.type + Device.this.name, IWorkbenchPage.VIEW_CREATE);
+										if(view != null){
+											view.updateTitle(Device.this.type + Messages.DeviceManager_20 + Device.this.name);
+											view.appendContent(log);
+										}
+									} catch (PartInitException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 								}
-							} catch (PartInitException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							});
 						}
-					});
+					}
 				}
-			}
 
 			@Override
 			public boolean isCancelled() {
@@ -623,6 +628,10 @@ public class DeviceManager {
 			public void cancel() {
 				// TODO Auto-generated method stub
 				bisCancel = true;
+			}
+			
+			public void resume(){
+				bisCancel = false;
 			}
 
 

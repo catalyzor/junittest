@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
@@ -40,6 +41,11 @@ public class AdditionLogView extends ViewPart {
 				composite = new Composite(scrolledComposite, SWT.NONE);
 				composite.setLayout(new GridLayout(1, false));
 				{
+					Label lblNewLabel = new Label(composite, SWT.NONE);
+					lblNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+					lblNewLabel.setText("New Label");
+				}
+				{
 					text = new Text(composite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
 					text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 				}
@@ -55,6 +61,10 @@ public class AdditionLogView extends ViewPart {
 
 	public void updateTitle(String title){
 		setPartName(title);
+	}
+	
+	public void updateCaseName(String casename){
+		text.setText(casename);
 	}
 	public void appendContent(String content){
 		//clear text if text length up to the limit.
