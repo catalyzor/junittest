@@ -3,8 +3,6 @@ package junittest.view;
 import junittest.Activator;
 import junittest.preferences.PreferenceConstants;
 
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
@@ -66,6 +64,7 @@ public class AdditionLogView extends ViewPart {
 	
 	public void updateCaseName(String casename){
 		lblNewLabel.setText(casename);
+		lblNewLabel.setToolTipText(lblNewLabel.getText());
 	}
 	public void appendContent(String content){
 		//clear text if text length up to the limit.

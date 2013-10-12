@@ -31,7 +31,7 @@ public class QuickDeleteHandler extends AbstractHandler implements IHandler {
 		}
 
 		try {
-			res.delete(true, null);
+			res.getParent().delete(true, null);
 			Display.getDefault().asyncExec(new Runnable() {
 				
 				@Override

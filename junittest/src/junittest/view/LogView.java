@@ -491,8 +491,10 @@ public class LogView extends ViewPart {
 					lstDeviceLog.add(log);
 				}
 				if(log != null){
-					log.setContent(getLogContent(lstLog.get(i)));
-					log.updateCaseName(casename);
+					File file = lstLog.get(i);
+					String[] names = file.getName().split("_");
+					log.setContent(getLogContent(file));
+					log.updateCaseName((names.length > 2)?(names[0] + ":" + names[1] + " " + casename) : casename);
 				}
 			}
 			parent.pack();
@@ -508,8 +510,10 @@ public class LogView extends ViewPart {
 		}else{
 			for(int i = 0;i < lstDeviceLog.size();i ++){
 				if(i < lstLog.size()){
+					File file = lstLog.get(i);
+					String[] names = file.getName().split("_");
 					lstDeviceLog.get(i).setContent(getLogContent(lstLog.get(i)));
-					lstDeviceLog.get(i).updateCaseName(casename);
+					lstDeviceLog.get(i).updateCaseName((names.length > 2)?(names[0] + ":" + names[1] + " " + casename) : casename);
 				}else{
 					lstDeviceLog.get(i).setContent("");
 					lstDeviceLog.get(i).updateCaseName("");
