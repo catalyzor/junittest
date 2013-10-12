@@ -1,6 +1,7 @@
 package junittest.view;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,8 +16,6 @@ import junittest.xml.XMLLog;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -230,12 +229,12 @@ public class LogView extends ViewPart {
 	private Document doc;
 
 	private List<AdditionLogView> lstDeviceLog = new ArrayList<>();
-	private IResource mainLog;
-	public IResource getMainLog() {
+	private File mainLog;
+	public File getMainLog() {
 		return mainLog;
 	}
 
-	public void setMainLog(IResource mainLog) {
+	public void setMainLog(File mainLog) {
 		this.mainLog = mainLog;
 	}
 //	private RunListener runListener;
@@ -353,9 +352,17 @@ public class LogView extends ViewPart {
 //		if(projectView != null){
 			
 				treeViewer.setInput(getDoc());
+				cleanAdditionalLog();
 //			}
 //			treeViewer.refresh();
 //		}
+	}
+	
+	public void cleanAdditionalLog(){
+		for(AdditionLogView log : lstDeviceLog){
+			log.setContent("");
+			log.updateCaseName("");
+		}
 	}
 	public void refreshNode(Element element){
 //		Thread.currentThread().yield();
@@ -398,7 +405,7 @@ public class LogView extends ViewPart {
 								String casename = XMLLog.getElementID((Element)obj);
 								if(casename != null){
 									try {
-										showDeviceLogs(composite, findDeviceLogs(casename, getMainLog().getParent()), casename);
+										showDeviceLogs(composite, findDeviceLogs(casename, getMainLog().getParentFile()), casename);
 									} catch (IOException | CoreException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -459,19 +466,19 @@ public class LogView extends ViewPart {
 		return treeViewer;
 	}
 	
-	public List<IResource> findDeviceLogs(String casename, IContainer parent) throws CoreException{
-		List<IResource> lstLog= new ArrayList<>();
-		IResource[] ress = parent.members();
+	public List<File> findDeviceLogs(String casename, File file) throws CoreException{
+		List<File> lstLog= new ArrayList<>();
+		File[] ress = file.listFiles();
 		if(ress != null){
-			for(IResource res : ress){
-				if(res.getType() == IResource.FILE && res.getName().endsWith(casename + "." + ResourceManager.SUFFIX_ADDITIONAL_LOG)){
+			for(File res : ress){
+				if(res.isFile() && res.getName().endsWith(casename + "." + ResourceManager.SUFFIX_ADDITIONAL_LOG)){
 					lstLog.add(res);
 				}
 			}
 		}
 		return lstLog;
 	}
-	public void showDeviceLogs(Composite parent, List<IResource> lstLog, String casename) throws IOException{
+	public void showDeviceLogs(Composite parent, List<File> lstLog, String casename) throws IOException{
 		if(lstDeviceLog.size() < lstLog.size()){
 			for(int i = 0;i < lstLog.size(); i++){
 				AdditionLogView log = null;
@@ -505,8 +512,8 @@ public class LogView extends ViewPart {
 		
 	}
 	
-	public String getLogContent(IResource res) throws IOException{
-		BufferedReader reader = new BufferedReader(new FileReader(res.getLocation().toFile()));
+	public String getLogContent(File res) throws IOException{
+		BufferedReader reader = new BufferedReader(new FileReader(res));
 		String line = null;
 		StringBuffer buffer = new StringBuffer();
 		while((line = reader.readLine()) != null){

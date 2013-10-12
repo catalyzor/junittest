@@ -563,6 +563,7 @@ public class DeviceManager {
 				if(folder != null && folder.exists()){
 					String filename = Device.this.type + Messages.DeviceManager_13 + Device.this.name + Messages.DeviceManager_13 + ResourceManager.caseName + Messages.DeviceManager_14 + ResourceManager.SUFFIX_ADDITIONAL_LOG;
 					IFile logfile = folder.getFile(filename);
+					if (!bisCancel){
 					if(!logfile.exists()){
 						try {
 							File file = logfile.getLocation().toFile();
@@ -596,7 +597,6 @@ public class DeviceManager {
 							}
 						}
 					}
-					if (!bisCancel){
 //						System.out.println(new String(data,offset,length));
 							Display.getDefault().asyncExec(new Runnable() {
 								
@@ -607,6 +607,7 @@ public class DeviceManager {
 										AdditionLogView view = (AdditionLogView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(AdditionLogView.ID, Device.this.type + Device.this.name, IWorkbenchPage.VIEW_CREATE);
 										if(view != null){
 											view.updateTitle(Device.this.type + Messages.DeviceManager_20 + Device.this.name);
+											view.updateCaseName(ResourceManager.caseName);
 											view.appendContent(log);
 										}
 									} catch (PartInitException e) {

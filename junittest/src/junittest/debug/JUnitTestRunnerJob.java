@@ -151,7 +151,7 @@ public class JUnitTestRunnerJob extends Job {
 			public void run() {
 				LogView view = (LogView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(LogView.ID);
 				if(view != null){
-					view.setMainLog(logfile);
+					view.setMainLog(logfile.getLocation().toFile());
 				}
 			}
 		});

@@ -12,6 +12,9 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,10 +27,11 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
-
-import com.broadthinking.btt.device.ExtDeviceException;
+import org.eclipse.ui.handlers.IHandlerService;
 
 public class OpenProjectHandler extends AbstractHandler implements IHandler {
+
+	private static final String CMD_CLOSE = "junittest.command.close";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -41,6 +45,19 @@ public class OpenProjectHandler extends AbstractHandler implements IHandler {
 		dialog.setElements(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 		dialog.setMultipleSelection(false);
 		if(dialog.open() == IDialogConstants.OK_ID){
+			
+			//close project
+			IHandlerService service = (IHandlerService) window.getService(IHandlerService.class);
+			if(service != null){
+				try {
+					service.executeCommand(CMD_CLOSE, null);
+				} catch (NotDefinedException | NotEnabledException
+						| NotHandledException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			final ProjectView view = (ProjectView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ProjectView.ID);
 			if(view != null){
 				Job job = new Job(Messages.OpenProjectHandler_1) {

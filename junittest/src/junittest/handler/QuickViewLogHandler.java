@@ -36,7 +36,7 @@ public class QuickViewLogHandler extends AbstractHandler implements IHandler {
 			try {
 				Document doc = reader.read(res.getLocation().toFile());
 				LogViewer view = new LogViewer(res.getName(), doc);
-				view.setMainLog(res);
+				view.setMainLog(res.getLocation().toFile());
 				view.open();
 			} catch (DocumentException e) {
 				// TODO Auto-generated catch block

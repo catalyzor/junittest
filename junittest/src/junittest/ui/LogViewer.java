@@ -1,13 +1,14 @@
 package junittest.ui;
 
+import java.io.File;
+
 import junittest.view.LogView;
 
 import org.dom4j.Document;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -17,7 +18,7 @@ public class LogViewer {
 	private String name;
 	private LogView view;
 	private Document doc;
-	private IResource mainLog;
+	private File mainLog;
 
 //	/**
 //	 * Launch the application.
@@ -33,7 +34,7 @@ public class LogViewer {
 //	}
 
 
-	public IResource getMainLog() {
+	public File getMainLog() {
 		return mainLog;
 	}
 
@@ -85,9 +86,29 @@ public class LogViewer {
 //		treeviewer.remove
 	}
 
-	public void setMainLog(IResource res) {
+	public void setMainLog(File res) {
 		// TODO Auto-generated method stub
 		this.mainLog = res;
 	}
 	
+	public static void main(String[] args) {
+	      Display display = new Display ();
+	      Shell shell = new Shell (display);
+//	      shell.open ();
+	      DirectoryDialog dialog = new DirectoryDialog(shell);
+	      dialog.setText("打开");
+	      dialog.setMessage("选择要打开的日志文件夹");
+	      String doc = dialog.open();
+	      if(doc != null){
+	    	  
+	      }
+	      // start the event loop. We stop when the user has done
+	      // something to dispose our window.
+	      while (!shell.isDisposed ()) {
+	         if (!display.readAndDispatch ())
+	            display.sleep ();
+	      }
+	      display.dispose ();
+
+	}
 }
