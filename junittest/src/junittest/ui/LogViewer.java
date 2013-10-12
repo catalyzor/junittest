@@ -130,6 +130,7 @@ public class LogViewer {
 	}
 	
 	public static void main(String[] args) {
+		LogViewer.class.getResourceAsStream("/icons");
 	      Display display = new Display ();
 	      Shell shell = new Shell (display);
 //	      shell.open ();
@@ -218,7 +219,9 @@ public class LogViewer {
 						path = NameEnum.TAG_DEFAULT.toLowerCase() + ".png";
 					}
 				}
-				return new Image(Display.getDefault(), "icons/" + path);
+//				return new Image(Display.getDefault(), "icons/" + path);
+				//this only use for java application
+				return new Image(Display.getDefault(), LogViewer.class.getResourceAsStream("/icons/" + path));
 			}
 			return super.getImage(element);
 		}
