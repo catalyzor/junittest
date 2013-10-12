@@ -20,6 +20,7 @@ public class AdditionLogView extends ViewPart {
 	public static final String ID = "junittest.view.AdditionLogView"; //$NON-NLS-1$
 	private Composite composite;
 	private Text text;
+	private Label lblNewLabel;
 
 	public AdditionLogView() {
 	}
@@ -41,7 +42,7 @@ public class AdditionLogView extends ViewPart {
 				composite = new Composite(scrolledComposite, SWT.NONE);
 				composite.setLayout(new GridLayout(1, false));
 				{
-					Label lblNewLabel = new Label(composite, SWT.NONE);
+					lblNewLabel = new Label(composite, SWT.NONE);
 					lblNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 					lblNewLabel.setText("New Label");
 				}
@@ -64,7 +65,7 @@ public class AdditionLogView extends ViewPart {
 	}
 	
 	public void updateCaseName(String casename){
-		text.setText(casename);
+		lblNewLabel.setText(casename);
 	}
 	public void appendContent(String content){
 		//clear text if text length up to the limit.
@@ -91,16 +92,16 @@ public class AdditionLogView extends ViewPart {
 	 * Initialize the toolbar.
 	 */
 	private void initializeToolBar() {
-		IToolBarManager toolbarManager = getViewSite().getActionBars()
-				.getToolBarManager();
+//		IToolBarManager toolbarManager = getViewSite().getActionBars()
+//				.getToolBarManager();
 	}
 
 	/**
 	 * Initialize the menu.
 	 */
 	private void initializeMenu() {
-		IMenuManager menuManager = getViewSite().getActionBars()
-				.getMenuManager();
+//		IMenuManager menuManager = getViewSite().getActionBars()
+//				.getMenuManager();
 	}
 
 	@Override

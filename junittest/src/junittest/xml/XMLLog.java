@@ -351,4 +351,12 @@ public class XMLLog {
 		}
 		return result;
 	}
+	
+	public static String getElementID(Element element){
+		String id = null;
+		if(element != null){
+			id = element.attributeValue(NODE_ATTR_ID);
+		}
+		return id;
+	}
 }

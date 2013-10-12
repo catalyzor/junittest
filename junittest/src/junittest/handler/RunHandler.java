@@ -39,7 +39,7 @@ public class RunHandler extends AbstractHandler implements IHandler {
 			job.setMaxTime(time * 1000);
 //			job.setClasses(classes);
 			job.setClasses(list);
-			job.setPriority(job.LONG);
+			job.setPriority(job.SHORT);
 			job.setUser(false);
 //			job.setSystem(true);
 			job.schedule();

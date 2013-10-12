@@ -38,6 +38,7 @@ public class ShowLogHandler extends AbstractHandler implements IHandler {
 				try {
 					Document doc = reader.read(res.getLocation().toFile());
 					LogViewer view = new LogViewer(res.getName(), doc);
+					view.setMainLog(res);
 					view.open();
 				} catch (DocumentException e) {
 					// TODO Auto-generated catch block

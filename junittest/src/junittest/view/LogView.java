@@ -1,18 +1,28 @@
 package junittest.view;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import junittest.Activator;
 import junittest.ISharedImageConstants;
+import junittest.resource.ResourceManager;
 import junittest.userlog.NameEnum;
 import junittest.xml.XMLLog;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -219,6 +229,15 @@ public class LogView extends ViewPart {
 	private TreeViewer treeViewer;
 	private Document doc;
 
+	private List<AdditionLogView> lstDeviceLog = new ArrayList<>();
+	private IResource mainLog;
+	public IResource getMainLog() {
+		return mainLog;
+	}
+
+	public void setMainLog(IResource mainLog) {
+		this.mainLog = mainLog;
+	}
 //	private RunListener runListener;
 //	private IResourceChangeListener listener;
 	public LogView() {
@@ -358,7 +377,7 @@ public class LogView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		{
 			{
-				Composite composite = new Composite(parent, SWT.NONE);
+				final Composite composite = new Composite(parent, SWT.NONE);
 				composite.setLayout(new FillLayout(SWT.HORIZONTAL));
 				treeViewer = new TreeViewer(composite, SWT.BORDER);
 				Tree tree = treeViewer.getTree();
@@ -366,6 +385,29 @@ public class LogView extends ViewPart {
 				treeViewer.setLabelProvider(new ViewerLabelProvider());
 				treeViewer.setContentProvider(new TreeContentProvider());
 				treeViewer.setAutoExpandLevel(3);
+
+				treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+					
+					@Override
+					public void doubleClick(DoubleClickEvent event) {
+						// TODO Auto-generated method stub
+						IStructuredSelection selection = ((IStructuredSelection)event.getSelection());
+						if(!selection.isEmpty()){
+							Object obj = selection.getFirstElement();
+							if(obj instanceof Element){
+								String casename = XMLLog.getElementID((Element)obj);
+								if(casename != null){
+									try {
+										showDeviceLogs(composite, findDeviceLogs(casename, getMainLog().getParent()), casename);
+									} catch (IOException | CoreException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+					}
+				});
 			}
 		}
 
@@ -413,4 +455,64 @@ public class LogView extends ViewPart {
 		// Set the focus
 	}
 
+	public TreeViewer getTreeViewer(){
+		return treeViewer;
+	}
+	
+	public List<IResource> findDeviceLogs(String casename, IContainer parent) throws CoreException{
+		List<IResource> lstLog= new ArrayList<>();
+		IResource[] ress = parent.members();
+		if(ress != null){
+			for(IResource res : ress){
+				if(res.getType() == IResource.FILE && res.getName().endsWith(casename + "." + ResourceManager.SUFFIX_ADDITIONAL_LOG)){
+					lstLog.add(res);
+				}
+			}
+		}
+		return lstLog;
+	}
+	public void showDeviceLogs(Composite parent, List<IResource> lstLog, String casename) throws IOException{
+		if(lstDeviceLog.size() < lstLog.size()){
+			for(int i = 0;i < lstLog.size(); i++){
+				AdditionLogView log = null;
+				if(i < lstDeviceLog.size()){
+					log = lstDeviceLog.get(i);
+				}else{
+					log = new AdditionLogView();
+					log.createPartControl(parent);
+					lstDeviceLog.add(log);
+				}
+				if(log != null){
+					log.setContent(getLogContent(lstLog.get(i)));
+					log.updateCaseName(casename);
+				}
+			}
+			parent.pack();
+			if(parent.getParent() != null && parent.getParent().getParent() != null){
+				parent.getParent().getParent().pack();
+			}
+		}else{
+			for(int i = 0;i < lstDeviceLog.size();i ++){
+				if(i < lstLog.size()){
+					lstDeviceLog.get(i).setContent(getLogContent(lstLog.get(i)));
+					lstDeviceLog.get(i).updateCaseName(casename);
+				}else{
+					lstDeviceLog.get(i).setContent("");
+					lstDeviceLog.get(i).updateCaseName("");
+				}
+			}
+		}
+		
+	}
+	
+	public String getLogContent(IResource res) throws IOException{
+		BufferedReader reader = new BufferedReader(new FileReader(res.getLocation().toFile()));
+		String line = null;
+		StringBuffer buffer = new StringBuffer();
+		while((line = reader.readLine()) != null){
+			buffer.append(line).append('\n');
+		}
+		reader.close();
+		return buffer.toString();
+	}
 }

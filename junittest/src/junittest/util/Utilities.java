@@ -5,6 +5,7 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 import junittest.resource.ResourceManager;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -59,10 +60,18 @@ public class Utilities {
 				String[] filenames = folder.getLocation().toFile().list();
 				Arrays.sort(filenames);
 				for(int i = filenames.length; i > 0;i --){
-					if(filenames[i - 1].endsWith(ResourceManager.SUFFIX_LOG)){
-						res = folder.getFile(filenames[i - 1]);
-						break;
+					IFolder f = folder.getFolder(filenames[i - 1]);
+					if(f != null && f.exists()){
+						IFile file = f.getFile(filenames[i - 1] + "." + ResourceManager.SUFFIX_LOG);
+						if(file != null && file.exists()){
+							res = file;
+							break;
+						}
 					}
+//					if(filenames[i - 1].endsWith(ResourceManager.SUFFIX_LOG)){
+//						res = folder.getFile(filenames[i - 1]);
+//						break;
+//					}
 				}
 			}
 		}

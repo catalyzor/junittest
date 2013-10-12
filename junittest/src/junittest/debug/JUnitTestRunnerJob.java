@@ -3,8 +3,8 @@ package junittest.debug;
 import java.util.Calendar;
 import java.util.List;
 
-import junittest.device.DeviceManager;
 import junittest.resource.ResourceManager;
+import junittest.view.LogView;
 import junittest.xml.XMLLog;
 
 import org.eclipse.core.resources.IFolder;
@@ -18,6 +18,8 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 
@@ -131,7 +133,7 @@ public class JUnitTestRunnerJob extends Job {
 		getXmlLog().initStructure();
 //		logger.debug("保存文件");
 		IPath path = getXmlLog().saveToFile();
-		IResource logfile = this.runListener.getProject().getFile(path.makeRelativeTo(this.runListener.getProject().getLocation()));
+		final IResource logfile = this.runListener.getProject().getFile(path.makeRelativeTo(this.runListener.getProject().getLocation()));
 //		logger.debug("保存完毕");
 		try {
 			this.runListener.getProject().getFolder(ResourceManager.FOLDER_LOG).refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -142,6 +144,17 @@ public class JUnitTestRunnerJob extends Job {
 		this.runListener.refreshProjectView(null);
 		this.runListener.refreshLogHistoryView(null);
 		this.runListener.refreshLogView(null);
+
+		Display.getDefault().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				LogView view = (LogView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(LogView.ID);
+				if(view != null){
+					view.setMainLog(logfile);
+				}
+			}
+		});
 //		try{
 //			Result result = this.jUnitCore.run(classes);
 //		}catch(Exception e){
