@@ -1,15 +1,24 @@
 package junittest.ui;
 
 import java.io.File;
+import java.util.Arrays;
 
+import junittest.Activator;
+import junittest.ISharedImageConstants;
 import junittest.resource.ResourceManager;
+import junittest.userlog.NameEnum;
 import junittest.view.LogView;
+import junittest.view.Messages;
+import junittest.xml.XMLLog;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -38,6 +47,14 @@ public class LogViewer {
 //	}
 
 
+	public LogView getView() {
+		return view;
+	}
+
+	public void setView(LogView view) {
+		this.view = view;
+	}
+
 	public File getMainLog() {
 		return mainLog;
 	}
@@ -48,6 +65,7 @@ public class LogViewer {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
+		view.refreshView();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -62,6 +80,8 @@ public class LogViewer {
 			display = Display.getDefault();
 		}
 		createContents();
+		view.getTreeViewer().setLabelProvider(new ViewerLabelProvider());
+		view.refreshView();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -99,7 +119,7 @@ public class LogViewer {
 //		grpLog.setLayout(new FillLayout(SWT.HORIZONTAL));
 //		
 //		Text text = new Text(grpLog, SWT.BORDER);
-		view.refreshView();
+//		view.refreshView();
 //		TreeViewer treeviewer = view.getTreeViewer();
 //		treeviewer.remove
 	}
@@ -126,6 +146,7 @@ public class LogViewer {
 						LogViewer viewer = new LogViewer(file.getName(), new SAXReader().read(file));
 						viewer.setMainLog(file);
 						viewer.open(display);
+//						viewer.getView().getTreeViewer().setLabelProvider(new ViewerLabelProvider());
 					} catch (DocumentException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -143,5 +164,80 @@ public class LogViewer {
 //	      }
 //	      display.dispose ();
 
+	}
+
+	private static class ViewerLabelProvider extends LabelProvider {
+		private String[] tags = Arrays.copyOf(NameEnum.TAGS, NameEnum.TAGS.length);
+		public ViewerLabelProvider(){
+			super();
+			Arrays.sort(tags);
+		}
+		public Image getImage(Object element) {
+			if(element instanceof Element){
+				Element el = (Element) element;
+				String name = el.getName();
+				String path = ISharedImageConstants.TEST;
+				if(name.endsWith(XMLLog.NODE_CASE)){
+					switch (el.elementTextTrim(XMLLog.NODE_VERDICT)) {
+					case "ERROR": //$NON-NLS-1$
+						path = ISharedImageConstants.TESTERR;
+						break;
+					case "FAIL": //$NON-NLS-1$
+//						path = ISharedImageConstants.TESTFAIL;
+						path = NameEnum.TAG_RUNFAIL.toLowerCase() + ".png";
+						break;
+					case "OK": //$NON-NLS-1$
+//						path = ISharedImageConstants.TESTOK;
+						path = NameEnum.TAG_RUNSUCCESS.toLowerCase() + ".png";
+						break;
+					default:
+						path = ISharedImageConstants.TEST;
+						break;
+					}
+				}else if(name.startsWith(XMLLog.NODE_ROOT) || name.startsWith(XMLLog.NODE_SUITE)){
+					if(el.element(XMLLog.NODE_VERDICT) != null){
+						switch (el.elementTextTrim(XMLLog.NODE_VERDICT)) {
+						case "ERROR": //$NON-NLS-1$
+							path = ISharedImageConstants.TSUITEERROR;
+							break;
+						case "FAIL": //$NON-NLS-1$
+							path = ISharedImageConstants.TSUITEFAIL;
+							break;
+						case "OK": //$NON-NLS-1$
+							path = ISharedImageConstants.TSUITEOK;
+							break;
+						default:
+							path = ISharedImageConstants.TSUITE;
+							break;
+						}
+					}
+				}else{
+					if(Arrays.binarySearch(tags, el.getName()) >= 0){
+						path = el.getName().toLowerCase() + ".png";
+					}else{
+						path = NameEnum.TAG_DEFAULT.toLowerCase() + ".png";
+					}
+				}
+				return new Image(Display.getDefault(), "icons/" + path);
+			}
+			return super.getImage(element);
+		}
+		public String getText(Object element) {
+			if(element instanceof Element){
+				Element e = (Element) element;
+				if(e.selectSingleNode(XMLLog.NODE_NAME) != null){
+					String name = e.elementTextTrim(XMLLog.NODE_NAME);
+					return name;
+				}else if(e.getParent().getName().equals(XMLLog.NODE_PROPS)){
+					return e.getName() + Messages.LogView_14 + e.getTextTrim();
+				}else{
+					return e.getTextTrim();
+				}
+//				if(name.endsWith("." + ResourceManager.SUFFIX_CLASS)){
+//					name = name.substring(0, name.length() - ResourceManager.SUFFIX_CLASS.length() - 1);
+//				}
+			}
+			return super.getText(element);
+		}
 	}
 }

@@ -31,10 +31,13 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener;
 import com.android.ddmlib.DdmPreferences;
+import com.android.ddmlib.IDevice;
 import com.broadthinking.btt.device.ExtDeviceException;
 import com.broadthinking.btt.device.ExtDeviceManager;
 import com.broadthinking.btt.device.IExtDevice;
+import com.broadthinking.btt.device.IExtDeviceChangeListener;
 import com.broadthinking.btt.device.ILogReceiver;
 import com.broadthinking.btt.phone.AdbSocketPhone;
 import com.broadthinking.btt.phone.SamplePhone;
@@ -444,6 +447,14 @@ public class DeviceManager {
 		private Thread t1;
 		private junittest.device.DeviceManager.Device.Devicelogreceiver adDevicelogreceiver;
 		
+		private IExtDeviceChangeListener listener = new IExtDeviceChangeListener() {
+			
+			@Override
+			public void deviceReset(IExtDevice arg0) {
+				// TODO Auto-generated method stub
+				log(true);
+			}
+		};
 		public boolean isConncted() {
 			//return conncted;
 			return device.isConnect();
@@ -500,12 +511,14 @@ public class DeviceManager {
 //		}
 		public void connect() throws ExtDeviceException{
 			device.connectDevice(name);
+			device.addDeviceChanegeListener(listener);
 			//conncted = true;
 			log(true);
 		}
 		
 		public void disconnnect() throws ExtDeviceException{
 			//conncted = false;
+//			device.
 			log(false);
 			device.disconnectDevice();
 		}
