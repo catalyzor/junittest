@@ -31,6 +31,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
 
@@ -495,8 +496,14 @@ public class LogView extends ViewPart {
 				}
 			}
 			parent.pack();
+//			parent.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			if(parent.getParent() != null && parent.getParent().getParent() != null){
-				parent.getParent().getParent().pack();
+				if(parent.getParent().getParent() instanceof Shell){
+					parent.getParent().getParent().pack();
+				}
+//					if(parent.getParent().getParent().getParent() != null){
+//							parent.getParent().getParent().getParent().pack();
+//					}
 			}
 		}else{
 			for(int i = 0;i < lstDeviceLog.size();i ++){
