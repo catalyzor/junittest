@@ -2,9 +2,13 @@ package junittest.ui;
 
 import java.io.File;
 
+import junittest.resource.ResourceManager;
 import junittest.view.LogView;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.io.SAXReader;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -43,6 +47,20 @@ public class LogViewer {
 	 */
 	public void open() {
 		Display display = Display.getDefault();
+		createContents();
+		shell.open();
+		shell.layout();
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}
+	}
+	
+	public void open(Display display){
+		if(display == null){
+			display = Display.getDefault();
+		}
 		createContents();
 		shell.open();
 		shell.layout();
@@ -100,15 +118,30 @@ public class LogViewer {
 	      dialog.setMessage("选择要打开的日志文件夹");
 	      String doc = dialog.open();
 	      if(doc != null){
-	    	  
+	    	  File folder = new File(doc);
+	    	  if(folder.exists()){
+	    		  File file = new File(doc + File.separator + folder.getName() + "." + ResourceManager.SUFFIX_LOG);
+	    		  if(file.exists()){
+	    			  try {
+						LogViewer viewer = new LogViewer(file.getName(), new SAXReader().read(file));
+						viewer.setMainLog(file);
+						viewer.open(display);
+					} catch (DocumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		  }else{
+	    			  MessageDialog.openError(shell, "错误", "没找到日志文件");
+	    		  }
+	    	  }
 	      }
 	      // start the event loop. We stop when the user has done
 	      // something to dispose our window.
-	      while (!shell.isDisposed ()) {
-	         if (!display.readAndDispatch ())
-	            display.sleep ();
-	      }
-	      display.dispose ();
+//	      while (!shell.isDisposed ()) {
+//	         if (!display.readAndDispatch ())
+//	            display.sleep ();
+//	      }
+//	      display.dispose ();
 
 	}
 }

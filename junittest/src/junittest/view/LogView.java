@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -487,7 +488,13 @@ public class LogView extends ViewPart {
 					log = lstDeviceLog.get(i);
 				}else{
 					log = new AdditionLogView();
-					log.createPartControl(parent);
+					ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+					sc.setExpandHorizontal(true);
+					sc.setExpandVertical(true);
+					log.createPartControl(sc);
+//					log.getContainer().setSize(log.getContainer().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+					sc.setContent(log.getContainer());
+//					sc.setMinSize(log.getContainer().getSize());
 					lstDeviceLog.add(log);
 				}
 				if(log != null){
@@ -497,12 +504,12 @@ public class LogView extends ViewPart {
 					log.updateCaseName((names.length > 2)?(names[0] + ":" + names[1] + " " + casename) : casename);
 				}
 			}
-			parent.pack();
+			parent.pack(false);
 //			parent.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			if(parent.getParent() != null && parent.getParent().getParent() != null){
-				if(parent.getParent().getParent() instanceof Shell){
-					parent.getParent().getParent().pack();
-				}
+//				if(parent.getParent().getParent() instanceof Shell){
+					parent.getParent().getParent().pack(false);
+//				}
 //					if(parent.getParent().getParent().getParent() != null){
 //							parent.getParent().getParent().getParent().pack();
 //					}

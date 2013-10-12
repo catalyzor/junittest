@@ -19,9 +19,21 @@ public class AdditionLogView extends ViewPart {
 	private Composite composite;
 	private Text text;
 	private Label lblNewLabel;
+	private Composite container;
 
 	public AdditionLogView() {
 	}
+
+	
+	public Composite getContainer() {
+		return container;
+	}
+
+
+	public void setContainer(Composite container) {
+		this.container = container;
+	}
+
 
 	/**
 	 * Create contents of the view part.
@@ -30,7 +42,7 @@ public class AdditionLogView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 //		setPartName()
-		Composite container = new Composite(parent, SWT.NONE);
+		container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 		{
 			ScrolledComposite scrolledComposite = new ScrolledComposite(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
