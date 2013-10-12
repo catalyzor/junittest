@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import junittest.debug.JUnitRunnerListener;
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
 import junittest.util.Utilities;
@@ -244,8 +245,15 @@ public class XMLLog {
 				}
 				element.addAttribute(NODE_ATTR_TIME, SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM, Locale.CHINA).format(Calendar.getInstance().getTime()));
 				Element el = doc.getRootElement().element(NODE_VERDICT).addAttribute(result.name(), Messages.XMLLog_26 + doc.selectNodes(Messages.XMLLog_27 + NODE_CASE + Messages.XMLLog_28 + NODE_VERDICT + Messages.XMLLog_29 + result.name() + Messages.XMLLog_30).size());
-				int total = Integer.parseInt(el.attributeValue(ATTR_VERDICT_TOTAL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_ERROR)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_FAIL)) - Integer.parseInt(el.attributeValue(ATTR_VERDICT_OK));
+				int sum = Integer.parseInt(el.attributeValue(ATTR_VERDICT_TOTAL));
+				int error = Integer.parseInt(el.attributeValue(ATTR_VERDICT_ERROR));
+				int fail = Integer.parseInt(el.attributeValue(ATTR_VERDICT_FAIL));
+				int ok = Integer.parseInt(el.attributeValue(ATTR_VERDICT_OK));
+				int total = sum - error - fail - ok;
 				el.addAttribute(ATTR_VERDICT_IGNORE, total + Messages.XMLLog_31);
+				
+				//refresh resultview
+				JUnitRunnerListener.refreshResultView(ok, fail, error);
 			}
 			if(element.getParent() != null){
 				updateTestResult(element.getParent(), result);

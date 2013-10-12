@@ -6,6 +6,7 @@ import junittest.view.DeviceView;
 import junittest.view.LogHistoryView;
 import junittest.view.LogView;
 import junittest.view.ProjectView;
+import junittest.view.ResultView;
 import junittest.xml.XMLLog;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -14,6 +15,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class CloseProjectHandler extends AbstractHandler implements IHandler {
@@ -44,6 +46,11 @@ public class CloseProjectHandler extends AbstractHandler implements IHandler {
 		DeviceView dv = (DeviceView) window.getActivePage().findView(DeviceView.ID);
 		if(dv != null){
 			dv.setInput(null);
+		}
+
+		ResultView rv = (ResultView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ResultView.ID);
+		if(rv != null){
+			rv.updateResult(0, 0, 0);
 		}
 
 //		IViewPart vp = null;

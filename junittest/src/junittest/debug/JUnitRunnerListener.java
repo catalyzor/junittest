@@ -9,6 +9,7 @@ import junittest.userlog.UserLogUtil;
 import junittest.view.LogHistoryView;
 import junittest.view.LogView;
 import junittest.view.ProjectView;
+import junittest.view.ResultView;
 import junittest.xml.XMLLog;
 
 import org.dom4j.Element;
@@ -187,6 +188,21 @@ public class JUnitRunnerListener extends RunListener {
 					view.refreshView();
 				}else{
 					view.refreshNode(el);
+				}
+			}
+		});
+	}
+	
+	public static void refreshResultView(final int ok, final int fail, final int error){
+
+		Display.getDefault().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				ResultView view = (ResultView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ResultView.ID);
+				if(view != null){
+					view.updateResult(ok, fail, error);
 				}
 			}
 		});

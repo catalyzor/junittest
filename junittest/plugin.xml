@@ -85,6 +85,11 @@
             id="junittest.view.AdditionLogView"
             name="%view.name.4">
       </view>
+      <view
+            class="junittest.view.ResultView"
+            id="junittest.view.ResultView"
+            name="%view.name.5">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -119,7 +124,7 @@
                closeable="false"
                id="junittest.view.DeviceView"
                minimized="false"
-               ratio="0.7"
+               ratio="0.5"
                relationship="bottom"
                relative="junittest.view.ProjectView">
          </view>
@@ -130,6 +135,18 @@
                ratio="0.7"
                relationship="bottom"
                relative="junittest.view.LogHistoryView">
+         </view>
+         <view
+               closeable="false"
+               id="junittest.view.ResultView"
+               minimized="false"
+               moveable="false"
+               ratio="0.6"
+               relationship="bottom"
+               relative="junittest.view.DeviceView"
+               showTitle="true"
+               standalone="true"
+               visible="true">
          </view>
       </perspectiveExtension>
    </extension>

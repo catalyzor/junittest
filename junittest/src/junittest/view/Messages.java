@@ -34,6 +34,10 @@ public class Messages extends NLS {
 	public static String ProjectView_0;
 	public static String ProjectView_1;
 	public static String ProjectView_2;
+	public static String ResultView_0;
+	public static String ResultView_1;
+	public static String ResultView_2;
+	public static String ResultView_3;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
