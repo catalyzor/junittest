@@ -32,6 +32,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
 
@@ -240,6 +241,9 @@ public class LogView extends ViewPart {
 	}
 //	private RunListener runListener;
 //	private IResourceChangeListener listener;
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public LogView() {
 //		listener = new IResourceChangeListener() {
 //			
@@ -385,7 +389,11 @@ public class LogView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		{
 			{
-				final Composite composite = new Composite(parent, SWT.NONE);
+				
+				ScrolledComposite scrolledComposite = new ScrolledComposite(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+				scrolledComposite.setExpandHorizontal(true);
+				scrolledComposite.setExpandVertical(true);
+				final Composite composite = new Composite(scrolledComposite, SWT.NONE);
 				composite.setLayout(new FillLayout(SWT.HORIZONTAL));
 				treeViewer = new TreeViewer(composite, SWT.BORDER);
 				Tree tree = treeViewer.getTree();
@@ -393,6 +401,8 @@ public class LogView extends ViewPart {
 				treeViewer.setLabelProvider(new ViewerLabelProvider());
 				treeViewer.setContentProvider(new TreeContentProvider());
 				treeViewer.setAutoExpandLevel(3);
+				scrolledComposite.setContent(composite);
+				scrolledComposite.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 				treeViewer.addDoubleClickListener(new IDoubleClickListener() {
 					
@@ -506,9 +516,9 @@ public class LogView extends ViewPart {
 			parent.pack(false);
 //			parent.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			if(parent.getParent() != null && parent.getParent().getParent() != null){
-//				if(parent.getParent().getParent() instanceof Shell){
+				if(parent.getParent().getParent() instanceof Shell){
 					parent.getParent().getParent().pack(false);
-//				}
+				}
 //					if(parent.getParent().getParent().getParent() != null){
 //							parent.getParent().getParent().getParent().pack();
 //					}
