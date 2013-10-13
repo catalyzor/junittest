@@ -452,6 +452,8 @@ public class DeviceManager {
 			@Override
 			public void deviceReset(IExtDevice arg0) {
 				// TODO Auto-generated method stub
+				//reinit the t1 thread after reset
+				t1 = null;
 				log(true);
 			}
 		};
@@ -533,7 +535,7 @@ public class DeviceManager {
 				if(adDevicelogreceiver == null) adDevicelogreceiver  = new Devicelogreceiver();
 				if(bool){
 					
-					if(t1 == null){
+					if(t1 == null || !t1.isAlive()){
 						t1 = new Thread(new runlog(device, adDevicelogreceiver));
 						t1.start();
 					}
