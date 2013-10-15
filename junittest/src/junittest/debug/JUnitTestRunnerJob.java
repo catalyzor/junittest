@@ -164,7 +164,7 @@ public class JUnitTestRunnerJob extends Job {
 		for(String c: this.lstClasses){
 			monitor.setCanceled(!checkTime(Calendar.getInstance().getTimeInMillis()));
 			if(monitor.isCanceled()){
-				XMLLog.log = null;
+				XMLLog.instance = null;
 				this.runListener.refreshLogHistoryView(logfile);
 				return Status.CANCEL_STATUS;
 			}
@@ -182,7 +182,7 @@ public class JUnitTestRunnerJob extends Job {
 		}
 		ResourceManager.getInstance().getDeviceManager().logAllDevice(false);
 		monitor.done();
-		XMLLog.log = null;
+//		XMLLog.instance = null;
 		this.runListener.refreshLogHistoryView(logfile);
 		return Status.OK_STATUS;
 	}

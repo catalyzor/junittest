@@ -69,7 +69,7 @@ public class StatusLabelDecorator implements
 				}
 				return Activator.getDefault().getImageRegistry().get(pic);
 			}else{
-				XMLLog log = XMLLog.log;
+				XMLLog log = XMLLog.instance;
 				if(log != null){
 					String result = (res.getType() == IResource.PROJECT)?log.getTestResult(res.getName()):log.getTestResult(res.getProject().getName() + Messages.StatusLabelDecorator_4 + res.getProjectRelativePath().removeFirstSegments(1).toString());
 					String path = ISharedImageConstants.TSUITE;

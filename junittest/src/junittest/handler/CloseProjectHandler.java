@@ -38,7 +38,7 @@ public class CloseProjectHandler extends AbstractHandler implements IHandler {
 		
 		LogView lv = (LogView) window.getActivePage().findView(LogView.ID);
 		if(lv != null){
-			XMLLog.log = null;
+			XMLLog.instance = null;
 			lv.setDoc(null);
 			lv.refreshView();
 		}

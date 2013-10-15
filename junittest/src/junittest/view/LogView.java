@@ -339,7 +339,7 @@ public class LogView extends ViewPart {
 	public Document getDoc() {
 		if(doc == null){
 //			XMLLog logger = JUnitRunner.getInstance().getXMLLog();
-			XMLLog logger = XMLLog.log;
+			XMLLog logger = XMLLog.instance;
 			if(logger != null){
 				doc = logger.getDocument();
 			}

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import junittest.Activator;
+import junittest.debug.JUnitTestRunnerJob;
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultConstants;
 import junittest.resource.TestResultEnum;
@@ -24,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -60,7 +62,7 @@ public class LogHistoryView extends ViewPart {
 					String name = file.getName().substring(0, file.getName().length() - ResourceManager.SUFFIX_CLASS.length() + 1);
 					return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM,SimpleDateFormat.MEDIUM,Locale.CHINA).format(new Date(Long.parseLong(name)));
 				case 1:
-					if(XMLLog.log != null && file.getName().startsWith(XMLLog.log.getTime())){
+					if(Job.getJobManager().find(JUnitTestRunnerJob.FAMILINAME).length > 0 && XMLLog.instance != null && file.getName().startsWith(XMLLog.instance.getTime())){
 						return Messages.LogHistoryView_0;
 					}
 					return Messages.LogHistoryView_1;

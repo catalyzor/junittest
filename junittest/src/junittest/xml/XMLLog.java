@@ -56,7 +56,7 @@ public class XMLLog {
 	private Document doc;
 	private IFolder folder;
 	private String fileName;
-	public static XMLLog log;
+	public static XMLLog instance;
 	
 	public String getTime() {
 		return time;
@@ -72,7 +72,7 @@ public class XMLLog {
 		this.folder = folder;
 		this.fileName = time + "." + ResourceManager.SUFFIX_LOG;
 		doc = DocumentHelper.createDocument();
-		log = this;
+		instance = this;
 	}
 	
 	public void initStructure(){
@@ -332,8 +332,8 @@ public class XMLLog {
 	
 	public static String getLogTestResult(String filename) throws DocumentException{
 		Document doc = null;
-		if(log != null && log.time.equals(filename)){
-			doc = log.getDocument();
+		if(instance != null && instance.time.equals(filename)){
+			doc = instance.getDocument();
 		}else{
 			SAXReader sax = new SAXReader();
 			doc = sax.read(new File(filename));
