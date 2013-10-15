@@ -182,7 +182,7 @@ public class JUnitTestRunnerJob extends Job {
 		}
 		ResourceManager.getInstance().getDeviceManager().logAllDevice(false);
 		monitor.done();
-		XMLLog.log = null;
+//		XMLLog.log = null;
 		this.runListener.refreshLogHistoryView(logfile);
 		return Status.OK_STATUS;
 	}
