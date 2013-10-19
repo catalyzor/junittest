@@ -75,7 +75,7 @@ public class ResourceManager {
 				e.printStackTrace();
 			}
 		}
-		DeviceManager.sIExtDevices = null;
+//		DeviceManager.sIExtDevices = null;
 		this.deviceManager = deviceManager;
 	}
 	public boolean createProject(String name, String jarPath, IProgressMonitor monitor) throws Exception{

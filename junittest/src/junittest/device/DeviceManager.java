@@ -149,7 +149,7 @@ public class DeviceManager {
 		this.project = project;
 		init();
 	}
-	public static IExtDevice[] sIExtDevices = null;
+	public IExtDevice[] sIExtDevices = null;
 	
 	public void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, ExtDeviceException {
 		// TODO Auto-generated method stub

@@ -2,6 +2,7 @@ package junittest.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -44,11 +45,12 @@ public class ResourcePropertySource implements IPropertySource {
 	}
 	
 	public void buildDescs(){
-		Enumeration<Object> en = props.keys();
+		Object[] en = props.keySet().toArray();
+//		Arrays.sort(en);
 //		Set<Entry<Object,Object>> set = props.entrySet();
 		descs = new IPropertyDescriptor[props.size()];
 		for(int i = 0 ;i < descs.length;i ++){
-			String name = (String) en.nextElement();
+			String name = (String) en[i];
 			PropertyDescriptor txt = new PropertyDescriptor(name, name);
 			descs[i] = txt;
 //			txt.set

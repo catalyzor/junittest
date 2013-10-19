@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -33,6 +34,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 public class XMLLog {
 
@@ -105,12 +108,21 @@ public class XMLLog {
 			InputStream in = file.getContents();
 			prop.load(in);
 			in.close();
-			Iterator<Entry<Object, Object>> itr = prop.entrySet().iterator();
+
 			Element props = element.addElement(NODE_PROPS);
-			while(itr.hasNext()){
-				Entry<Object, Object> entry = itr.next();
-				props.addElement((String)entry.getKey()).addText((String)entry.getValue());
+			Object[] en = prop.keySet().toArray();
+			Arrays.sort(en);
+//			Set<Entry<Object,Object>> set = props.entrySet();
+			for(int i = 0 ;i < en.length;i ++){
+				String name = (String) en[i];
+				props.addElement(name).addText(prop.getProperty(name));
 			}
+			
+//			Iterator<Entry<Object, Object>> itr = prop.entrySet().iterator();
+//			while(itr.hasNext()){
+//				Entry<Object, Object> entry = itr.next();
+//				props.addElement((String)entry.getKey()).addText((String)entry.getValue());
+//			}
 		}
 	}
 	public synchronized IPath saveToFile(){
