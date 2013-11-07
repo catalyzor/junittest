@@ -6,11 +6,15 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import junittest.Activator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
@@ -40,6 +44,7 @@ public class ResourcePropertySource implements IPropertySource {
 			} catch (IOException | CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 	}

@@ -24,7 +24,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="junittest.application"
-            name="%product.name">
+            name="RCP Product">
          <property
                name="windowImages"
                value="icons/alt_window_16.gif,icons/alt_window_32.gif">

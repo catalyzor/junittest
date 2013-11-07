@@ -3,12 +3,15 @@ package junittest.util;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
+import junittest.Activator;
 import junittest.resource.ResourceManager;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 public class Utilities {
 
@@ -33,6 +36,7 @@ public class Utilities {
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 				return false;
 			}

@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import junittest.Activator;
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
 import junittest.ui.TestRunningCheckSourceProvider;
@@ -20,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
@@ -183,6 +185,7 @@ public class JUnitRunner {
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+							Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 						}
 //						pause = false;
 						setPause(false);
@@ -253,6 +256,7 @@ public class JUnitRunner {
 						} catch (CoreException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+							Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 						}
 					}
 					logger = new XMLLog(name, folder);
@@ -265,6 +269,7 @@ public class JUnitRunner {
 					} catch (CoreException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 					}
 					result = junit.run(JUnitRunner.this.classes);
 				}
@@ -359,6 +364,7 @@ public class JUnitRunner {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 		}
 		System.out.println(Messages.JUnitRunner_13);
 //		try {
@@ -374,6 +380,7 @@ public class JUnitRunner {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 		}
 		System.out.println(Messages.JUnitRunner_14);
 //		t.notify();
@@ -388,6 +395,7 @@ public class JUnitRunner {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 		}
 		System.out.println(Messages.JUnitRunner_15);
 //		t.;
@@ -418,6 +426,7 @@ public class JUnitRunner {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 			}
 		}

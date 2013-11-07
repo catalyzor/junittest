@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import junittest.Activator;
 import junittest.resource.ResourceManager;
 import junittest.view.AdditionLogView;
 
@@ -26,6 +27,8 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -171,6 +174,7 @@ public class DeviceManager {
 					sIExtDevices[i] = ExtDeviceManager.getInstance(classnameStrings[i]);				
 				}catch(Error e){
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 			}
 		}
@@ -259,6 +263,7 @@ public class DeviceManager {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 	}
@@ -280,6 +285,7 @@ public class DeviceManager {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 		try {
@@ -287,6 +293,7 @@ public class DeviceManager {
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 		}
 	}
 	
@@ -312,6 +319,7 @@ public class DeviceManager {
 		} catch (IOException | CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 		}
 		return lstConfig;
 	}
@@ -561,6 +569,7 @@ public class DeviceManager {
 				} catch (ExtDeviceException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 				
 			}
@@ -587,6 +596,7 @@ public class DeviceManager {
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+							Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 						}
 					}
 
@@ -600,6 +610,7 @@ public class DeviceManager {
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 					}
 					if(file.length()/(1024 * 1024) >= 3){
 						String str = Device.this.type + Messages.DeviceManager_15 + Device.this.name + Messages.DeviceManager_16 + new SimpleDateFormat(Messages.DeviceManager_17).format(Calendar.getInstance().getTime());
@@ -628,6 +639,7 @@ public class DeviceManager {
 									} catch (PartInitException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
+										Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 									}
 								}
 							});

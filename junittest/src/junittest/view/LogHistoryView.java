@@ -79,6 +79,7 @@ public class LogHistoryView extends ViewPart {
 //						e.printStackTrace();
 					}catch (Exception e){
 						e.printStackTrace();
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 					}
 				default:
 					break;
@@ -226,6 +227,7 @@ public class LogHistoryView extends ViewPart {
 					| NotEnabledException | NotHandledException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				ErrorDialog.openError(getSite().getShell(), Messages.LogHistoryView_7, Messages.LogHistoryView_8, new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
@@ -257,6 +259,7 @@ public class LogHistoryView extends ViewPart {
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 			}else{
 				tableViewer.setInput(null);

@@ -43,6 +43,7 @@ public class ShowLogHandler extends AbstractHandler implements IHandler {
 				} catch (DocumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 					ErrorDialog.openError(window.getShell(), Messages.ShowLogHandler_0, Messages.ShowLogHandler_1, new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 			}

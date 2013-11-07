@@ -3,6 +3,7 @@ package junittest.debug;
 import java.util.Calendar;
 import java.util.List;
 
+import junittest.Activator;
 import junittest.resource.ResourceManager;
 import junittest.view.LogView;
 import junittest.xml.XMLLog;
@@ -125,6 +126,7 @@ public class JUnitTestRunnerJob extends Job {
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 		this.runListener.setXmlLog(new XMLLog(name, folder));
@@ -140,6 +142,7 @@ public class JUnitTestRunnerJob extends Job {
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 		}
 		this.runListener.refreshProjectView(null);
 		this.runListener.refreshLogHistoryView(null);
@@ -178,6 +181,7 @@ public class JUnitTestRunnerJob extends Job {
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 		ResourceManager.getInstance().getDeviceManager().logAllDevice(false);

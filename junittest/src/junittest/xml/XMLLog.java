@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import junittest.Activator;
 import junittest.debug.JUnitRunnerListener;
 import junittest.resource.ResourceManager;
 import junittest.resource.TestResultEnum;
@@ -33,7 +34,9 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
@@ -87,6 +90,7 @@ public class XMLLog {
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 		}
 		//add count
 		StringBuffer buf = new StringBuffer().append(Messages.XMLLog_16).append(NODE_CASE);
@@ -137,6 +141,7 @@ public class XMLLog {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 		}
 		return path;
 	}
@@ -155,6 +160,7 @@ public class XMLLog {
 					} catch (CoreException | IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 					}
 				}
 				
@@ -163,6 +169,7 @@ public class XMLLog {
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 			}else if(ress[i].getType() == IResource.FILE && !Utilities.isFilted(ress[i])){
 				String name = ress[i].getName();
@@ -188,6 +195,7 @@ public class XMLLog {
 						} catch (CoreException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+							Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 						}
 					}
 					

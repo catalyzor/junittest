@@ -70,6 +70,7 @@ public class DetailReportHandler extends AbstractHandler implements IHandler {
 					} catch (JRException | IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 						Display.getDefault().asyncExec(new Runnable() {
 							
 							@Override

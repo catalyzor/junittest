@@ -1,5 +1,6 @@
 package junittest.handler;
 
+import junittest.Activator;
 import junittest.debug.JUnitTestRunnerJob;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -9,6 +10,8 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -28,6 +31,7 @@ public class StopHandler extends AbstractHandler implements IHandler {
 					| NotHandledException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 		Job[] jobs = Job.getJobManager().find(JUnitTestRunnerJob.FAMILINAME);

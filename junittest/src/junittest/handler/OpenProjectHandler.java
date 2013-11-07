@@ -1,5 +1,6 @@
 package junittest.handler;
 
+import junittest.Activator;
 import junittest.debug.JUnitRunner;
 import junittest.resource.ResourceManager;
 import junittest.ui.ResourceLabelProvider;
@@ -55,6 +56,7 @@ public class OpenProjectHandler extends AbstractHandler implements IHandler {
 						| NotHandledException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				}
 			}
 			

@@ -41,6 +41,7 @@ public class QuickViewLogHandler extends AbstractHandler implements IHandler {
 			} catch (DocumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 				ErrorDialog.openError(window.getShell(), Messages.QuickViewLogHandler_2, Messages.QuickViewLogHandler_3, new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}

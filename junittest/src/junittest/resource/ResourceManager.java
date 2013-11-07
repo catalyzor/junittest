@@ -133,6 +133,7 @@ public class ResourceManager {
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.ResourceManager_9, e);
 				}
 				return Status.OK_STATUS;
@@ -159,24 +160,10 @@ public class ResourceManager {
 				setDeviceManager(new DeviceManager(Messages.ResourceManager_10, getProject()));
 				String str = this.project.getFolder(FOLDER_JAR).members()[0].getLocation().toOSString();
 				loadTestJar(str);
-			} catch (CoreException e) {
+			} catch (ExtDeviceException | ClassNotFoundException | IOException | InstantiationException | IllegalAccessException | CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExtDeviceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 	}

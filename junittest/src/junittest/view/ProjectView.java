@@ -15,7 +15,9 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -250,6 +252,7 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 							} catch (CoreException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
+								Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 							}
 						}
 					}else if(folder != null){
@@ -275,6 +278,7 @@ public class ProjectView extends ViewPart implements IResourceChangeListener {
 						} catch (CoreException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+							Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 						}
 					}
 					return null;

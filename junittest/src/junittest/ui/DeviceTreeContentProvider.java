@@ -1,8 +1,11 @@
 package junittest.ui;
 
+import junittest.Activator;
 import junittest.device.DeviceManager;
 import junittest.device.DeviceManager.Device;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -55,6 +58,7 @@ public class DeviceTreeContentProvider implements ITreeContentProvider {
 							| IllegalAccessException | ExtDeviceException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 					}
 				}
 //			}

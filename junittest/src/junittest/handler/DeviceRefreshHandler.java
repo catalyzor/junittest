@@ -1,5 +1,6 @@
 package junittest.handler;
 
+import junittest.Activator;
 import junittest.device.DeviceManager;
 import junittest.resource.ResourceManager;
 import junittest.view.DeviceView;
@@ -8,6 +9,8 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -28,6 +31,7 @@ public class DeviceRefreshHandler extends AbstractHandler implements IHandler {
 					| IllegalAccessException | ExtDeviceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 		if(view != null) view.setInput(device);

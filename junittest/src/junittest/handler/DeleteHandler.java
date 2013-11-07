@@ -2,6 +2,7 @@ package junittest.handler;
 
 import java.util.Iterator;
 
+import junittest.Activator;
 import junittest.resource.ResourceManager;
 import junittest.view.LogHistoryView;
 
@@ -15,6 +16,8 @@ import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -49,6 +52,7 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 										| NotHandledException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
+									Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 								}
 							}
 						}
@@ -63,6 +67,7 @@ public class DeleteHandler extends AbstractHandler implements IHandler {
 					} catch (CoreException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e));
 					}
 				}
 			}
