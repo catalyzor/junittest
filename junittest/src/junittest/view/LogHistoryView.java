@@ -59,14 +59,16 @@ public class LogHistoryView extends ViewPart {
 			if(file != null){
 				switch (columnIndex) {
 				case 0:
+					return file.getParent().getName();
+				case 1:
 					String name = file.getName().substring(0, file.getName().length() - ResourceManager.SUFFIX_CLASS.length() + 1);
 					return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM,SimpleDateFormat.MEDIUM,Locale.CHINA).format(new Date(Long.parseLong(name)));
-				case 1:
+				case 2:
 					if(Job.getJobManager().find(JUnitTestRunnerJob.FAMILINAME).length > 0 && XMLLog.instance != null && file.getName().startsWith(XMLLog.instance.getTime())){
 						return Messages.LogHistoryView_0;
 					}
 					return Messages.LogHistoryView_1;
-				case 2:
+				case 3:
 					try {
 //						String str = XMLLog.getLogTestResult(file.getLocation().toOSString());
 						String str = XMLLog.getLogTestResult(file);
@@ -176,6 +178,12 @@ public class LogHistoryView extends ViewPart {
 				});
 				table.setHeaderVisible(true);
 				table.setLinesVisible(true);
+				{
+					TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+					TableColumn tableColumn = tableViewerColumn.getColumn();
+					tcl_composite.setColumnData(tableColumn, new ColumnPixelData(150, true, true));
+					tableColumn.setText(Messages.LogHistoryView_tableColumn_text);
+				}
 				{
 					TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 					TableColumn tblclmnNewColumn = tableViewerColumn.getColumn();

@@ -13,7 +13,7 @@ public class UserLogUtil {
 
 	protected static void refreshLogView(final Element el) {
 		// TODO Auto-generated method stub
-		Display.getDefault().asyncExec(new Runnable() {
+		Display.getDefault().syncExec(new Runnable() {
 			
 			@Override
 			public void run() {

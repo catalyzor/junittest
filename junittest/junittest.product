@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="RCP Product" uid="JunitTest" id="junittest.product" application="junittest.application" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="SIMAC Test Manager" uid="JunitTest" id="junittest.product" application="junittest.application" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>

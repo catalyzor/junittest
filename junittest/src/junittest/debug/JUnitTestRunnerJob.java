@@ -115,7 +115,7 @@ public class JUnitTestRunnerJob extends Job {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
-		monitor.beginTask(Messages.JUnitTestRunnerJob_4, lstClasses.size() * 10);
+		monitor.beginTask(Messages.JUnitTestRunnerJob_4, lstClasses.size() * 10 + 10);
 		ResourceManager.getInstance().getMapResult().clear();
 		startTime = Calendar.getInstance().getTimeInMillis();
 		String name = startTime + Messages.JUnitTestRunnerJob_5;
@@ -148,7 +148,7 @@ public class JUnitTestRunnerJob extends Job {
 		this.runListener.refreshLogHistoryView(null);
 		this.runListener.refreshLogView(null);
 
-		Display.getDefault().asyncExec(new Runnable() {
+		Display.getDefault().syncExec(new Runnable() {
 			
 			@Override
 			public void run() {

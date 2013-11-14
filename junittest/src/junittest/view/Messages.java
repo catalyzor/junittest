@@ -38,6 +38,7 @@ public class Messages extends NLS {
 	public static String ResultView_1;
 	public static String ResultView_2;
 	public static String ResultView_3;
+	public static String LogHistoryView_tableColumn_text;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

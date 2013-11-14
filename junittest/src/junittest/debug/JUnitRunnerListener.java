@@ -153,7 +153,7 @@ public class JUnitRunnerListener extends RunListener {
 
 	protected void refreshProjectView(final String classname){
 		// TODO Auto-generated method stub
-		Display.getDefault().asyncExec(new Runnable() {
+		Display.getDefault().syncExec(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -177,7 +177,7 @@ public class JUnitRunnerListener extends RunListener {
 	}
 	protected void refreshLogView(final Element el) {
 		// TODO Auto-generated method stub
-		Display.getDefault().asyncExec(new Runnable() {
+		Display.getDefault().syncExec(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -195,7 +195,7 @@ public class JUnitRunnerListener extends RunListener {
 	
 	public static void refreshResultView(final int ok, final int fail, final int error){
 
-		Display.getDefault().asyncExec(new Runnable() {
+		Display.getDefault().syncExec(new Runnable() {
 			
 			@Override
 			public void run() {

@@ -102,19 +102,19 @@
 			<frame>
 				<reportElement uuid="7d0f937d-3fc2-4bbe-8be2-72c05505b127" style="table_TD" x="5" y="0" width="445" height="20"/>
 				<frame>
-					<reportElement uuid="78571670-45b1-4f01-a3d6-e972980691c2" style="table_CH" x="224" y="0" width="221" height="20" backcolor="#FFFFFF"/>
+					<reportElement uuid="78571670-45b1-4f01-a3d6-e972980691c2" style="table_TD" stretchType="RelativeToTallestObject" x="224" y="0" width="221" height="20" backcolor="#FFFFFF"/>
 				</frame>
 				<frame>
-					<reportElement uuid="dd8cdb84-32d1-48fa-b681-51467d342d3e" style="table_CH" x="0" y="0" width="224" height="20" backcolor="#FFFFFF"/>
+					<reportElement uuid="dd8cdb84-32d1-48fa-b681-51467d342d3e" style="table_TD" stretchType="RelativeToTallestObject" x="0" y="0" width="224" height="20" backcolor="#FFFFFF"/>
 				</frame>
-				<textField>
+				<textField isStretchWithOverflow="true">
 					<reportElement uuid="62006287-bf95-4ff2-b6ba-be78eae43b85" x="268" y="0" width="100" height="20"/>
 					<textElement>
 						<font fontName="仿宋" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Purpose}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isStretchWithOverflow="true">
 					<reportElement uuid="9cfbd11a-48f2-4eb7-b5da-c98e40e5e8b8" x="32" y="0" width="100" height="20"/>
 					<textElement>
 						<font fontName="仿宋" size="12"/>
