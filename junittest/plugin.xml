@@ -488,7 +488,7 @@
                label="%command.label.12"
                style="push">
          </command>
-         <command
+<!--         <command
                commandId="junittest.command.pause"
                label="%command.label.13"
                style="push">
@@ -498,6 +498,7 @@
                label="%command.label.14"
                style="push">
          </command>
+         -->
       </menuContribution>
    </extension>
    <extension

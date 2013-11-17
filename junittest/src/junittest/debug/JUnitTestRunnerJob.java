@@ -115,14 +115,14 @@ public class JUnitTestRunnerJob extends Job {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
-		monitor.beginTask(Messages.JUnitTestRunnerJob_4, lstClasses.size() * 10 + 10);
+		monitor.beginTask(Messages.JUnitTestRunnerJob_4, lstClasses.size() * 10 + 30);
 		ResourceManager.getInstance().getMapResult().clear();
 		startTime = Calendar.getInstance().getTimeInMillis();
 		String name = startTime + Messages.JUnitTestRunnerJob_5;
 		IFolder folder = this.runListener.getProject().getFolder(ResourceManager.FOLDER_LOG).getFolder(name);
 		if(!folder.exists()){
 			try {
-				folder.create(true, true, new SubProgressMonitor(monitor, 1));
+				folder.create(true, true, new SubProgressMonitor(monitor, 5));
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

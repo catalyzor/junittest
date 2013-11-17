@@ -68,7 +68,7 @@ public class JUnitRunnerListener extends RunListener {
 		// TODO Auto-generated method stub
 		super.testRunStarted(description);
 		logger.debug(Messages.JUnitRunnerListener_0);
-		getMonitor().beginTask(Messages.JUnitRunnerListener_1, description.testCount() * 10);
+		getMonitor().beginTask(Messages.JUnitRunnerListener_1, description.testCount() * 10 + 20);
 	}
 
 	@Override
